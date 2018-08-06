@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.videorecord.mybatis.mapper.VideoInfoMapper">
+	<resultMap id="BaseResultMap" type="com.videorecord.mybatis.pojo.VideoInfo">
+		<id column="video_id" property="video_id" jdbcType="VARCHAR" />
+		<result column="video_name" property="video_name" jdbcType="VARCHAR" />
+		<result column="video_episode" property="video_episode"
+			jdbcType="VARCHAR" />
+		<result column="video_broadcast_time" property="video_broadcast_time"
+			jdbcType="TIMESTAMP" />
+		<result column="video_type" property="video_type" jdbcType="VARCHAR" />
+		<result column="video_season" property="video_season" jdbcType="VARCHAR" />
+		<result column="video_country" property="video_country"
+			jdbcType="VARCHAR" />
+		<result column="video_source" property="video_source" jdbcType="VARCHAR" />
+		<result column="video_remark" property="video_remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+		<result column="last_update_time" property="last_update_time"
+			jdbcType="TIMESTAMP" />
+		<result column="have_bd_resource" property="have_bd_resource"
+			jdbcType="VARCHAR" />
+		<result column="have_poster" property="have_poster" jdbcType="VARCHAR" />
+		<collection property="videoResourceInfo" javaType="java.util.List"
+			ofType="com.videorecord.mybatis.pojo.VideoResourceInfo">
+			<result column="video_id" property="video_id" jdbcType="VARCHAR" />
+			<result column="resource_type" property="resource_type"
+				jdbcType="VARCHAR" />
+			<result column="resource_format" property="resource_format"
+				jdbcType="VARCHAR" />
+			<result column="resource_resolution" property="resource_resolution"
+				jdbcType="VARCHAR" />
+			<result column="resource_sub" property="resource_sub"
+				jdbcType="VARCHAR" />
+			<result column="resource_sub_type" property="resource_sub_type"
+				jdbcType="VARCHAR" />
+			<result column="resource_record_time" property="resource_record_time"
+				jdbcType="TIMESTAMP" />
+			<result column="resource_record_address" property="resource_record_address"
+				jdbcType="VARCHAR" />
+			<result column="resource_remark" property="resource_remark"
+				jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.videorecord.mybatis.pojo.VideoInfo"
+		extends="BaseResultMap">
+		<result column="video_detail_info" property="video_detail_info"
+			jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		video_id, video_name, video_episode, video_broadcast_time,
+		video_type,
+		video_season,
+		video_country, video_source, video_remark,
+		create_time, last_update_time,
+		have_bd_resource,
+		have_poster
+	</sql>
+	<sql id="Blob_Column_List">
+		video_detail_info
+	</sql>
+	<select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+		parameterType="com.videorecord.mybatis.pojo.VideoInfoExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from video_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.videorecord.mybatis.pojo.VideoInfoExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from video_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from video_info
+		where video_id = #{video_id,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByPrimaryKeyWithResource" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.String">
+		select
+		t1.video_id, t1.video_name, t1.video_episode,
+		t1.video_broadcast_time,
+		t1.video_type,
+		t1.video_season,
+		t1.video_country,
+		t1.video_source,
+		t1.video_remark, t1.create_time,
+		t1.last_update_time,
+		t1.have_bd_resource ,
+		t1.video_detail_info ,
+		t2.video_id,t2.resource_type, t2.resource_format,
+		t2.resource_resolution, t2.resource_sub,
+		t2.resource_sub_type,
+		t2.resource_record_time, t2.resource_record_address,
+		t2.resource_remark
+		from video_info t1
+		LEFT JOIN video_resource_info t2
+		ON t1.video_id = t2.video_id
+		where
+		t1.video_id =
+		#{video_id,jdbcType=VARCHAR}
+	</select>
+	<select id="searchVideo" parameterType="com.videorecord.mybatis.pojo.VideoSearch"
+		resultMap="ResultMapWithBLOBs">
+		SELECT DISTINCT t1.*,t2.* FROM video_info t1 LEFT JOIN
+		video_resource_info
+		t2 ON t1.video_id = t2.video_id
+		<where>
+			video_type = #{videoType}
+			<if test="videoName != null and !(videoName.trim()).equals('') ">
+				and UPPER(t1.video_name) LIKE
+				UPPER(CONCAT(CONCAT('%',#{videoName}),'%'))
+			</if>
+			<if test="yearBegin != null and !(yearBegin.trim()).equals('') ">
+				and DATE_FORMAT(t1.video_broadcast_time,'%Y') &gt;=
+				#{yearBegin}
+			</if>
+			<if test="yearEnd != null and !(yearEnd.trim()).equals('') ">
+				and DATE_FORMAT(t1.video_broadcast_time,'%Y') &lt;=
+				#{yearEnd}
+			</if>
+			<if test="episodeBegin != null and !(episodeBegin.trim()).equals('') ">
+				and CONVERT(t1.video_episode,SIGNED) &gt;=
+				CONVERT(#{episodeBegin},SIGNED)
+			</if>
+			<if test="episodeEnd != null and !(episodeEnd.trim()).equals('') ">
+				and CONVERT(t1.video_episode,SIGNED) &lt;=
+				CONVERT(#{episodeEnd},SIGNED)
+			</if>
+			<if
+				test="address != null and !(address.trim()).equals('') 
+				and address != 'ALL' ">
+				and t2.resource_record_address=#{address}
+			</if>
+			<if
+				test="animationSeason != null and !(animationSeason.trim()).equals('') ">
+				and t1.video_season=#{animationSeason}
+			</if>
+			<if test="country != null and !(country.trim()).equals('') ">
+				and t1.video_country=#{country}
+			</if>
+			<if test="dramaSeason != null and !(dramaSeason.trim()).equals('') ">
+				and t1.video_season=#{dramaSeason}
+			</if>
+			<if test="resourceType != null and !(resourceType.trim()).equals('') ">
+				and t2.resource_type=#{resourceType}
+			</if>
+			<if test="format != null and !(format.trim()).equals('')  ">
+				and t2.resource_format=#{format}
+			</if>
+			<if test="resolution != null and !(resolution.trim()).equals('') ">
+				and t2.resource_resolution=#{resolution}
+			</if>
+			<if test="subType != null and !(subType.trim()).equals('') ">
+				and t2.resource_sub_type=#{subType}
+			</if>
+		</where>
+		order by t1.video_broadcast_time
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		video_info
+		where video_id = #{video_id,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.videorecord.mybatis.pojo.VideoInfoExample">
+		delete from video_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.videorecord.mybatis.pojo.VideoInfo">
+		insert into video_info
+		(video_id, video_name, video_episode,
+		video_broadcast_time, video_type,
+		video_season,
+		video_country, video_source, video_remark,
+		create_time,
+		last_update_time, have_bd_resource,
+		have_poster, video_detail_info)
+		values (#{video_id,jdbcType=VARCHAR}, #{video_name,jdbcType=VARCHAR},
+		#{video_episode,jdbcType=VARCHAR},
+		#{video_broadcast_time,jdbcType=TIMESTAMP},
+		#{video_type,jdbcType=VARCHAR}, #{video_season,jdbcType=VARCHAR},
+		#{video_country,jdbcType=VARCHAR}, #{video_source,jdbcType=VARCHAR},
+		#{video_remark,jdbcType=VARCHAR},
+		#{create_time,jdbcType=TIMESTAMP},
+		#{last_update_time,jdbcType=TIMESTAMP},
+		#{have_bd_resource,jdbcType=VARCHAR},
+		#{have_poster,jdbcType=VARCHAR},
+		#{video_detail_info,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.videorecord.mybatis.pojo.VideoInfo">
+		insert into video_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="video_id != null">
+				video_id,
+			</if>
+			<if test="video_name != null">
+				video_name,
+			</if>
+			<if test="video_episode != null">
+				video_episode,
+			</if>
+			<if test="video_broadcast_time != null">
+				video_broadcast_time,
+			</if>
+			<if test="video_type != null">
+				video_type,
+			</if>
+			<if test="video_season != null">
+				video_season,
+			</if>
+			<if test="video_country != null">
+				video_country,
+			</if>
+			<if test="video_source != null">
+				video_source,
+			</if>
+			<if test="video_remark != null">
+				video_remark,
+			</if>
+			<if test="create_time != null">
+				create_time,
+			</if>
+			<if test="last_update_time != null">
+				last_update_time,
+			</if>
+			<if test="have_bd_resource != null">
+				have_bd_resource,
+			</if>
+			<if test="have_poster != null">
+				have_poster,
+			</if>
+			<if test="video_detail_info != null">
+				video_detail_info,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="video_id != null">
+				#{video_id,jdbcType=VARCHAR},
+			</if>
+			<if test="video_name != null">
+				#{video_name,jdbcType=VARCHAR},
+			</if>
+			<if test="video_episode != null">
+				#{video_episode,jdbcType=VARCHAR},
+			</if>
+			<if test="video_broadcast_time != null">
+				#{video_broadcast_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="video_type != null">
+				#{video_type,jdbcType=VARCHAR},
+			</if>
+			<if test="video_season != null">
+				#{video_season,jdbcType=VARCHAR},
+			</if>
+			<if test="video_country != null">
+				#{video_country,jdbcType=VARCHAR},
+			</if>
+			<if test="video_source != null">
+				#{video_source,jdbcType=VARCHAR},
+			</if>
+			<if test="video_remark != null">
+				#{video_remark,jdbcType=VARCHAR},
+			</if>
+			<if test="create_time != null">
+				#{create_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="last_update_time != null">
+				#{last_update_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="have_bd_resource != null">
+				#{have_bd_resource,jdbcType=VARCHAR},
+			</if>
+			<if test="have_poster != null">
+				#{have_poster,jdbcType=VARCHAR},
+			</if>
+			<if test="video_detail_info != null">
+				#{video_detail_info,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.videorecord.mybatis.pojo.VideoInfoExample"
+		resultType="java.lang.Integer">
+		select count(*) from video_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update video_info
+		<set>
+			<if test="record.video_id != null">
+				video_id = #{record.video_id,jdbcType=VARCHAR},
+			</if>
+			<if test="record.video_name != null">
+				video_name = #{record.video_name,jdbcType=VARCHAR},
+			</if>
+			<if test="record.video_episode != null">
+				video_episode = #{record.video_episode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.video_broadcast_time != null">
+				video_broadcast_time =
+				#{record.video_broadcast_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.video_type != null">
+				video_type = #{record.video_type,jdbcType=VARCHAR},
+			</if>
+			<if test="record.video_season != null">
+				video_season = #{record.video_season,jdbcType=VARCHAR},
+			</if>
+			<if test="record.video_country != null">
+				video_country = #{record.video_country,jdbcType=VARCHAR},
+			</if>
+			<if test="record.video_source != null">
+				video_source = #{record.video_source,jdbcType=VARCHAR},
+			</if>
+			<if test="record.video_remark != null">
+				video_remark = #{record.video_remark,jdbcType=VARCHAR},
+			</if>
+			<if test="record.create_time != null">
+				create_time = #{record.create_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.last_update_time != null">
+				last_update_time =
+				#{record.last_update_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.have_bd_resource != null">
+				have_bd_resource =
+				#{record.have_bd_resource,jdbcType=VARCHAR},
+			</if>
+			<if test="record.have_poster != null">
+				have_poster = #{record.have_poster,jdbcType=VARCHAR},
+			</if>
+			<if test="record.video_detail_info != null">
+				video_detail_info =
+				#{record.video_detail_info,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExampleWithBLOBs" parameterType="map">
+		update video_info
+		set video_id = #{record.video_id,jdbcType=VARCHAR},
+		video_name = #{record.video_name,jdbcType=VARCHAR},
+		video_episode =
+		#{record.video_episode,jdbcType=VARCHAR},
+		video_broadcast_time =
+		#{record.video_broadcast_time,jdbcType=TIMESTAMP},
+		video_type =
+		#{record.video_type,jdbcType=VARCHAR},
+		video_season =
+		#{record.video_season,jdbcType=VARCHAR},
+		video_country =
+		#{record.video_country,jdbcType=VARCHAR},
+		video_source =
+		#{record.video_source,jdbcType=VARCHAR},
+		video_remark =
+		#{record.video_remark,jdbcType=VARCHAR},
+		create_time =
+		#{record.create_time,jdbcType=TIMESTAMP},
+		last_update_time =
+		#{record.last_update_time,jdbcType=TIMESTAMP},
+		have_bd_resource =
+		#{record.have_bd_resource,jdbcType=VARCHAR},
+		have_poster =
+		#{record.have_poster,jdbcType=VARCHAR},
+		video_detail_info =
+		#{record.video_detail_info,jdbcType=LONGVARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update video_info
+		set video_id = #{record.video_id,jdbcType=VARCHAR},
+		video_name = #{record.video_name,jdbcType=VARCHAR},
+		video_episode =
+		#{record.video_episode,jdbcType=VARCHAR},
+		video_broadcast_time =
+		#{record.video_broadcast_time,jdbcType=TIMESTAMP},
+		video_type =
+		#{record.video_type,jdbcType=VARCHAR},
+		video_season =
+		#{record.video_season,jdbcType=VARCHAR},
+		video_country =
+		#{record.video_country,jdbcType=VARCHAR},
+		video_source =
+		#{record.video_source,jdbcType=VARCHAR},
+		video_remark =
+		#{record.video_remark,jdbcType=VARCHAR},
+		create_time =
+		#{record.create_time,jdbcType=TIMESTAMP},
+		last_update_time =
+		#{record.last_update_time,jdbcType=TIMESTAMP},
+		have_bd_resource =
+		#{record.have_bd_resource,jdbcType=VARCHAR},
+		have_poster =
+		#{record.have_poster,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.videorecord.mybatis.pojo.VideoInfo">
+		update video_info
+		<set>
+			<if test="video_name != null">
+				video_name = #{video_name,jdbcType=VARCHAR},
+			</if>
+			<if test="video_episode != null">
+				video_episode = #{video_episode,jdbcType=VARCHAR},
+			</if>
+			<if test="video_broadcast_time != null">
+				video_broadcast_time =
+				#{video_broadcast_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="video_type != null">
+				video_type = #{video_type,jdbcType=VARCHAR},
+			</if>
+			<if test="video_season != null">
+				video_season = #{video_season,jdbcType=VARCHAR},
+			</if>
+			<if test="video_country != null">
+				video_country = #{video_country,jdbcType=VARCHAR},
+			</if>
+			<if test="video_source != null">
+				video_source = #{video_source,jdbcType=VARCHAR},
+			</if>
+			<if test="video_remark != null">
+				video_remark = #{video_remark,jdbcType=VARCHAR},
+			</if>
+			<if test="create_time != null">
+				create_time = #{create_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="last_update_time != null">
+				last_update_time =
+				#{last_update_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="have_bd_resource != null">
+				have_bd_resource = #{have_bd_resource,jdbcType=VARCHAR},
+			</if>
+			<if test="have_poster != null">
+				have_poster = #{have_poster,jdbcType=VARCHAR},
+			</if>
+			<if test="video_detail_info != null">
+				video_detail_info =
+				#{video_detail_info,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where video_id = #{video_id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.videorecord.mybatis.pojo.VideoInfo">
+		update
+		video_info
+		set video_name = #{video_name,jdbcType=VARCHAR},
+		video_episode = #{video_episode,jdbcType=VARCHAR},
+		video_broadcast_time = #{video_broadcast_time,jdbcType=TIMESTAMP},
+		video_type = #{video_type,jdbcType=VARCHAR},
+		video_season =
+		#{video_season,jdbcType=VARCHAR},
+		video_country =
+		#{video_country,jdbcType=VARCHAR},
+		video_source =
+		#{video_source,jdbcType=VARCHAR},
+		video_remark =
+		#{video_remark,jdbcType=VARCHAR},
+		create_time =
+		#{create_time,jdbcType=TIMESTAMP},
+		last_update_time =
+		#{last_update_time,jdbcType=TIMESTAMP},
+		have_bd_resource =
+		#{have_bd_resource,jdbcType=VARCHAR},
+		have_poster =
+		#{have_poster,jdbcType=VARCHAR},
+		video_detail_info =
+		#{video_detail_info,jdbcType=LONGVARCHAR}
+		where video_id =
+		#{video_id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.videorecord.mybatis.pojo.VideoInfo">
+		update video_info
+		set video_name = #{video_name,jdbcType=VARCHAR},
+		video_episode =
+		#{video_episode,jdbcType=VARCHAR},
+		video_broadcast_time =
+		#{video_broadcast_time,jdbcType=TIMESTAMP},
+		video_type =
+		#{video_type,jdbcType=VARCHAR},
+		video_season =
+		#{video_season,jdbcType=VARCHAR},
+		video_country =
+		#{video_country,jdbcType=VARCHAR},
+		video_source =
+		#{video_source,jdbcType=VARCHAR},
+		video_remark =
+		#{video_remark,jdbcType=VARCHAR},
+		create_time =
+		#{create_time,jdbcType=TIMESTAMP},
+		last_update_time =
+		#{last_update_time,jdbcType=TIMESTAMP},
+		have_bd_resource =
+		#{have_bd_resource,jdbcType=VARCHAR},
+		have_poster =
+		#{have_poster,jdbcType=VARCHAR}
+		where video_id =
+		#{video_id,jdbcType=VARCHAR}
+	</update>
+</mapper>

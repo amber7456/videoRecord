@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>资源详情</title>
+<link rel="stylesheet" href="../../css/animationDetail.css">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<script src="../../js/jquery-2.1.4.js"></script>
+<script src="../../js/jquery.serializejson.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/imgController.js"></script>
+<script src="../../js/util.js"></script>
+</head>
+<body class="wrap-outer">
+	<div class="main-div" style="display: none;">
+		<div class="item" style="display: inline-table;">
+			<div id="video-poster " class="video-poster" style="">
+				<img onload="setImgStyle(this)" id="img" style="display: none;" onclick="enlargeImg(this)" />
+			</div>
+			<div id="video-poster-hide" style="display: none;">
+				<img alt="" id="img-hide" />
+			</div>
+			<div class="video-info">
+				<div class="video-info-line">
+					<p id="video_name" style="font-size: 22px;"></p>
+				</div>
+				<div class="video-info-line">
+					<p id="video_season"></p>
+				</div>
+				<div class="video-info-line">
+					<p id="video_broadcast_time">播出时间：</p>
+				</div>
+				<div class="video-info-line">
+					<p id="video_episode">集数：</p>
+				</div>
+				<div class="video-info-line">
+					<p id="video_source">原作类型：</p>
+				</div>
+				<div class="video-info-line">
+					<p id="create_time">收录时间：</p>
+				</div>
+				<div class="video-info-line">
+					<p id="last_update_time">修改时间：</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item " id="resource-info"></div>
+
+		<div class="item" style="width: 100%">
+			<label class="item-title">详情</label>
+			<div class="item_info">
+				<pre name="video_detail_info" id="video_detail_info" style="resize: none;"></pre>
+			</div>
+		</div>
+
+		<div class="item" style="width: 100%">
+			<label class="item-title">备注</label>
+			<div class="item_info">
+				<pre name="video_remark" id="video_remark" style="resize: none; height: 200px; overflow: auto;"></pre>
+			</div>
+		</div>
+	</div>
+
+	<div id="resource-info-model" style="display: none;">
+		<div style="width: 1000px; display: none;" id="resource_{id}">
+			<div class="resource-info-item">
+				<label class="item-lable">资源信息</label>
+				<div class="item-inline">
+					<p>{resource_type}</p>
+				</div>
+				<div class="item-inline">
+					<p>{resource_format}</p>
+				</div>
+				<div class="item-inline">
+					<p>{resource_resolution}</p>
+				</div>
+				<div class="item-inline">
+					<p>{resource_sub}</p>
+				</div>
+				<div class="item-inline">
+					<p>{resource_sub_type}</p>
+				</div>
+			</div>
+			<div class="resource-info-item">
+				<label class="item-lable">收录地址</label>
+				<div class="item-inline" style="width: 309px;">
+					<p>{resource_record_address}</p>
+				</div>
+				<label class="item-lable">收录时间</label>
+				<div class="item-inline">
+					<p>{resource_record_time}</p>
+				</div>
+			</div>
+			<div class="resource-info-item">
+				<label class="item-lable">备注</label>
+				<div class="item-inline" style="width: 787px;">
+					<p>{resource_remark}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script>
+	var layer;
+	layui.use([ 'layer', 'element', 'util' ], function() {
+		layer = layui.layer;
+		var element = layui.element;
+		var util = layui.util;
+
+		//执行
+		util.fixbar({
+			showHeight : "100"
+		});
+
+		layer.ready(function() {
+			loadAnimation();
+			$(".main-div").show();
+		})
+
+	});
+
+	function loadAnimation(index) {
+		var url = "/videoRecord/getDiskListByVideoType/";
+		var data = {};
+		var diskResp = getData(url, data)
+		var diskjson = getDiskjson(diskResp);
+
+		url = "/videoRecord/getVideoDetail/" + getUrlParam('video_id');
+		var videoResp = getData(url, data)
+		loadVideoInfo(videoResp, diskjson);
+	}
+
+	function loadVideoInfo(resp, diskjson) {
+
+		if (resp.data.have_poster === "1") {
+			var imgurl = "/videoRecord/getPoster/" + resp.data.video_id + "?t=" + (new Date()).getTime().toString();
+			$("#img").attr("src", imgurl);
+			$("#img-hide").attr("src", imgurl);
+		}
+
+		$("#video_name").append(resp.data.video_name);
+		$("#video_episode").append(resp.data.video_episode);
+		$("#video_broadcast_time").append(getWeek(resp.data.video_broadcast_time));
+
+		$("#video_season").append(resp.data.video_season);
+
+		$("#video_source").append(resp.data.video_source);
+		$("#video_remark").append(resp.data.video_remark);
+		$("#create_time").append(resp.data.create_time);
+		$("#last_update_time").append(resp.data.last_update_time);
+		$("#have_bd_resource").append(resp.data.have_bd_resource);
+		$("#video_detail_info").append(resp.data.video_detail_info);
+
+		if (resp.data.videoResourceInfo != null && resp.data.videoResourceInfo.length > 0) {
+			for (var i = 0, lenI = resp.data.videoResourceInfo.length; i < lenI; i++) {
+				var resource = resp.data.videoResourceInfo[i];
+
+				var resourceDiv = $("#resource-info-model").html();
+				var id = (new Date()).getTime().toString();
+
+				resourceDiv = resourceDiv.replace(/{id}/g, id);//替换id
+				//
+				if (resource.resource_type == "NORMAL") {
+					resourceDiv = resourceDiv.replace("{resource_type}", "普通资源");
+				} else if (resource.resource_type == "BD") {
+					resourceDiv = resourceDiv.replace("{resource_type}", "BD资源");
+				} else {
+					resourceDiv = resourceDiv.replace("{resource_type}", "");
+				}
+				//
+				if (resource.resource_format == null || resource.resource_format == "null") {
+					resourceDiv = resourceDiv.replace("{resource_format}", "");
+				} else {
+					resourceDiv = resourceDiv.replace("{resource_format}", resource.resource_format);
+				}
+				//
+				if (resource.resource_resolution == null || resource.resource_resolution == "null") {
+					resourceDiv = resourceDiv.replace("{resource_resolution}", "");
+				} else {
+					resourceDiv = resourceDiv.replace("{resource_resolution}", resource.resource_resolution);
+				}
+				//
+				if (resource.resource_sub == "1") {
+					resourceDiv = resourceDiv.replace("{resource_sub}", "有字幕");
+				} else {
+					resourceDiv = resourceDiv.replace("{resource_sub}", "无字幕");
+				}
+				//
+				if (resource.resource_sub_type == null || resource.resource_sub_type == "null") {
+					resourceDiv = resourceDiv.replace("{resource_sub_type}", "");
+				} else {
+					resourceDiv = resourceDiv.replace("{resource_sub_type}", resource.resource_sub_type);
+				}
+
+				//
+				if (resource.resource_record_time == null || resource.resource_record_time == "null") {
+					resourceDiv = resourceDiv.replace("{resource_record_time}", "");
+				} else {
+					resourceDiv = resourceDiv.replace("{resource_record_time}", resource.resource_record_time);
+				}
+
+				//
+				if (resource.resource_record_address == null || resource.resource_record_address == "null") {
+					resourceDiv = resourceDiv.replace("{resource_record_address}", "");
+				} else {
+					resourceDiv = resourceDiv.replace("{resource_record_address}", diskjson[resource.resource_record_address]);
+				}
+
+				//
+				if (resource.resource_remark == null || resource.resource_remark == "null") {
+					resourceDiv = resourceDiv.replace("{resource_remark}", "");
+				} else {
+					resourceDiv = resourceDiv.replace("{resource_remark}", resource.resource_remark);
+				}
+				$("#resource-info").append(resourceDiv);
+
+				if (i < lenI - 1) {
+					$("#resource-info").append("<hr class='layui-bg-orange'>");
+				}
+
+				// 展示
+				$("#resource_" + id).show();
+			}
+		}
+
+	}
+
+	function getDiskjson(resp) {
+		var diskjson = {};
+		for (var i = 0, lenI = resp.data.length; i < lenI; i++) {
+			diskjson[resp.data[i].disk_id] = resp.data[i].disk_name;
+		}
+		return diskjson;
+	}
+</script>
+</html>

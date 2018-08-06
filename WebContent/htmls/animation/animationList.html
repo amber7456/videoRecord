@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<link rel="stylesheet" href="../../css/animationList.css">
+</head>
+<body>
+	<div style="padding: 15px;">
+		<div class="layui-inline">
+			<input class="layui-input" name="year" id="year" autocomplete="off"
+				readonly="readonly">
+		</div>
+		<div class="layui-inline">
+			<div class="layui-btn layui-btn-normal" id="search-div"
+				onclick="search()">搜索</div>
+		</div>
+		<div id="video-list-div" style="width: 100%;"></div>
+	</div>
+
+	<div id="video-modile" style="display: none;">
+		<div class="video-box" style="display: inline;" id="{id}">
+			<div class="video-poster" id="video-poster-{id}"></div>
+			<div id="video-poster-hide-{id}" style="display: none;"></div>
+			<div class="video-name" onclick="detail('{id}')">{name}</div>
+			<div class="video-date">{date}</div>
+			<div style="float: right; width: 40px; margin: 3px 0px 3px 3px;">
+				<div class="edit-div layui-btn layui-btn-xs layui-btn-normal"
+					style="width: 40px;">
+					<i class="layui-icon" style="margin-right: 0px;">&#xe65f;</i>
+				</div>
+				<div class="edit-list" id="edit-list-{id}"
+					style="display: none; padding: 5px;">
+					<div style="margin: 5px auto; width: 100%;"
+						class="layui-btn layui-btn-sm layui-btn-normal"
+						onclick="editAnimation(this,'{id}')">
+						<i class="layui-icon">&#xe642;</i>编辑
+					</div>
+					<div style="margin: 5px auto; width: 100%;"
+						class="layui-btn layui-btn-sm layui-btn-danger"
+						onclick="deleteAnimation(this,'{id}','{name}')">
+						<i class="layui-icon">&#xe640;</i>删除
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="../../js/jquery-2.1.4.js"></script>
+<script src="../../js/jquery.serializejson.js"></script>
+<script src="../../js/img-controller.js"></script>
+<script src="../../layui/layui.js"></script>
+<script>
+	layui.use([ 'layer', 'laydate', 'util' ], function() {
+		var $ = layui.jquery;
+		var layer = layui.layer;
+		var laydate = layui.laydate;
+		var util = layui.util;
+
+		//执行
+		util.fixbar({
+			showHeight : "100"
+		});
+
+		//初始化加载
+		$("#year").val(new Date().getFullYear() - 1);
+		search();
+
+		//年选择器
+		laydate.render({
+			elem : '#year',
+			trigger : 'click',
+			theme : '#5FB878',
+			value : new Date().getFullYear() - 1,
+			type : 'year',
+			showBottom : true,
+			btns : [ 'now', 'confirm' ],
+			change : function(value, date, endDate) {
+				$("#year").val(date.year);
+				document.getElementById("search-div").click();
+			},
+			done : function(value, date, endDate) {
+				document.getElementById("search-div").click();
+			}
+		});
+
+	});
+
+	function search() {
+		var url = "/videoRecord/getAnimationList/";
+		var method = "POST";
+		var data = {
+			year : $("#year").val(),
+			video_type : "动画"
+		};
+		// JSON.stringify(data)
+		console.log(data);
+		parent.sendRequest(url, method, data, loadVideoInfo);
+
+	}
+
+	function detail(id) {
+		var url = "htmls/animation/animationDetail.html?video_id=" + id + "&t="
+				+ (new Date()).getTime().toString();
+		// window.open(url, "_blank").location;
+		//iframe层
+		parent.layer.open({
+			type : 2,
+			title : '资源详情',
+			shadeClose : true,
+			maxmin : true,
+			shade : [ 0.3, '#fff' ],
+			area : [ '1200px', '90%' ],
+			anim : 5,
+			isOutAnim : false,
+			content : url
+		});
+
+	}
+
+	function editAnimation(div, id) {
+		var url = "htmls/animation/animationEdit.html?video_id=" + id + "&t="
+				+ (new Date()).getTime().toString();
+		$(div).parent().slideUp(200);//滑动消失 
+		// window.open(url, "_blank").location;
+		//iframe层
+		parent.layer.open({
+			type : 2,
+			title : '资源编辑',
+			shadeClose : false,
+			maxmin : true,
+			shade : [ 0.3, '#fff' ],
+			area : [ '1200px', '90%' ],
+			anim : 5,
+			isOutAnim : false,
+			content : url
+		});
+	}
+
+	function deleteAnimation(div, id, name) {
+		$(div).parent().slideUp(200); //滑动
+		//询问框
+		parent.layer.confirm('确认删除记录：' + name, {
+			offset : '200px',
+			btn : [ '确定', '取消' ]
+		}, function(confirmIndex) {
+
+			var url = "/videoRecord/delAnimation";
+			var method = "POST";
+			var data = {
+				video_id : id
+			};
+
+			parent.sendRequest(url, method, data, function(resp) {
+				parent.layer.close(confirmIndex);
+				if (resp.data == 1) {
+					parent.layer.alert("删除成功！！！", {
+						offset : '200px'
+					}, function(index) {
+						parent.layer.close(index);
+						//刷新
+						search();
+					});
+				} else {
+					parent.layer.alert("删除失败！！！", {
+						offset : '200px'
+					});
+				}
+			});
+		});
+	}
+
+	function loadVideoInfo(resp) {
+		$("#video-list-div").html("");
+		for (i = 0, len = resp.data.yearData.length; i < len; i++) {
+			var yearData = resp.data.yearData[i];
+
+			$("#video-list-div")
+					.append(
+							"<div id='video-list-div-" + yearData.year + "' class='year-div'></div>");
+			var yearId = "video-list-div-" + yearData.year;
+
+			$("#" + yearId).append(
+					"<div class='year-title'>" + yearData.year + "年</div>");
+			$("#" + yearId).append(
+					"<div class='countMsg-title'>" + yearData.countMsg
+							+ "</div>");
+
+			for (j = 0, lenJ = yearData.group.length; j < lenJ; j++) {
+				var group = yearData.group[j];
+				$("#" + yearId)
+						.append(
+								"<div id=" + yearData.year + "-" + j + " class='group-div'><div class='group-title'>"
+										+ group.type + "</div></div>");
+				var videoInfo = group.videoInfo;
+				var typeId = yearData.year + "-" + j;
+				/* 此处加载渲染数据 */
+				for (k = 0, lenK = videoInfo.length; k < lenK; k++) {
+
+					var video = videoInfo[k];
+					var vm = $("#video-modile").html();
+					vm = vm.replace(/{id}/g, video.video_id);
+
+					if (video.video_broadcast_time != null) {
+						vm = vm.replace(/{date}/g,
+								getWeek(video.video_broadcast_time));
+					} else {
+						vm = vm.replace(/{date}/g, "");
+					}
+					if (video.video_name != null) {
+						vm = vm.replace(/{name}/g, video.video_name);
+					} else {
+						vm = vm.replace(/{name}/g, "");
+					}
+					$("#" + typeId).append(vm);
+
+					if (video.have_bd_resource === "1") {
+						var blueObj = "<i class='layui-icon' style='color: #1E9FFF; position: absolute; top: 5px; left: 5px;'>&#xe643;</i>";
+						$("#" + video.video_id).append(blueObj);
+					}
+
+					if (video.have_poster === "1") {
+						var imgUrl = "/videoRecord/getPoster/" + video.video_id
+								+ "?t=t" + (new Date()).getTime().toString();
+
+						var imgObj = "<img onload='setImgStyle(this)' id='img' onclick='enlargeImg(this)' style='display: none;' src='"
+								+ imgUrl + "'>"
+						$("#video-poster-" + video.video_id).html(imgObj);
+
+						var imgHide = "<img id='img' src='" + imgUrl + "'>";
+						$("#video-poster-hide-" + video.video_id).html(imgHide);
+					} else {
+						$("#video-poster-" + video.video_id).html("暂无图片");
+						$("#video-poster-hide-" + video.video_id).html("");
+					}
+
+				}
+				if (j != lenJ - 1) {
+					$("#" + typeId).append("<hr class='layui-bg-blue' />");
+				}
+			}
+			if (i != len - 1) {
+				$("#" + typeId).append("<hr class='layui-bg-green' />");
+			}
+		}
+
+		$(".edit-div").click(function(event) {
+			event.stopPropagation();//取消事件冒泡  
+			$(this).parent().find(".edit-list").slideToggle(200); //按钮的toggle,如果div是可见的,点击按钮切换为隐藏的;如果是隐藏的,切换为可见的。  
+			var thisId = $(this).parent().find(".edit-list").attr("id");
+			$(".edit-list").each(function() {
+				if ($(this).attr("id") != thisId) {
+					$(this).slideUp(200);
+				}
+			});
+			return false;
+		});
+	}
+
+	/**
+	 *放大图片
+	 **/
+	function enlargeImg(img) {
+		var div = $(img).parent().next();
+		console.log(div.attr("id"));
+		var w = $(window).width();
+		var h = $(window).height();
+		console.log(w + "," + h);
+		// 获取浏览器可用高度*0.95，为遮罩层留出空间
+		w = w * 0.95;
+		h = h * 0.95;
+		var image = new Image();
+		image.src = img.src;
+		var arr = clacImgZoomParam(w, h, image.width, image.height);// 计算弹出的图片的大小
+
+		// 调整弹出的图片的大小
+		div.children("img").css("width", arr.width);// img.width = rect.width;
+		div.children("img").css("height", arr.height);// img.height = rect.height;
+
+		parent.layer.open({
+			type : 1,
+			title : false,
+			closeBtn : 1,
+			shade : [ 0.6, '#fff' ],
+			area : [ arr.width + "px", arr.height + "px" ],
+			skin : 'layui-layer-nobg', //没有背景色
+			shadeClose : true,
+			content : div.html()
+		});
+
+	}
+
+	//点击空白处隐藏弹出层，下面为滑动消失效果和淡出消失效果。
+	$(document).click(function(event) {
+		var _con = $(".edit-list"); // 设置目标区域
+		if (!_con.is(event.target) && _con.has(event.target).length === 0) { // Mark 1
+			$(".edit-list").slideUp(200); //滑动消失 
+		}
+	});
+
+	function getWeek(date) {
+		var s = date.replace(/-/g, "/");
+		var d = new Date(s);
+		var weekday = new Array(7);
+		weekday[0] = "星期日";
+		weekday[1] = "星期一";
+		weekday[2] = "星期二";
+		weekday[3] = "星期三";
+		weekday[4] = "星期四";
+		weekday[5] = "星期五";
+		weekday[6] = "星期六";
+		return date + " " + weekday[d.getDay()];
+	}
+</script>
+</html>

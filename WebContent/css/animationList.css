@@ -1,0 +1,114 @@
+@CHARSET "UTF-8";
+
+.video-box {
+	position: relative;
+	width: 196px;
+	height: 171px;
+	margin: 5px 6px;
+	float: left;
+	color: #000;
+	display: block;
+	background-color: #FFF;
+}
+
+.video-poster {
+	width: 192px;
+	height: 108px;
+	border: 1px solid #e2e2e2;
+	border-radius: 4px;
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 100px;
+}
+
+.video-poster-text {
+	position: relative;
+	line-height: 108px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.video-name {
+	min-height: 20px;
+	padding: 1px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: .2s;
+}
+
+.video-name:hover {
+	color: #1E9FFF;
+}
+
+.video-date {
+	height: 20px;
+	padding: 1px;
+	font-size: 15px;
+	margin: 3px 3px 3px 0px;
+	float: left;
+	cursor: default;
+}
+
+.video-poster img {
+	width: 192px;
+	height: 108px;
+	/* border-radius: 4px; */
+	display: block;
+	cursor: pointer;
+}
+
+.edit-list {
+	width: 80px;
+	position: relative;
+	float: right;
+	top: 3px;
+	background-color: #fff;
+	border: 1px solid #e5e9ef;
+	border-radius: 4px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, .14);
+	color: #000;
+	z-index: 1;
+}
+
+.year-div {
+	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.year-div .year-title {
+	font-size: 20px;
+}
+
+.year-div .countMsg-title {
+	font-size: 15px;
+}
+
+.year-div .group-div {
+	display: block;
+	clear: both;
+	font-size: 15px;
+}
+
+.year-div .group-title {
+	font-size: 15px;
+}
+
+.grid-demo {
+	text-align: center;
+	background-color: #79C48C;
+	color: #fff;
+}
+
+.grid-demo-bg1 {
+	background-color: #63BA79;
+}
+
+.grid-demo-bg2 {
+	background-color: #49A761;
+}
+
+.grid-demo-bg3 {
+	background-color: #38814A;
+}

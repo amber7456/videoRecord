@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>硬盘详情</title>
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<script src="../../js/jquery-2.1.4.js"></script>
+<script src="../../layui/layui.js"></script>
+</head>
+<body>
+	<div style="padding: 15px;">
+		<form class="layui-form layui-form-pane" action="">
+			<div class="layui-form-item">
+				<label class="layui-form-label">硬盘名</label>
+				<div class="layui-input-block">
+					<input name="title" id="disk_name" autocomplete="off"
+						class="layui-input" type="text">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">硬盘ID</label>
+					<div class="layui-input-inline">
+						<input name="username" lay-verify="required" id="disk_id"
+							autocomplete="off" class="layui-input" type="text">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">硬盘容量</label>
+					<div class="layui-input-inline">
+						<input name="username" lay-verify="required" id="disk_capacity"
+							autocomplete="off" class="layui-input" type="text">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">存储状态</label>
+					<div class="layui-input-inline">
+						<input name="is_full" autocomplete="off" class="layui-input"
+							id="is_full" type="text">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">硬盘状态</label>
+					<div class="layui-input-inline">
+						<input name="number" autocomplete="off" class="layui-input"
+							id="disk_state" type="text">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">创建时间</label>
+					<div class="layui-input-inline">
+						<input name="date" autocomplete="off" id="create_time"
+							class="layui-input" type="text">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">存储类型</label>
+					<div class="layui-input-inline">
+						<input name="number" autocomplete="off" class="layui-input"
+							id="video_type" type="text">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+					<textarea id="remark" class="layui-textarea" style="resize: none;"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+<script>
+	layui.use('form', function() {
+		var form = layui.form;
+
+		var disk_id = getUrlParam('disk_id');
+
+		$.ajax({
+			url : "/videoRecord/getDiskDetail/" + disk_id,
+			method : "GET",
+			dataType : "json",
+			success : function(resp) {
+				console.log(resp);
+				if (resp.code == 0) {
+					var jsonObj = resp.data;
+					for ( var prop in jsonObj) {
+						$("#" + prop).val(jsonObj[prop]);
+					}
+					$("body").find("input,select,textarea").attr("disabled",
+							true).css("cursor", "default");
+				} else {
+					alert("程序异常：" + resp.msg);
+				}
+			},
+			error : function(xhr) {
+				alert("错误提示： " + xhr.status + " " + xhr.statusText);
+			}
+		});
+	});
+
+	//使用正则表达式获取url中的参数
+	function getUrlParam(name) {
+		//构造一个含有目标参数的正则表达式对象
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		//匹配目标参数 
+		var r = window.location.search.substr(1).match(reg);
+		//返回参数值
+		if (r != null)
+			return unescape(r[2]);
+		return null;
+	}
+</script>
+</html>

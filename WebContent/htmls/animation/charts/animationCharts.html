@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<link rel="stylesheet" href="../../css/animationAdvSearch.css?v=0309">
+</head>
+<body>
+	<div class="layui-tab layui-tab-brief main-height"
+		lay-filter="animationCharts">
+		<ul class="layui-tab-title">
+		</ul>
+		<div class="layui-tab-content"></div>
+	</div>
+</body>
+<script src="../../js/jquery-2.1.4.js"></script>
+<script src="../../js/jquery.serializejson.js"></script>
+<script src="../../js/echarts.js"></script>
+<script src="../../layui/layui.js"></script>
+<script>
+	layui.use('element', function() {
+		var $ = layui.jquery, element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+		//新增一个Tab项
+		element.tabAdd('animationCharts', {
+			title : "趋势图 ",
+			content : getHtml("charts/trendChart.html"),
+			id : "trendChart"
+		});
+
+		//新增一个Tab项
+		element.tabAdd('animationCharts', {
+			title : "比例图 ",
+			content : getHtml("charts/ratioChart.html"),
+			id : "ratioChart"
+		});
+
+		element.tabChange('animationCharts', 'trendChart'); //切换 
+
+		element.on('tab(animationCharts)', function(data) {
+			//console.log(this); //当前Tab标题所在的原始DOM元素
+			//console.log(data.index); //得到当前Tab的所在下标
+			//console.log(data.elem); //得到当前的Tab大容器
+		});
+
+	});
+
+	function getHtml(local) {
+		htmlobj = $.ajax({
+			url : local + "?t=" + (new Date()).getTime().toString(),
+			method : "post",
+			cache : false,
+			dataType : "html",
+			async : false,
+			error : function(xhr) {
+				top.layer.alert("错误提示： " + xhr.status + " " + xhr.statusText);
+			}
+		});
+		return htmlobj.responseText;
+	}
+</script>
+</html>

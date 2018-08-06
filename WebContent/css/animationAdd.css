@@ -1,0 +1,59 @@
+@CHARSET "UTF-8";
+
+.main-div {
+	width: 1100px;
+	padding: 15px;
+}
+
+.video-poster-div {
+	position: relative;
+	height: 180px;
+	width: 320px;
+	border: 1px solid #DDD;
+	border-radius: 4px;
+	float: left;
+	display: inline-block;
+	margin: 5px 0px;
+}
+
+.video-poster {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	border-radius: 4px;
+	cursor: pointer;
+	line-height: 170px;
+	text-align: center;
+}
+
+.video-info {
+	position: relative;
+	height: 180px;
+	margin-left: 10px;
+	float: left;
+	display: inline-block;
+}
+
+.resource-info {
+	position: relative;
+	margin: 10px 0px;
+	display: inline-block;
+}
+
+.layui-form-item {
+	margin: 5px 0px;
+}
+
+.layui-form-item .small {
+	width: 150px;
+}
+
+.i-del {
+	position: absolute;
+	margin-left: 284px;
+	font-size: 26px;
+	color: #DDD;
+	cursor: pointer;
+	display: none;
+	z-index: 99999;
+}

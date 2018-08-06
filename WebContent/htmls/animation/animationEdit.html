@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>资源编辑</title>
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<link rel="stylesheet" href="../../css/animationEdit.css">
+<script src="../../js/jquery-2.1.4.js"></script>
+<script src="../../js/jquery.serializejson.js"></script>
+<script src="../../js/img-controller.js"></script>
+<script src="../../layui/layui.js"></script>
+</head>
+<body class="wrap-outer">
+	<div class="main-div" style="display: none;">
+		<form class="layui-form layui-form-pane" action=""
+			id="animationEditForm" method="post" enctype="multipart/form-data">
+			<div style="width: 1000px; display: inline-block;">
+				<input type="hidden" name="video_id" id="video_id">
+				<!--  -->
+				<input type="hidden" name="create_time" id="create_time">
+				<!--  -->
+				<input type="hidden" name="have_poster" id="have_poster">
+				<!--  -->
+				<input type="hidden" name="posterUpdateFlag" id="posterUpdateFlag"
+					value="0">
+
+				<div style="display: inline-table; height: 180px;">
+
+					<div id="video-poster" style="" class="video-poster-div">
+						<i
+							class="layui-icon layui-btn layui-btn-danger layui-btn-xs i-del"
+							onclick="deleteImg(this)" id="img_del" style="">&#xe640;</i>
+						<div onclick="inputClick(this)" class="video-poster"></div>
+						<input onchange="previewImage(this)" style="display: none;"
+							type="file" name="video_poster" id="previewImg">
+					</div>
+
+					<div class="video-info">
+						<div class="layui-form-item" style="margin-bottom: 10px;">
+							<label class="layui-form-label">动画名</label>
+							<div class="layui-input-block">
+								<input name="video_name" id="video_name" lay-verify="video_name"
+									autocomplete="off" class="layui-input" type="text">
+							</div>
+						</div>
+						<div class="layui-form-item" style="margin-bottom: 5px;">
+							<div class="layui-inline">
+								<label class="layui-form-label">播出时间</label>
+								<div class="layui-input-inline">
+									<input name="video_broadcast_time" readonly="readonly"
+										lay-verify="video_broadcast_time" id="video_broadcast_time"
+										autocomplete="off" class="layui-input" type="text">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">类型</label>
+								<div class="layui-input-inline">
+									<select name="video_type" id="video_type"
+										lay-filter="video_type">
+										<option value="动画;冬番">冬番</option>
+										<option value="动画;春番">春番</option>
+										<option value="动画;夏番">夏番</option>
+										<option value="动画;秋番">秋番</option>
+										<option value="动画;OVA/OAD">OVA/OAD</option>
+										<option value="动画;映画">映画</option>
+										<option value="动画;其他">其他</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item" style="margin-bottom: 5px;">
+							<div class="layui-inline">
+								<label class="layui-form-label">集数</label>
+								<div class="layui-input-inline">
+									<input name="video_episode" lay-verify="video_episode"
+										id="video_episode" autocomplete="off" class="layui-input"
+										value="12" type="text">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<div class="layui-btn layui-btn-normal layui-btn-sm"
+									onclick="setEpisode('11')">11</div>
+								<div class="layui-btn layui-btn-normal layui-btn-sm"
+									onclick="setEpisode('12')">12</div>
+								<div class="layui-btn layui-btn-normal layui-btn-sm"
+									onclick="setEpisode('13')">13</div>
+								<div class="layui-btn layui-btn-normal layui-btn-sm"
+									onclick="setEpisode('23')">23</div>
+								<div class="layui-btn layui-btn-normal layui-btn-sm"
+									onclick="setEpisode('24')">24</div>
+								<div class="layui-btn layui-btn-normal layui-btn-sm"
+									onclick="setEpisode('25')">25</div>
+								<div class="layui-btn layui-btn-normal layui-btn-sm"
+									onclick="setEpisode('26')">26</div>
+							</div>
+						</div>
+						<div class="layui-form-item" style="margin-bottom: 5px;">
+							<div class="layui-inline">
+								<label class="layui-form-label">原作类型</label>
+								<div class="layui-input-inline">
+									<select name="video_source" id="video_source"
+										lay-filter="video_source">
+										<option value="漫画">漫画</option>
+										<option value="轻小说">轻小说</option>
+										<option value="游戏">游戏</option>
+										<option value="原创">原创</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="resource-info" id="resource-info">
+					<div class="layui-btn layui-btn-normal layui-btn-sm"
+						onclick="addResource()">添加资源</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">详情</label>
+					<div class="layui-input-block">
+						<textarea placeholder="请输入内容" class="layui-textarea"
+							name="video_detail_info" id="video_detail_info"
+							style="resize: none; height: 200px;"></textarea>
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text"
+					style="margin-top: 10px;">
+					<label class="layui-form-label">备注</label>
+					<div class="layui-input-block">
+						<textarea placeholder="请输入内容" class="layui-textarea"
+							name="video_remark" id="video_remark"
+							style="resize: none; height: 200px;"></textarea>
+					</div>
+				</div>
+			</div>
+			<div
+				style="display: inline-block; position: fixed; margin-left: 20px; bottom: 100px; z-index: 99999;">
+				<div class="layui-btn layui-btn-normal" lay-submit="" style=""
+					lay-filter="submitButton">提交</div>
+			</div>
+		</form>
+	</div>
+
+	<div id="resource-info-model" style="display: none;">
+		<div style="margin-top: 15px; width: 1000px; display: none;"
+			id="resource_{id}">
+			<div style="width: 919px; display: inline-block;">
+				<div class="layui-form-item">
+					<label class="layui-form-label">资源信息</label>
+					<div class="layui-input-inline small">
+						<select name="resource_type" id="resource_type_{id}"
+							lay-filter="resource_type">
+							<option value="NORMAL">普通资源</option>
+							<option value="BD">BD资源</option>
+						</select>
+					</div>
+					<div class="layui-input-inline small">
+						<select name="resource_format" id="resource_format_{id}"
+							lay-filter="resource_format">
+							<option value="MP4">MP4</option>
+							<option value="MKV">MKV</option>
+							<option value="RMVB">RMVB</option>
+							<option value="AVI">AVI</option>
+							<option value="OTHER">其他</option>
+						</select>
+					</div>
+					<div class="layui-input-inline small">
+						<select name="resource_resolution" id="resource_resolution_{id}"
+							lay-filter="resource_resolution">
+							<option value="1280*720" selected="selected">1280*720</option>
+							<option value="1920*1080">1920*1080</option>
+							<option value="848*480">848*480</option>
+							<option value="960*576">960*576</option>
+							<option value="1024*576">1024*576</option>
+							<option value="1440*1080">1440*1080</option>
+							<option value="3840*2160">3840*2160</option>
+						</select>
+					</div>
+					<div class="layui-input-inline small">
+						<select name="resource_sub" id="resource_sub_{id}"
+							lay-filter="resource_sub">
+							<option value="1">有字幕</option>
+							<option value="0">无字幕</option>
+						</select>
+					</div>
+					<div class="layui-input-inline small">
+						<select name="resource_sub_type" id="resource_sub_type_{id}"
+							lay-filter="resource_sub_type">
+							<option value="内嵌">内嵌</option>
+							<option value="封装">封装</option>
+							<option value="外挂">外挂</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">收录地址</label>
+					<div class="layui-input-inline" style="width: 309px;">
+						<select name="resource_record_address"
+							class="resource_record_address" id="resource_record_address_{id}"
+							lay-filter="resource_record_address">
+						</select>
+					</div>
+					<label class="layui-form-label">收录时间</label>
+					<div class="layui-input-inline">
+						<input name="resource_record_time" readonly="readonly"
+							lay-verify="resource_record_time" id="resource_record_time_{id}"
+							autocomplete="off" class="layui-input" type="text">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">备注</label>
+					<div class="layui-input-inline" style="width: 787px;">
+						<input name="resource_remark" lay-verify="resource_remark"
+							maxlength="55" id="resource_remark_{id}" autocomplete="off"
+							class="layui-input" type="text">
+					</div>
+				</div>
+			</div>
+			<div class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm"
+				id="resource_del_{id}" onclick="resourceDel('resource_{id}')"
+				style="position: relative;; float: right; right: 30px; top: 5px; display: inline-block;">
+				<i class="layui-icon">&#xe640;</i>删除
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	$(function() {
+		$("#video-poster").mouseover(function() {
+			var imgsrc = $("#img_del").next().find('img').attr('src');
+			//console.log(imgsrc);
+			if (typeof (imgsrc) != "undefined") {
+				$("#img_del").css("display", "block");
+			}
+		});
+
+		$("#video-poster").mouseout(function() {
+			$("#img_del").css("display", "none");
+		});
+
+		console.log("$function");
+	});
+
+	var form;
+	var laydate;
+	layui.use([ 'form', 'util', 'layedit', 'laydate' ], function() {
+		form = layui.form;
+		laydate = layui.laydate;
+		var util = layui.util;
+		var layedit = layui.layedit;
+
+		//执行
+		util.fixbar({
+			showHeight : "100"
+		});
+
+		laydate.render({
+			elem : '#video_broadcast_time',
+			type : 'date'
+		});
+
+		//页面一打开就执行弹层
+		layer.ready(function() {
+			console.log('layer.ready');
+			loadDiskReq();
+			console.log('body.show');
+			$(".main-div").show();
+		});
+
+		//自定义验证规则
+		form.verify({
+			video_name : function(value) {
+				if (value.length <= 0) {
+					return '请输入动画名';
+				}
+			}
+		});
+
+		//监听提交
+		form.on('submit(submitButton)', function(data) {
+			var loadIndex = layer.load(1);
+			var form = new FormData($("#animationEditForm")[0]);
+
+			$.ajax({
+				url : "/videoRecord/editAnimation/",
+				method : "POST",
+				contentType : 'application/json',
+				data : form,
+				processData : false,
+				contentType : false,
+				dataType : "json",
+				success : function(resp) {
+					layer.close(loadIndex);
+					console.log(resp);
+					if (resp.code == 0) {
+						if (resp.data == 1) {
+							layer.alert("编辑成功！！！", function(index) {
+								layer.close(index);
+								// 关闭页面
+								var indexP = parent.layer
+										.getFrameIndex(window.name); //先得到当前iframe层的索引
+								parent.layer.close(indexP); //再执行关闭   
+								// 刷新父页面
+								var iframe2 = top.callback();
+								iframe2.contentWindow.search();//iframe3调用iframe2中的方法 
+							});
+						} else {
+							layer.alert("编辑失败，请核对数据！！！", {
+								title : '编辑失败'
+							});
+						}
+					} else {
+						layer.alert(resp.msg, {
+							title : '程序异常'
+						})
+					}
+				},
+				error : function(xhr) {
+					layer.close(loadIndex);
+					layer.alert(xhr.status + " " + xhr.statusText, {
+						title : '系统异常'
+					})
+				}
+			});
+			return false;
+		});
+
+	});
+
+	function loadDiskReq() {
+ 
+		//加载收录地址硬盘信息
+		var getDiskListByVideoType = "/videoRecord/getDiskListByVideoType/";
+
+		console.log("加载收录地址硬盘信息");
+		$.ajax({
+			url : getDiskListByVideoType,
+			method : "POST",
+			data : {
+				video_type : "动画"
+			},
+			dataType : "json",
+			async : false,
+			success : function(resp) {
+				console.log("读取硬盘信息成功");
+				if (resp.code == 0) {
+					addDiskToHtml(resp);
+					console.log("加载视频信息");
+					loadAnimation();
+				} else {
+					layer.alert(resp.msg, {
+						title : '读取硬盘信息异常'
+					});
+				}
+			},
+			error : function(xhr) {
+				layer.alert(xhr.status + " " + xhr.statusText, {
+					title : '系统异常：'
+				});
+			}
+		});
+	}
+
+	function loadAnimation() {
+		var video_id = getUrlParam('video_id');
+		var url = "/videoRecord/getAnimationDetail/" + video_id;
+		$.ajax({
+			url : url,
+			method : "GET",
+			dataType : "json",
+			success : function(resp) {
+				console.log(url);
+				console.log(resp.data);
+				if (resp.code == 0) {
+					loadVideoInfo(resp);
+					form.render(); 
+				} else { 
+					layer.alert(resp.msg, {
+						title : '程序异常'
+					});
+				}
+			},
+			error : function(xhr) { 
+				layer.alert(xhr.status + " " + xhr.statusText, {
+					title : '系统异常'
+				});
+			}
+		});
+	}
+
+	function addDiskToHtml(resp) {
+		console.log("加载硬盘地址");
+		if (resp.code == 0) {
+			console.log(resp.data);
+			var objSelect = $("#resource-info-model").find(
+					".resource_record_address");
+			for (var i = 0; i < resp.data.length; i++) {
+				objSelect.append("<option value=" + resp.data[i].disk_id + ">"
+						+ resp.data[i].disk_name + "</option>");
+			}
+		} else {
+			layer.alert(resp.msg, {
+				title : "读取硬盘信息异常"
+			});
+		}
+		console.log("加载硬盘地址完成");
+	}
+
+	function loadVideoInfo(resp) {
+
+		var imgurl = "/videoRecord/getPoster/" + resp.data.video_id + "?t="
+				+ (new Date()).getTime().toString();
+
+		if (resp.data.have_poster === "1") {
+			$(".video-poster").html(
+					"<img onload='setImgStyle(this)' id='img' style='display: none;' src='"
+							+ imgurl + "' />");
+		} else {
+			$(".video-poster").html("上传图片");
+		}
+
+		$("#video_id").val(resp.data.video_id);
+		$("#video_name").val(resp.data.video_name);
+		$("#video_episode").val(resp.data.video_episode);
+		$("#video_broadcast_time").val(resp.data.video_broadcast_time);
+		$("#create_time").val(resp.data.create_time);
+		$("#have_poster").val(resp.data.have_poster);
+
+		var typeArr = new Array();
+		typeArr = resp.data.video_type.split(';');
+		if (typeArr.length > 1) {
+			$("#video_type").val(resp.data.video_type);
+		} else {
+			$("#video_type").val("其他");
+		}
+
+		$("#video_source").val(resp.data.video_source);
+		$("#video_remark").val(resp.data.video_remark);
+		$("#have_bd_resource").val(resp.data.have_bd_resource);
+		$("#video_detail_info").val(resp.data.video_detail_info);
+
+		if (resp.data.videoResourceInfo != null
+				&& resp.data.videoResourceInfo.length > 0) {
+			console.log(resp.data.videoResourceInfo.length);
+			for (var i = 0, lenI = resp.data.videoResourceInfo.length; i < lenI; i++) {
+				var resource = resp.data.videoResourceInfo[i];
+
+				var id = (new Date()).getTime().toString();
+				var resourceDiv = $("#resource-info-model").html(); //获取模板
+				resourceDiv = resourceDiv.replace(/{id}/g, id); //替换id
+				$("#resource-info").append(resourceDiv); //隐藏状态下添加到页面
+				// 赋初值
+				$("#resource_type_" + id).val(resource.resource_type);
+				$("#resource_format_" + id).val(resource.resource_format);
+				$("#resource_resolution_" + id).val(
+						resource.resource_resolution);
+				$("#resource_sub_" + id).val(resource.resource_sub);
+				$("#resource_sub_type_" + id).val(resource.resource_sub_type);
+				$("#resource_record_time_" + id).val(
+						resource.resource_record_time);
+				$("#resource_record_address_" + id).val(
+						resource.resource_record_address);
+				$("#resource_remark_" + id).val(resource.resource_remark);
+				//绑定日期插件
+				laydate.render({
+					elem : '#resource_record_time_' + id,
+					type : 'date'
+				});
+				// 展示
+				$("#resource_" + id).show();
+			}
+		}
+
+	}
+
+	function addResource() {
+		var id = new Date().getTime().toString();
+		var resourseHtml = $("#resource-info-model").html();
+		resourseHtml = resourseHtml.replace(/{id}/g, id);
+		$("#resource-info").append(resourseHtml);
+
+		form.render('select'); //刷新select选择框渲染
+		laydate.render({
+			elem : '#resource_record_time_' + id,
+			type : 'date',
+			value : new Date()
+		});
+
+		$("#resource_" + id).show(200);
+	}
+
+	function resourceDel(resourceId) {
+		$("#" + resourceId).slideUp(200, function() {
+			$("#" + resourceId).remove();
+		});
+	}
+
+	function setEpisode(episode) {
+		$("#video_episode").val(episode);
+	}
+
+	//使用正则表达式获取url中的参数
+	function getUrlParam(name) {
+		//构造一个含有目标参数的正则表达式对象
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		//匹配目标参数 
+		var r = window.location.search.substr(1).match(reg);
+		//返回参数值
+		if (r != null)
+			return unescape(r[2]);
+		return null;
+	}
+
+	function getWeek(date) {
+		var s = date.replace(/-/g, "/");
+		var d = new Date(s);
+		var weekday = new Array(7);
+		weekday[0] = "星期日";
+		weekday[1] = "星期一";
+		weekday[2] = "星期二";
+		weekday[3] = "星期三";
+		weekday[4] = "星期四";
+		weekday[5] = "星期五";
+		weekday[6] = "星期六";
+		return date + " " + weekday[d.getDay()];
+	}
+</script>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>资源列表</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../layui/css/layui.css" media="all">
+<link rel="stylesheet" href="../css/resourceList.css" media="all">
+<script src="../js/jquery-2.1.4.js"></script>
+<script src="../layui/layui.js" charset="utf-8"></script>
+<script src="../js/util.js"></script>
+<script src="../js/imgController.js"></script>
+<script src="../js/resourceList.js"></script>
+</head>
+<body>
+	<div>
+		<div class="layui-form margin-bottom20">
+			<div class="search-item">
+				<div class="layui-inline" id="video_type_item">
+					<div class="video-type-tab video-type-tab-this" onclick="clickVideoTypeButton(this)" id="动画">动画</div>
+					<div class="video-type-tab " onclick="clickVideoTypeButton(this)" id="番剧">番剧</div>
+					<div class="video-type-tab " onclick="clickVideoTypeButton(this)" id="电影">电影</div>
+					<div class="video-type-tab " onclick="clickVideoTypeButton(this)" id="记录片">记录片</div>
+					<div class="video-type-tab " onclick="clickVideoTypeButton(this)" id="网络视频">网络视频</div>
+					<!--  -->
+					<input type="hidden" name="videoType" id="videoType" value="动画">
+				</div>
+			</div>
+			<div class="search-item">
+				<div class="layui-inline" style="width: 100px;">
+					<select name="year" id="year" autocomplete="off" readonly="readonly"></select>
+				</div>
+				<div class="layui-inline">
+					<div class="layui-btn layui-btn-normal" id="search-div" onclick="search()">搜索</div>
+				</div>
+			</div>
+			<input type="hidden" id="yearHide" value="">
+			<!--  -->
+			<input type="hidden" id="videoTypeHide" value="动画">
+		</div>
+		<div id="video_list_div" class="video-list-div"></div>
+	</div>
+	<div id="video-modile" style="display: none;">
+		<div class="video-box" style="display: inline;" id="{id}">
+			<div class="video-poster" id="video-poster-{id}"></div>
+			<div id="video-poster-hide-{id}" style="display: none;"></div>
+			<div class="video-name" onclick="detail('{id}')">{name}</div>
+			<div class="video-date">{date}</div>
+			<div style="float: right; width: 40px; margin: 3px 0px 3px 3px;">
+				<div class="edit-div layui-btn layui-btn-xs layui-btn-normal" style="width: 40px;">
+					<i class="layui-icon" style="margin-right: 0px;">&#xe65f;</i>
+				</div>
+				<div class="edit-list" id="edit-list-{id}" style="display: none; padding: 5px;">
+					<div style="margin: 5px auto; width: 100%;" class="layui-btn layui-btn-sm layui-btn-normal" onclick="editVideo(this,'{id}')">
+						<i class="layui-icon">&#xe642;</i>编辑
+					</div>
+					<div style="margin: 5px auto; width: 100%;" class="layui-btn layui-btn-sm layui-btn-danger" onclick="deleteVideo(this,'{id}','{name}')">
+						<i class="layui-icon">&#xe640;</i>删除
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	var form;
+	var layer;
+	var layedit;
+	var laydate;
+
+	$(function() {
+		var nowYear = new Date().getFullYear();
+		var step = nowYear - 1900;
+		for (var i = 0; i <= step; i++) {
+			var y = nowYear - i;
+			if (i == 1) {
+				$("#year").append("<option value="+y+" selected='selected'>" + y + "年</option>");
+				$("#yearHide").val(y);
+			} else {
+				$("#year").append("<option value="+y+">" + y + "年</option>");
+			}
+		}
+
+	});
+
+	layui.use([ 'form', 'layedit', 'laydate', 'util' ], function() {
+		form = layui.form;
+		layer = layui.layer;
+		layedit = layui.layedit;
+		laydate = layui.laydate;
+		var util = layui.util;
+
+		//执行
+		util.fixbar({
+			showHeight : "100"
+		});
+
+		layer.ready(function() {
+			search();
+		});
+
+	});
+
+	//点击空白处隐藏弹出层，下面为滑动消失效果和淡出消失效果。
+	$(document).click(function(event) {
+		var _con = $(".edit-list"); // 设置目标区域
+		if (!_con.is(event.target) && _con.has(event.target).length === 0) { // Mark 1
+			$(".edit-list").slideUp(200); //滑动消失 
+		}
+	});
+</script>
+</html>
