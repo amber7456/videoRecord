@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<script src="../../js/jquery-2.1.4.js"></script>
+<script src="../../js/jquery.serializejson.js"></script>
+<script src="../../layui/layui.js"></script>
+</head>
+<body>
+	<div style="padding: 15px 15px 0px 15px; width: 645px;">
+		<form class="layui-form layui-form-pane" action=""
+			lay-filter="diskAdd" id="diskAdd">
+			<div class="layui-form-item">
+				<label class="layui-form-label">硬盘名</label>
+				<div class="layui-input-block">
+					<input name="disk_name" lay-verify="disk_name" id="disk_name"
+						autocomplete="off" class="layui-input" type="text">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">硬盘容量</label>
+					<div class="layui-input-inline">
+						<select name="disk_capacity" id="disk_capacity"
+							lay-filter="disk_capacity">
+							<option value="500G">500G</option>
+							<option value="1T">1T</option>
+							<option value="2T" selected="selected">2T</option>
+							<option value="3T">3T</option>
+							<option value="4T">4T</option>
+							<option value="6T">6T</option>
+							<option value="8T">8T</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-inline">
+					<label class="layui-form-label">存储类型</label>
+					<div class="layui-input-inline">
+						<select name="video_type" id="video_type" lay-filter="video_type">
+							<option value="动画" selected="selected">动画</option>
+							<option value="番剧">番剧</option>
+							<option value="电影">电影</option>
+							<option value="纪录片">纪录片</option>
+							<option value="网络视频">网络视频</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+					<textarea id="remark" name="remark" class="layui-textarea"
+						style="resize: none;"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div style="float: right;" class="layui-btn layui-btn-normal"
+					lay-submit="" lay-filter="submitButton">提交</div>
+			</div>
+
+		</form>
+	</div>
+</body>
+<script>
+	layui.use([ 'element', 'form', 'layedit', 'laydate' ], function() {
+		var element = layui.element;
+		var form = layui.form;
+
+		var layedit = layui.layedit;
+		var laydate = layui.laydate;
+		form.render(); //刷新 
+
+		//创建一个编辑器
+		var editIndex = layedit.build('LAY_demo_editor');
+
+		//自定义验证规则
+		form.verify({
+			disk_name : function(value) {
+				if (value.length <= 0) {
+					return '请输入硬盘名';
+				}
+			}
+		});
+
+		//监听提交
+		form.on('submit(submitButton)', function(data) {
+			var loadIndex = layer.load(1);
+			console.log(JSON.stringify(data.field));
+			$.ajax({
+				url : "/videoRecord/diskAdd/",
+				method : "POST",
+				contentType : 'application/json',
+				data : JSON.stringify(data.field),
+				dataType : "json",
+				success : function(resp) {
+					console.log(resp);
+					layer.close(loadIndex);
+					if (resp.code == 0) {
+						if (resp.data == 1) {
+							layer.alert("添加成功！！！", {
+								offset : '200px'
+							}, function(index) {
+								layer.close(index);
+								$('#diskAdd')[0].reset();
+							});
+						} else {
+							layer.alert("添加失败，请核对数据！！！", {
+								title : '添加失败',
+								offset : '200px'
+							});
+						}
+					} else {
+						layer.alert(resp.msg, {
+							title : '程序异常',
+							offset : '200px'
+						})
+					}
+				},
+				error : function(xhr) {
+					layer.close(loadIndex);
+					layer.alert(xhr.status + " " + xhr.statusText, {
+						title : '系统异常',
+						offset : '200px'
+					});
+				}
+			});
+			return false;
+		});
+
+	});
+</script>
+</html>

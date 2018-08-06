@@ -15,7 +15,7 @@
 <body>
 	<div style="padding: 15px 15px 0px 15px;">
 		<div class="layui-form-item layui-form-pane" style="width: 1100px;">
-			<form class="layui-form" id="formDemo">
+			<form class="layui-form" id="searchForm">
 				<div class="layui-inline">
 					<label class="layui-form-label">硬盘名</label>
 					<div class="layui-input-inline">
@@ -26,11 +26,11 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">存储类型</label>
 					<div class="layui-input-inline">
-						<select name="video_type" id="video_type" lay-filter="video_type">
+						<select name="video_type" id="video_type">
 							<option value="ALL">全部</option>
 							<option value="动画">动画</option>
+							<option value="番剧">番剧</option>
 							<option value="电影">电影</option>
-							<option value="剧">剧</option>
 							<option value="纪录片">纪录片</option>
 							<option value="网络视频">网络视频</option>
 						</select>
@@ -55,7 +55,7 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">存储状态</label>
 					<div class="layui-input-inline">
-						<select name="is_full" id="is_full" lay-filter="is_full">
+						<select name="is_full" id="is_full">
 							<option value="ALL">全部</option>
 							<option value="未满">未满</option>
 							<option value="已满">已满</option>
@@ -65,7 +65,7 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">硬盘状态</label>
 					<div class="layui-input-inline">
-						<select name="disk_state" id="disk_state" lay-filter="disk_state">
+						<select name="disk_state" id="disk_state">
 							<option value="ALL">全部</option>
 							<option value="现役">现役</option>
 							<option value="退役">退役</option>
@@ -75,6 +75,20 @@
 				<div class="layui-inline">
 					<div class="layui-btn layui-btn-normal" onclick="search()">搜索</div>
 				</div>
+			</form>
+
+			<form id="searchHide" style="display: none;">
+				<!--  -->
+				<input type="hidden" id="diskNameHide" name="disk_name" />
+				<!--  -->
+				<input type="hidden" id="videoTypeHide" name="video_type" />
+				<!--  -->
+				<input type="hidden" id="diskCapacityHide" name="disk_capacity" />
+				<!--  -->
+				<input type="hidden" id="isFullHide" name="is_full" />
+				<!--  -->
+				<input type="hidden" id="diskStateHide" name="disk_state" />
+				<!--  -->
 			</form>
 		</div>
 		<!--  -->
@@ -94,9 +108,10 @@
 <script type="text/javascript">
 	console.log("加载硬盘列表页");
 	var tableIns;
+	var form;
 	layui.use([ 'element', 'form', 'table', 'layedit', 'laydate' ], function() {
+		form = layui.form;
 		var element = layui.element;
-		var form = layui.form;
 		var table = layui.table;
 		var layedit = layui.layedit;
 		var laydate = layui.laydate;
@@ -112,12 +127,8 @@
 			}, //开启分页
 			width : 1100,
 			cols : [ [ {
-				field : 'disk_id',
-				width : 170,
-				title : '硬盘ID',
-				sort : true
-			}, {
 				field : 'disk_name',
+				width : 150,
 				title : '硬盘名'
 			}, {
 				field : 'video_type',
@@ -141,7 +152,6 @@
 				title : '创建时间'
 			}, {
 				field : 'remark',
-				width : 100,
 				title : '备注'
 			}, {
 				//fixed : 'right',
@@ -166,53 +176,125 @@
 		table.on('tool(disk)', function(obj) {
 			var data = obj.data;
 			if (obj.event === 'detail') {
-				top.layer.open({
+				layer.open({
 					type : 2,
 					title : '硬盘详情',
-					offset : '200px',
+					//offset : '200px',
 					shadeClose : true,
-					shade : 0.8,
-					area : [ '848px', '480px' ],
-					content : 'htmls/disk/diskDetail.html?disk_id='
-							+ data.disk_id + "&t="
+					shade : 0.3,
+					area : [ '848px', '90%' ],
+					content : 'diskDetail.html?disk_id=' + data.disk_id + "&t="
 							+ (new Date()).getTime().toString() //iframe的url
 				});
 			} else if (obj.event === 'del') {
-				top.layer.confirm('确认删除？', function(index) {
-					//obj.del();
+				layer.confirm('确认删除硬盘「' + data.disk_name + '」?', {
+					offset : '200px'
+				}, function(index) {
 					layer.close(index);
 					// 起遮罩层
-					var loadIndex = layer.load(1);
-					console.log(loadIndex);
-					diskDel(data.disk_id, loadIndex);
+					var loadIndex = layer.load(1, {
+						shade : [ 0.3, '#ddd' ]
+					});
+
+					$.ajax({
+						url : "/videoRecord/diskDel/" + data.disk_id,
+						method : "POST",
+						contentType : 'application/json',
+						dataType : "json",
+						success : function(resp) {
+							layer.close(loadIndex);
+							if (resp.code == 0) {
+								if (resp.data == 1) {
+									layer.alert("删除成功！！！", {
+										offset : '200px'
+									}, function(index) {
+										layer.close(index);
+										callBackSearch();
+									});
+								} else {
+									layer.alert("删除失败！！！", {
+										offset : '200px'
+									});
+								}
+							} else {
+								layer.alert(resp.msg, {
+									title : '程序异常',
+									offset : '200px'
+								})
+							}
+						},
+						error : function(xhr) {
+							layer.close(loadIndex);
+							layer.alert(xhr.status + " " + xhr.statusText, {
+								title : '系统异常',
+								offset : '200px'
+							});
+						}
+					});
+
 				});
 			} else if (obj.event === 'edit') {
-				top.layer.open({
+				layer.open({
 					type : 2,
 					title : '硬盘信息编辑',
-					offset : '200px',
+					//offset : '200px',
 					shadeClose : true,
-					shade : 0.8,
-					area : [ '848px', '492px' ],
-					content : 'htmls/disk/diskEdit.html?disk_id='
-							+ data.disk_id + "&t="
+					shade : 0.3,
+					area : [ '848px', '90%' ],
+					content : 'diskEdit.html?disk_id=' + data.disk_id + "&t="
 							+ (new Date()).getTime().toString() //iframe的url
 				});
 			}
 		});
 
+		setHideForm();
+
 	});
 
 	function search() {
-		console.log($('#formDemo').serializeJSON());
-		//console.log(JSON.stringify($('#formDemo').serializeJSON())); 
+		var searchJson = $('#searchForm').serializeJSON();
 		tableIns.reload({
-			where : $('#formDemo').serializeJSON(),
+			where : searchJson,
 			page : {
 				curr : 1,/* 重新从第 1 页开始 */
 				theme : '#1E9FFF'
 			}
 		});
+		console.log(searchJson);
+
+		$("#diskNameHide").val(searchJson['disk_name']);
+		$("#videoTypeHide").val(searchJson['video_type']);
+		$("#diskCapacityHide").val(searchJson['disk_capacity']);
+		$("#isFullHide").val(searchJson['is_full']);
+		$("#diskStateHide").val(searchJson['disk_state']);
 	}
+
+	function setHideForm() {
+		var searchJson = $('#searchForm').serializeJSON();
+		$("#diskNameHide").val(searchJson['disk_name']);
+		$("#videoTypeHide").val(searchJson['video_type']);
+		$("#diskCapacityHide").val(searchJson['disk_capacity']);
+		$("#isFullHide").val(searchJson['is_full']);
+		$("#diskStateHide").val(searchJson['disk_state']);
+	}
+
+	window.callBackSearch = function() {
+		// 按照 隐藏表单重新加载 表格
+		var searchJson = $('#searchHide').serializeJSON();
+		tableIns.reload({
+			where : searchJson,
+			page : {
+				curr : 1,/* 重新从第 1 页开始 */
+				theme : '#1E9FFF'
+			}
+		});
+		// 按照 隐藏表单重置表单 
+		$("#disk_name").val(searchJson['disk_name']);
+		$("#video_type").val(searchJson['video_type']);
+		$("#disk_capacity").val(searchJson['disk_capacity']);
+		$("#is_full").val(searchJson['is_full']);
+		$("#disk_state").val(searchJson['disk_state']);
+		form.render(); //刷新 
+	};
 </script>
 </html>

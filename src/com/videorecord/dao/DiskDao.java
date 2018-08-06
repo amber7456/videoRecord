@@ -1,5 +1,7 @@
 package com.videorecord.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,9 @@ public class DiskDao {
 	}
 
 	public Integer diskAdd(DiskReqBean diskReqBean) {
+		diskReqBean.setCreate_time(new Date());
+		diskReqBean.setIs_full("未满");
+		diskReqBean.setDisk_state("现役");
 		return diskInfoMapper.insertSelective(diskReqBean);
 	}
 

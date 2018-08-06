@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>硬盘详情</title>
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<script src="../../js/jquery-2.1.4.js"></script>
+<script src="../../js/util.js"></script>
+<script src="../../layui/layui.js"></script>
+</head>
+<body>
+	<div style="padding: 15px 15px 0px 15px;">
+		<form class="layui-form layui-form-pane" action="">
+			<input type="hidden" name="disk_id" id="disk_id" value="">
+			<!--  -->
+			<input type="hidden" name="create_time" id="create_time">
+			<div class="layui-form-item">
+				<label class="layui-form-label">硬盘名</label>
+				<div class="layui-input-block">
+					<input name="disk_name" lay-verify="disk_name" id="disk_name"
+						autocomplete="off" class="layui-input" type="text">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">存储类型</label>
+					<div class="layui-input-inline">
+						<select name="video_type" id="video_type">
+							<option value="动画">动画</option>
+							<option value="番剧">番剧</option>
+							<option value="电影">电影</option>
+							<option value="纪录片">纪录片</option>
+							<option value="网络视频">网络视频</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">硬盘容量</label>
+					<div class="layui-input-inline">
+						<select name="disk_capacity" id="disk_capacity">
+							<option value="500G">500G</option>
+							<option value="1T">1T</option>
+							<option value="2T">2T</option>
+							<option value="3T">3T</option>
+							<option value="4T">4T</option>
+							<option value="6T">6T</option>
+							<option value="8T">8T</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">存储状态</label>
+					<div class="layui-input-inline">
+						<select name="is_full" id="is_full">
+							<option value="已满">已满</option>
+							<option value="未满">未满</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">硬盘状态</label>
+					<div class="layui-input-inline">
+						<select name="disk_state" id="disk_state">
+							<option value="现役">现役</option>
+							<option value="退役">退役</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+					<textarea id="remark" name="remark" class="layui-textarea"
+						style="resize: none;"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<button style="float: right;" class="layui-btn" lay-submit=""
+					lay-filter="submitButton">提交</button>
+			</div>
+
+		</form>
+	</div>
+</body>
+<script>
+	layui.use([ 'form', 'layedit', 'laydate' ], function() {
+		var form = layui.form;
+		var disk_id = getUrlParam('disk_id');
+		$.ajax({
+			url : "/videoRecord/getDiskDetail/" + disk_id,
+			method : "GET",
+			dataType : "json",
+			success : function(resp) {
+				console.log(resp);
+				if (resp.code == 0) {
+					var jsonObj = resp.data;
+					for ( var prop in jsonObj) {
+						$("#" + prop).val(jsonObj[prop]);
+					}
+					form.render();
+				} else {
+					layer.alert("程序异常：" + resp.msg);
+				}
+			},
+			error : function(xhr) {
+				layer.alert("错误提示： " + xhr.status + " " + xhr.statusText);
+			}
+		});
+
+		var layedit = layui.layedit;
+		//创建一个编辑器
+		var editIndex = layedit.build('LAY_demo_editor');
+
+		//监听提交
+		form.on('submit(submitButton)', function(data) {
+			var loadIndex = layer.load(1);
+			console.log(JSON.stringify(data.field));
+			$.ajax({
+				url : "/videoRecord/diskEdit/",
+				method : "POST",
+				contentType : 'application/json',
+				data : JSON.stringify(data.field),
+				dataType : "json",
+				success : function(resp) {
+					layer.close(loadIndex);
+					console.log(resp);
+					if (resp.code == 0) {
+						if (resp.data == 1) {
+							layer.alert("编辑成功！！！", {
+								offset : '150px'
+							}, function() {
+								var index = parent.layer
+										.getFrameIndex(window.name);
+								parent.callBackSearch();
+								parent.layer.close(index);
+							});
+						} else {
+							layer.alert("编辑失败，请核对数据！！！");
+						}
+					} else {
+						layer.alert(resp.msg, {
+							title : '程序异常：'
+						})
+					}
+				},
+				error : function(xhr) {
+					layer.close(loadIndex);
+					layer.alert(xhr.status + " " + xhr.statusText, {
+						title : '系统异常：'
+					})
+				}
+			});
+			return false;
+		});
+
+	});
+</script>
+</html>

@@ -48,10 +48,10 @@
 							class="layui-icon layui-icon-file"></i>硬盘管理</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a url="html/menu123.html">硬盘列表</a>
+								<a url="html/disk/diskList.html">硬盘列表</a>
 							</dd>
 							<dd>
-								<a url="html/menu1.html">添加硬盘</a>
+								<a url="html/disk/diskAdd.html">添加硬盘</a>
 							</dd>
 						</dl></li>
 					<li class="layui-nav-item"><a><i
@@ -160,11 +160,7 @@
 				$("#main-body").append(iframeTemplate.html());
 				$("iframe[name='" + iframeId + "']").attr("onload", onload);
 				$("iframe[name='" + iframeId + "']").attr("src", src);
-				// 				console.log("隐藏" + iframeId + "外其他页面");
-				// 				$("#" + iframeId).siblings().removeClass("show");
-				// 				$("#" + iframeId).siblings().addClass("hide");
 
-				//$("#" + iframeId).find("iframe").attr("src", src);
 				// 				$("[name=" + iframeId + "]").attr("src", src);
 				// 				$.ajax({
 				// 					url : src,

@@ -11,7 +11,7 @@ function sendRequest(url, method, data, callback) {
 		success : function(resp) {
 			if (resp.code == 0) {
 				console.log("公共方法返回");
-				console.log(resp);
+				// console.log(resp);
 				if (callback != null) {
 					console.log("执行参数函数");
 					callback(resp);
