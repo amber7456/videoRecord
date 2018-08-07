@@ -36,7 +36,6 @@
 					<li class="layui-nav-item"><a><i
 							class="layui-icon layui-icon-search"></i>检索分析</a>
 						<dl class="layui-nav-child">
-
 							<dd>
 								<a url="html/resourceSearch.html">资源检索</a>
 							</dd>
@@ -137,9 +136,7 @@
 				}
 			});
 
-			//iframe_template 此处可优化  
-			// 			iframe.attr("src", src);
-			// 			iframe.attr("id", iframeId);
+			//iframe_template 此处可优化   
 
 			var iframeTemplate = $("#iframe_template").clone();
 			var iframe = iframeTemplate.find("iframe");
@@ -160,8 +157,7 @@
 				$("#main-body").append(iframeTemplate.html());
 				$("iframe[name='" + iframeId + "']").attr("onload", onload);
 				$("iframe[name='" + iframeId + "']").attr("src", src);
-
-				// 				$("[name=" + iframeId + "]").attr("src", src);
+ 
 				// 				$.ajax({
 				// 					url : src,
 				// 					type : 'GET',
