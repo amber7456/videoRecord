@@ -12,7 +12,9 @@
 <script src="../layui/layui.js"></script>
 </head>
 <body>
+	<!-- style="display: none;" -->
 	<div class="main-div">
+		<!--  -->
 		<form class="layui-form layui-form-pane" action=""
 			id="animationAddForm" method="post" enctype="multipart/form-data">
 			<div class="search-item">
@@ -31,8 +33,7 @@
 					<input type="hidden" id="videoType" name="videoType" value="动画">
 				</div>
 			</div>
-
-			<div>
+			<div class="video-resource-div">
 				<div class="video-info-div">
 					<div id="video-poster" class="video-poster-div">
 						<i class="layui-icon layui-icon-close close"
@@ -42,15 +43,39 @@
 							type="file" name="video_poster" id="previewImg">
 					</div>
 					<div class="video-info">
-						<div class="layui-form-item" style="margin-bottom: 10px;">
-							<label class="layui-form-label">资源名</label>
-							<div class="layui-input-block">
-								<input name="video_name" id="video_name" lay-verify="video_name"
-									autocomplete="off" class="layui-input" type="text">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">资源名</label>
+								<div class="layui-input-block">
+									<input type="text" name="video_name" id="video_name"
+										lay-verify="video_name" autocomplete="off"
+										class="layui-input video-name-input">
+								</div>
 							</div>
 						</div>
 						<div class="layui-form-item">
-							<div class="layui-inline">
+							<div class="layui-inline display-none" id="countryDiv">
+								<label class="layui-form-label">国家</label>
+								<div class="layui-input-inline">
+									<input name="country" lay-verify="country" id="country"
+										autocomplete="off" class="layui-input" type="text" value="日本" />
+								</div>
+							</div>
+							<div class="layui-inline display-none" id="dramaSeasonDiv">
+								<label class="layui-form-label">播出季</label>
+								<div class="layui-input-inline">
+									<select name="dramaSeason" id="dramaSeason">
+										<option value="冬季">冬季</option>
+										<option value="春季">春季</option>
+										<option value="夏季">夏季</option>
+										<option value="秋季">秋季</option>
+										<option value="SP">SP</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-inline" id="broadcastTimeDiv">
 								<label class="layui-form-label">播出时间</label>
 								<div class="layui-input-inline">
 									<input name="video_broadcast_time"
@@ -58,33 +83,10 @@
 										autocomplete="off" class="layui-input" type="text">
 								</div>
 							</div>
-							<div class="layui-inline">
+							<div class="layui-inline" id="animationSeasonDiv">
 								<label class="layui-form-label">播出季</label>
 								<div class="layui-input-inline">
-									<select name="video_type" id="video_type"
-										lay-filter="video_type">
-										<option value="冬番">冬番</option>
-										<option value="春番">春番</option>
-										<option value="夏番">夏番</option>
-										<option value="秋番">秋番</option>
-										<option value="OVA/OAD">OVA/OAD</option>
-										<option value="映画">映画</option>
-										<option value="其他">其他</option>
-									</select>
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">国家</label>
-								<div class="layui-input-inline">
-									<input name=" " lay-verify=" " id=" " autocomplete="off"
-										class="layui-input" type="text">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">播出季</label>
-								<div class="layui-input-inline">
-									<select name="video_type" id="video_type"
-										lay-filter="video_type">
+									<select name="animationSeason" id="animationSeason">
 										<option value="冬番">冬番</option>
 										<option value="春番">春番</option>
 										<option value="夏番">夏番</option>
@@ -97,7 +99,7 @@
 							</div>
 						</div>
 						<div class="layui-form-item">
-							<div class="layui-inline">
+							<div class="layui-inline" id="episodeDiv">
 								<label class="layui-form-label">集数</label>
 								<div class="layui-input-inline">
 									<input name="video_episode" lay-verify="video_episode"
@@ -105,25 +107,22 @@
 										value="12" type="text">
 								</div>
 							</div>
-							<div class="layui-inline">
-								<div class="layui-btn layui-btn-normal layui-btn-sm"
-									onclick="setEpisode('11')">11</div>
-								<div class="layui-btn layui-btn-normal layui-btn-sm"
-									onclick="setEpisode('12')">12</div>
-								<div class="layui-btn layui-btn-normal layui-btn-sm"
-									onclick="setEpisode('13')">13</div>
-								<div class="layui-btn layui-btn-normal layui-btn-sm"
-									onclick="setEpisode('23')">23</div>
-								<div class="layui-btn layui-btn-normal layui-btn-sm"
-									onclick="setEpisode('24')">24</div>
-								<div class="layui-btn layui-btn-normal layui-btn-sm"
-									onclick="setEpisode('25')">25</div>
-								<div class="layui-btn layui-btn-normal layui-btn-sm"
-									onclick="setEpisode('26')">26</div>
+							<div class="layui-inline episodeOption" id="episodeOptionDiv">
+								<div class="ep-button dramaEp" id="dramaEp4 "
+									onclick="setEpisode('4')">4</div>
+								<div class="ep-button dramaEp" id="dramaEp8"
+									onclick="setEpisode('8')">8</div>
+								<div class="ep-button" onclick="setEpisode('11')">11</div>
+								<div class="ep-button" onclick="setEpisode('12')">12</div>
+								<div class="ep-button" onclick="setEpisode('13')">13</div>
+								<div class="ep-button animEp" onclick="setEpisode('23')">23</div>
+								<div class="ep-button animEp" onclick="setEpisode('24')">24</div>
+								<div class="ep-button animEp" onclick="setEpisode('25')">25</div>
+								<div class="ep-button animEp" onclick="setEpisode('26')">26</div>
 							</div>
 						</div>
 						<div class="layui-form-item">
-							<div class="layui-inline">
+							<div class="layui-inline" id="sourceDiv">
 								<label class="layui-form-label">原作类型</label>
 								<div class="layui-input-inline">
 									<select name="video_source" id="video_source"
@@ -140,27 +139,30 @@
 				</div>
 				<div class="resource-info" id="resource-info">
 					<div class="layui-btn layui-btn-normal layui-btn-sm"
-						id="addResource">添加资源</div>
+						onclick="addResource()">添加资源</div>
+					<!-- id="addResource" -->
 					<div id="resource-info-div"></div>
 				</div>
 				<div class="layui-form-item layui-form-text">
-					<label class="layui-form-label">详情</label>
-					<div class="layui-input-block">
-						<textarea placeholder="请输入内容" class="layui-textarea"
-							name="video_detail_info" style="resize: none; height: 200px;"></textarea>
+					<div class="layui-inline  detail">
+						<label class="layui-form-label">详情</label>
+						<div class="layui-input-block">
+							<textarea placeholder="请输入内容" class="layui-textarea"
+								name="video_detail_info"></textarea>
+						</div>
 					</div>
 				</div>
-				<div class="layui-form-item layui-form-text"
-					style="margin-top: 10px;">
-					<label class="layui-form-label">备注</label>
-					<div class="layui-input-block">
-						<textarea placeholder="请输入内容" class="layui-textarea"
-							name="video_remark" style="resize: none; height: 200px;"></textarea>
+				<div class="layui-form-item layui-form-text">
+					<div class="layui-inline remark">
+						<label class="layui-form-label">备注</label>
+						<div class="layui-input-block">
+							<textarea placeholder="请输入内容" class="layui-textarea"
+								name="video_remark"></textarea>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div
-				style="display: inline-block; position: fixed; margin-left: 20px; bottom: 60px; z-index: 99999;">
+			<div class="submit">
 				<div class="layui-btn layui-btn-normal" lay-submit="" style=""
 					lay-filter="submitButton">提交</div>
 			</div>
@@ -168,83 +170,89 @@
 	</div>
 
 	<div id="resource-info-model" style="display: none;">
-		<div style="margin-top: 15px; width: 1000px; display: none;"
-			id="resource_{id}">
-			<div style="width: 919px; display: inline-block;">
+		<div class="resource-item" id="resource_{id}">
+			<div class="resource-item-info">
 				<div class="layui-form-item">
-					<label class="layui-form-label">资源信息</label>
-					<div class="layui-input-inline small">
-						<select name="resource_type" id="resource_type"
-							lay-filter="resource_type">
-							<option value="NORMAL">普通资源</option>
-							<option value="BD">BD资源</option>
-						</select>
-					</div>
-					<div class="layui-input-inline small">
-						<select name="resource_format" id="resource_format"
-							lay-filter="resource_format">
-							<option value="MP4">MP4</option>
-							<option value="MKV">MKV</option>
-							<option value="RMVB">RMVB</option>
-							<option value="AVI">AVI</option>
-							<option value="OTHER">其他</option>
-						</select>
-					</div>
-					<div class="layui-input-inline small">
-						<select name="resource_resolution" id="resource_resolution"
-							lay-filter="resource_resolution">
-							<option value="1280*720" selected="selected">1280*720</option>
-							<option value="1920*1080">1920*1080</option>
-							<option value="1440*1080">1440*1080</option>
-							<option value="848*480">848*480</option>
-							<option value="1024*576">1024*576</option>
-							<option value="960*576">960*576</option>
-							<option value="3840*2160">3840*2160</option>
-						</select>
-					</div>
-					<div class="layui-input-inline small">
-						<select name="resource_sub" id="resource_sub"
-							lay-filter="resource_sub">
-							<option value="1">有字幕</option>
-							<option value="0">无字幕</option>
-						</select>
-					</div>
-					<div class="layui-input-inline small">
-						<select name="resource_sub_type" id="resource_sub_type"
-							lay-filter="resource_sub_type">
-							<option value="内嵌">内嵌</option>
-							<option value="封装">封装</option>
-							<option value="外挂">外挂</option>
-						</select>
+					<div class="layui-inline">
+						<label class="layui-form-label">资源信息</label>
+						<div class="layui-input-inline small">
+							<select name="resource_type" id="resource_type"
+								lay-filter="resource_type">
+								<option value="NORMAL">普通资源</option>
+								<option value="BD">BD资源</option>
+							</select>
+						</div>
+						<div class="layui-input-inline small">
+							<select name="resource_format" id="resource_format"
+								lay-filter="resource_format">
+								<option value="MP4">MP4</option>
+								<option value="MKV">MKV</option>
+								<option value="RMVB">RMVB</option>
+								<option value="AVI">AVI</option>
+								<option value="OTHER">其他</option>
+							</select>
+						</div>
+						<div class="layui-input-inline small">
+							<select name="resource_resolution" id="resource_resolution"
+								lay-filter="resource_resolution">
+								<option value="1280*720" selected="selected">1280*720</option>
+								<option value="1920*1080">1920*1080</option>
+								<option value="1440*1080">1440*1080</option>
+								<option value="848*480">848*480</option>
+								<option value="1024*576">1024*576</option>
+								<option value="960*576">960*576</option>
+								<option value="3840*2160">3840*2160</option>
+							</select>
+						</div>
+						<div class="layui-input-inline small">
+							<select name="resource_sub" id="resource_sub"
+								lay-filter="resource_sub">
+								<option value="1">有字幕</option>
+								<option value="0">无字幕</option>
+							</select>
+						</div>
+						<div class="layui-input-inline small">
+							<select name="resource_sub_type" id="resource_sub_type"
+								lay-filter="resource_sub_type">
+								<option value="内嵌">内嵌</option>
+								<option value="封装">封装</option>
+								<option value="外挂">外挂</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">收录地址</label>
-					<div class="layui-input-inline" style="width: 309px;">
-						<select name="resource_record_address"
-							id="resource_record_address" lay-filter="resource_record_address">
-						</select>
+					<div class="layui-inline">
+						<label class="layui-form-label">收录地址</label>
+						<div class="layui-input-inline" style="width: 309px;">
+							<select name="resource_record_address"
+								id="resource_record_address"
+								lay-filter="resource_record_address">
+							</select>
+						</div>
+						<label class="layui-form-label">收录时间</label>
+						<div class="layui-input-inline">
+							<input name="resource_record_time"
+								lay-verify="resource_record_time" id="resource_record_time_{id}"
+								autocomplete="off" class="layui-input" type="text">
+						</div>
 					</div>
-					<label class="layui-form-label">收录时间</label>
-					<div class="layui-input-inline">
-						<input name="resource_record_time"
-							lay-verify="resource_record_time" id="resource_record_time_{id}"
-							autocomplete="off" class="layui-input" type="text">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">备注</label>
-					<div class="layui-input-inline" style="width: 787px;">
-						<input maxlength="55" name="resource_remark"
-							lay-verify="resource_remark" id="resource_remark" value=""
-							autocomplete="off" class="layui-input" type="text">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">备注</label>
+							<div class="layui-input-inline" style="width: 787px;">
+								<input maxlength="55" name="resource_remark"
+									lay-verify="resource_remark" id="resource_remark" value=""
+									autocomplete="off" class="layui-input" type="text">
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm"
-				id="resource_del_{id}" onclick="resourceDel('resource_{id}')"
-				style="position: relative;; float: right; right: 30px; top: 5px; display: inline-block;">
-				<i class="layui-icon">&#xe640;</i>删除
+			<div
+				class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm del"
+				id="resource_del_{id}" onclick="resourceDel('resource_{id}')">
+				<span>删除</span>
 			</div>
 		</div>
 	</div>
@@ -260,24 +268,20 @@
 		$("#video-poster").mouseout(function() {
 			$("#img_del").css("display", "none");
 		});
+
 	});
 
 	var layer;
-
+	var form;
+	var laydate;
 	layui.use([ "form", "util", "layedit", "laydate" ], function() {
-		var form = layui.form;
+		layer = layui.layer;
+		form = layui.form;
+		laydate = layui.laydate;
 		var util = layui.util;
 		var layedit = layui.layedit;
-		var laydate = layui.laydate;
-		layer = layui.layer;
-
-		var url = "/videoRecord/getDiskListByVideoType/";
-		var method = "POST";
-		var data = {};
-		sendRequest(url, method, data, loadDisk);
-
-		form.render("select");
-
+		//
+		addInit();
 		//执行
 		util.fixbar({
 			showHeight : "100"
@@ -302,66 +306,64 @@
 			var url = "/videoRecord/addAnimation/";
 			var method = "POST";
 
-			parent.submitForm(url, method, form, function(resp) {
-				if (resp.code == 0) {
-					if (resp.data == 1) {
-						parent.layer.alert("添加成功！！！", {
-							offset : '200px'
-						}, function(index) {
-							parent.layer.close(index);
-							// 重新载入添加页面
-							location.href = location.href;
-						});
-					} else {
-						parent.layer.alert("添加失败，请核对数据！！！", {
-							title : "添加失败",
-							offset : '200px'
-						});
-					}
-				} else {
-					parent.layer.alert(resp.msg, {
-						title : "程序异常",
+			submitForm(url, method, form, function(resp) {
+				if (resp.data == 1) {
+					layer.alert("添加成功！！！", {
 						offset : '200px'
-					})
+					}, function(index) {
+						layer.close(index);
+						// 重新载入添加页面
+						location.href = location.href;
+					});
+				} else {
+					layer.alert("添加失败，请核对数据！！！", {
+						title : "添加失败",
+						offset : '200px'
+					});
 				}
 			});
-
 			return false;
 		});
 
-		$("#addResource").on("click", function() {
-			var id = new Date().getTime().toString();
-			var resourseHtml = $("#resource-info-model").html();
-			resourseHtml = resourseHtml.replace(/{id}/g, id);
-			$("#resource-info-div").append(resourseHtml);
-			form.render("select");
-			laydate.render({
-				elem : "#resource_record_time_" + id,
-				type : "date",
-				value : new Date()
-			});
-			console.log(id);
-			$("#resource_" + id).fadeIn(300);
+		layer.ready(function() {
+			$("body").show();
 		});
-
-		$("#addResource").click();
 
 	});
 
+	function addInit() {
+		var url = "/videoRecord/getDiskListByVideoType/";
+		var method = "POST";
+		var data = {};
+		var diskJson = getData(url, data);
+		loadDisk(diskJson);
+		form.render("select");
+		addResource();
+	}
+
+	function addResource() {
+		var id = new Date().getTime().toString();
+		var resourseHtml = $("#resource-info-model").html();
+		resourseHtml = resourseHtml.replace(/{id}/g, id);
+		$("#resource-info-div").append(resourseHtml);
+		form.render("select");
+		laydate.render({
+			elem : "#resource_record_time_" + id,
+			type : "date",
+			value : new Date()
+		});
+		//$("#resource_" + id).fadeIn(300);
+		$("#resource_" + id).slideDown(300);
+	}
+
 	function loadDisk(resp) {
 		console.log("加载硬盘地址");
-		if (resp.code == 0) {
-			console.log(resp.data);
-			var objSelect = $("#resource-info-model").find(
-					"#resource_record_address");
-			for (var i = 0; i < resp.data.length; i++) {
-				objSelect.append("<option value=" + resp.data[i].disk_id + ">"
-						+ resp.data[i].disk_name + "</option>");
-			}
-		} else {
-			layer.alert(resp.msg, {
-				title : "读取硬盘信息异常"
-			});
+		console.log(resp.data);
+		var objSelect = $("#resource-info-model").find(
+				"#resource_record_address");
+		for (var i = 0; i < resp.data.length; i++) {
+			objSelect.append("<option value=" + resp.data[i].disk_id + ">"
+					+ resp.data[i].disk_name + "</option>");
 		}
 		console.log("加载硬盘地址完成");
 	}
@@ -374,6 +376,91 @@
 
 	function setEpisode(episode) {
 		$("#video_episode").val(episode);
+	}
+
+	function clickVideoTypeButton(vtt) {
+		var pitchId;
+		$("#video_type_item").children().each(function() {
+			if ($(this).hasClass("video-type-tab-this")) {
+				pitchId = $(this).attr("id");
+			}
+		});
+		if (pitchId !== $(vtt).attr("id")) {
+			$(vtt).addClass('video-type-tab-this');
+			$(vtt).siblings().removeClass('video-type-tab-this');
+			$("#videoType").val($(vtt).attr("id"));
+			setAddInfo(300);// 设置 添加数据
+		} else {
+			console.log("已选中，无操作");
+		}
+	}
+
+	function setAddInfo(second) {
+		var videoType = $("#videoType").val();
+		switch (videoType) {
+		case "动画":
+			$("#countryDiv").hide();
+			$("#dramaSeasonDiv").hide();
+
+			$(".dramaEp").each(function() {
+				$(this).hide();
+			});
+
+			$(".animEp").each(function() {
+				$(this).css("display", "inline-block");
+			});
+
+			$("#animationSeasonDiv").fadeIn(second);
+			$("#episodeDiv").fadeIn(second);
+			$("#episodeOptionDiv").fadeIn(second);
+			$("#sourceDiv").fadeIn(second);
+			break;
+		case "番剧":
+			$("#animationSeasonDiv").hide();
+			$("#sourceDiv").hide();
+
+			$(".animEp").each(function() {
+				$(this).hide();
+			});
+
+			$("#countryDiv").css("display", "inline-block");
+			$("#dramaSeasonDiv").css("display", "inline-block");
+
+			$("#episodeDiv").fadeIn(second);
+			$("#episodeOptionDiv").fadeIn(second);
+
+			$(".dramaEp").each(function() {
+				$(this).css("display", "inline-block");
+			});
+			break;
+		case "电影":
+			$("#dramaSeasonDiv").hide();
+			$("#animationSeasonDiv").hide();
+			$("#episodeDiv").hide();
+			$("#sourceDiv").hide();
+			$("#episodeOptionDiv").hide();
+
+			$("#countryDiv").fadeIn(second);
+			break;
+		case "记录片":
+			$("#dramaSeasonDiv").hide();
+			$("#animationSeasonDiv").hide();
+			$("#sourceDiv").hide();
+
+			$("#episodeDiv").fadeIn(second);
+			$("#episodeOptionDiv").fadeIn(second);
+			$("#countryDiv").fadeIn(second);
+			break;
+		case "网络视频":
+			$("#dramaSeasonDiv").hide();
+			$("#animationSeasonDiv").hide();
+			$("#sourceDiv").hide();
+
+			$("#episodeOptionDiv").fadeIn(second);
+			$("#episodeDiv").fadeIn(second);
+			$("#countryDiv").fadeIn(second);
+			break;
+		}
 	}
 </script>
 </html>

@@ -50,11 +50,24 @@ html {
 	margin-bottom: 5px !important;
 	/* height: 40px; */
 	clear: both;
+	font-size: 0;
+}
+
+.layui-form-label {
+	font-size: 14px;
+}
+
+.layui-inline {
+	font-size: 14px;
 }
 
 .layui-form-item .layui-inline {
 	height: 40px;
 	margin-bottom: 0px;
+}
+
+.button-div {
+	font-size: 0;
 }
 
 .video-box {

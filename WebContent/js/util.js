@@ -40,6 +40,37 @@ function sendRequest(url, method, data, callback) {
 	});
 }
 
+function submitForm(url, method, data, callback) {
+	var index = layer.load(1, {
+		shade : [ 0.3, '#fff' ]
+	});
+	$.ajax({
+		url : url,
+		method : method,
+		data : data,
+		dataType : "json",
+		contentType : "application/json",
+		processData : false,
+		contentType : false,
+		success : function(resp) {
+			console.log(resp);
+			layer.close(index);
+			if (callback != null) {
+				callback(resp);
+			} else {
+				return resp;
+			}
+		},
+		error : function(xhr) {
+			layer.close(index);
+			layer.alert(xhr.status + " " + xhr.statusText, {
+				offset : "200px",
+				title : '系统异常：'
+			})
+		}
+	});
+};
+
 function getData(url, data) {
 	var r;
 	$.ajax({

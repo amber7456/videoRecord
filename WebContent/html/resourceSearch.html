@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="../layui/css/layui.css">
 <link rel="stylesheet" href="../css/resourceSearch.css">
 </head>
@@ -15,14 +16,20 @@
 	<!-- 记录片搜索条件      播出时间 存储地址 国别 格式 分辨率 资源名  -->
 	<!-- 网络视频搜索条件  播出时间 存储地址 格式 分辨率 资源名 -->
 	<div>
-		<form class="layui-form layui-form-pane" id="searchVideo" method="post" enctype="multipart/form-data" action="">
+		<form class="layui-form layui-form-pane" id="searchVideo"
+			method="post" enctype="multipart/form-data" action="">
 			<div class="search-item">
 				<div class="layui-inline" id="video_type_item">
-					<div class="video-type-tab video-type-tab-this" onclick="clickVideoTypeButton(this)" id="动画">动画</div>
-					<div class="video-type-tab " onclick="clickVideoTypeButton(this)" id="番剧">番剧</div>
-					<div class="video-type-tab " onclick="clickVideoTypeButton(this)" id="电影">电影</div>
-					<div class="video-type-tab " onclick="clickVideoTypeButton(this)" id="记录片">记录片</div>
-					<div class="video-type-tab " onclick="clickVideoTypeButton(this)" id="网络视频">网络视频</div>
+					<div class="video-type-tab video-type-tab-this"
+						onclick="clickVideoTypeButton(this)" id="动画">动画</div>
+					<div class="video-type-tab " onclick="clickVideoTypeButton(this)"
+						id="番剧">番剧</div>
+					<div class="video-type-tab " onclick="clickVideoTypeButton(this)"
+						id="电影">电影</div>
+					<div class="video-type-tab " onclick="clickVideoTypeButton(this)"
+						id="记录片">记录片</div>
+					<div class="video-type-tab " onclick="clickVideoTypeButton(this)"
+						id="网络视频">网络视频</div>
 					<!--  -->
 					<input type="hidden" id="videoType" name="videoType" value="动画">
 				</div>
@@ -31,7 +38,8 @@
 				<div class="layui-inline" id="yearRangeDiv">
 					<label class="layui-form-label">播出时间</label>
 					<div class="layui-input-inline" style="width: 120px;">
-						<input name="yearRange" id="yearRange" autocomplete="off" readonly="readonly" class="layui-input" type="text">
+						<input name="yearRange" id="yearRange" autocomplete="off"
+							readonly="readonly" class="layui-input" type="text">
 					</div>
 				</div>
 				<div class="layui-inline" id="addressDiv">
@@ -45,7 +53,8 @@
 				<div class="layui-inline" id="animationSeasonDiv">
 					<label class="layui-form-label">播出季</label>
 					<div class="layui-input-inline" style="width: 120px;">
-						<select name="animationSeason" id="animationSeason" style="width: 200px;">
+						<select name="animationSeason" id="animationSeason"
+							style="width: 200px;">
 							<option value="ALL">全部</option>
 							<option value="冬番">冬番</option>
 							<option value="春番">春番</option>
@@ -57,7 +66,8 @@
 						</select>
 					</div>
 				</div>
-				<div class="layui-inline" id="videoCountryDiv" style="display: none;">
+				<div class="layui-inline" id="videoCountryDiv"
+					style="display: none;">
 					<label class="layui-form-label">国别</label>
 					<div class="layui-input-inline" style="width: 120px;">
 						<select name="country" id="country" style="width: 200px;">
@@ -95,7 +105,7 @@
 				</div>
 			</div>
 			<div class="layui-form-item">
-				<label class="layui-form-label">收录信息</label>
+				<div class="layui-form-label">收录信息</div>
 				<div class="layui-inline" id="typeDiv">
 					<div class="layui-input-inline">
 						<select name="resourceType" id="resourceType">
@@ -147,10 +157,11 @@
 				<div class="layui-inline" id="videoNameDiv">
 					<label class="layui-form-label">资源名</label>
 					<div class="layui-input-block" style="width: 576px;">
-						<input name="videoName" id="videoName" autocomplete="off" class="layui-input" type="text">
+						<input name="videoName" id="videoName" autocomplete="off"
+							class="layui-input" type="text">
 					</div>
 				</div>
-				<div class="layui-inline">
+				<div class="layui-inline button-div">
 					<div class="layui-btn layui-btn-normal" onclick="search()">搜索</div>
 					<div class="layui-btn layui-btn-normal" onclick="reset()">重置</div>
 					<div class="layui-btn" onclick="excelDownload()">下载列表</div>
@@ -193,14 +204,20 @@
 			<div class="video-name" onclick="detail('{id}')">{name}</div>
 			<div class="video-date">{date}</div>
 			<div style="float: right; width: 40px; margin: 3px 0px 3px 3px;">
-				<div class="edit-div layui-btn layui-btn-xs layui-btn-normal" style="width: 40px;">
+				<div class="edit-div layui-btn layui-btn-xs layui-btn-normal"
+					style="width: 40px;">
 					<i class="layui-icon" style="margin-right: 0px;">&#xe65f;</i>
 				</div>
-				<div class="edit-list" id="edit-list-{id}" style="display: none; padding: 5px;">
-					<div style="margin: 5px auto; width: 100%;" class="layui-btn layui-btn-sm layui-btn-normal" onclick="editVideo(this,'{id}')">
+				<div class="edit-list" id="edit-list-{id}"
+					style="display: none; padding: 5px;">
+					<div style="margin: 5px auto; width: 100%;"
+						class="layui-btn layui-btn-sm layui-btn-normal"
+						onclick="editVideo(this,'{id}')">
 						<i class="layui-icon">&#xe642;</i>编辑
 					</div>
-					<div style="margin: 5px auto; width: 100%;" class="layui-btn layui-btn-sm layui-btn-danger" onclick="deleteVideo(this,'{id}','{name}')">
+					<div style="margin: 5px auto; width: 100%;"
+						class="layui-btn layui-btn-sm layui-btn-danger"
+						onclick="deleteVideo(this,'{id}','{name}')">
 						<i class="layui-icon">&#xe640;</i>删除
 					</div>
 				</div>
@@ -219,7 +236,8 @@
 		setSearchCondition(300);
 		loadDiskInfo();
 		//初始化 年范围选择
-		var range = (new Date().getFullYear() - 6) + ' - ' + new Date().getFullYear();
+		var range = (new Date().getFullYear() - 6) + ' - '
+				+ new Date().getFullYear();
 		$("#yearRange").val(range);
 	});
 
@@ -288,7 +306,8 @@
 	function setDiskSelect(resp) {
 		var objSelect = $("#address");
 		for (var i = 0; i < resp.data.length; i++) {
-			objSelect.append("<option value=" + resp.data[i].disk_id + ">" + resp.data[i].disk_name + "</option>");
+			objSelect.append("<option value=" + resp.data[i].disk_id + ">"
+					+ resp.data[i].disk_name + "</option>");
 		}
 	}
 

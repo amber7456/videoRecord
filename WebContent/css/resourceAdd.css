@@ -6,6 +6,10 @@ html {
 	height: calc(100% -15px);
 }
 
+.main-div {
+	font-size: 14px;
+}
+
 .video-type-tab {
 	float: left;
 	font-size: 16px;
@@ -38,8 +42,25 @@ html {
 	color: #fff;
 }
 
+.layui-form-item {
+	font-size: 0;
+}
+
+.layui-inline {
+	font-size: 14px;
+}
+
+.episodeOption {
+	font-size: 0;
+}
+
 .search-item {
 	margin-bottom: 15px;
+}
+
+.video-resource-div {
+	width: 1000px;
+	display: inline-block;
 }
 
 .video-poster-div {
@@ -60,7 +81,7 @@ html {
 	height: 22px;
 	line-height: 22px;
 	border-radius: 50%;
-	font-size: 20px;  
+	font-size: 20px;
 	z-index: 999;
 	cursor: pointer;
 	text-align: center;
@@ -68,11 +89,11 @@ html {
 	background-color: #FF5722;
 	color: #fff;
 	display: none;
-} 
+}
 
 .video-info-div {
-	display: inline-table;
-	height: 180px;
+	display: inline-block;
+	width: 1100px;
 }
 
 .video-poster {
@@ -93,10 +114,42 @@ html {
 	display: inline-block;
 }
 
-.resource-info {
-	position: relative;
-	margin: 10px 0px;
+.video-name-input {
+	width: 513px;
+}
+
+.ep-button {
+	width: 35px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
 	display: inline-block;
+	font-size: 12px;
+	font-weight: 300;
+	margin-right: 10px;
+	border-radius: 3px;
+	cursor: pointer;
+	background-color: #1E9FFF;
+	color: #FFF;
+	moz-user-select: -moz-none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	transition: all .3s;
+	-webkit-transition: all .3s;
+}
+
+.ep-button:hover {
+	opacity: .8;
+	filter: alpha(opacity = 80);
+	color: #fff
+}
+
+.resource-info {
+	margin: 10px 0px;
 }
 
 .layui-form-item {
@@ -107,6 +160,41 @@ html {
 	width: 150px;
 }
 
+.resource-item {
+	margin-bottom: 5px;
+	display: inline-block;
+	display: none;
+	width: 1000px;
+}
+
+.resource-item-info {
+	display: inline-block;
+	width: 920px;
+}
+
+.resource-item .del {
+	position: relative;;
+	float: right;
+	right: 30px;
+	top: 5px;
+	display: inline-block;
+}
+
+.detail {
+	width: 1000px;
+	margin-bottom: 20px;
+}
+
+.remark {
+	width: 1000px;
+	margin-bottom: 20px;
+}
+
+.layui-textarea {
+	resize: none !important;
+	height: 200px !important;
+}
+
 .i-del {
 	position: absolute;
 	margin-left: 284px;
@@ -115,4 +203,25 @@ html {
 	cursor: pointer;
 	display: none;
 	z-index: 99999;
+}
+
+.submit {
+	display: inline-block;
+	position: fixed;
+	margin-left: 20px;
+	bottom: 60px;
+	z-index: 99999;
+}
+
+.display-none {
+	display: none;
+}
+
+.layui-btn {
+	margin-left: 0 !important;
+	margin-right: 10px !important;
+}
+
+.dramaEp {
+	display: none;
 }

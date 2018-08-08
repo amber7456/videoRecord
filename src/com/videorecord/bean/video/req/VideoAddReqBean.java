@@ -20,6 +20,10 @@ public class VideoAddReqBean {
 
 	private String video_season;
 
+	private String dramaSeason;
+
+	private String animationSeason;
+
 	private String video_country;
 
 	private String video_source;
@@ -256,18 +260,35 @@ public class VideoAddReqBean {
 		this.video_country = video_country;
 	}
 
+	public String getDramaSeason() {
+		return dramaSeason;
+	}
+
+	public void setDramaSeason(String dramaSeason) {
+		this.dramaSeason = dramaSeason;
+	}
+
+	public String getAnimationSeason() {
+		return animationSeason;
+	}
+
+	public void setAnimationSeason(String animationSeason) {
+		this.animationSeason = animationSeason;
+	}
+
 	@Override
 	public String toString() {
 		return "VideoAddReqBean [video_id=" + video_id + ", video_name=" + video_name + ", video_episode="
 				+ video_episode + ", video_broadcast_time=" + video_broadcast_time + ", video_type=" + video_type
-				+ ", video_season=" + video_season + ", video_country=" + video_country + ", video_source="
-				+ video_source + ", video_remark=" + video_remark + ", create_time=" + create_time
-				+ ", last_update_time=" + last_update_time + ", have_bd_resource=" + have_bd_resource + ", have_poster="
-				+ have_poster + ", video_detail_info=" + video_detail_info + ", resource_type="
-				+ Arrays.toString(resource_type) + ", resource_format=" + Arrays.toString(resource_format)
-				+ ", resource_resolution=" + Arrays.toString(resource_resolution) + ", resource_sub="
-				+ Arrays.toString(resource_sub) + ", resource_sub_type=" + Arrays.toString(resource_sub_type)
-				+ ", resource_record_time=" + Arrays.toString(resource_record_time) + ", resource_record_address="
+				+ ", video_season=" + video_season + ", dramaSeason=" + dramaSeason + ", animationSeason="
+				+ animationSeason + ", video_country=" + video_country + ", video_source=" + video_source
+				+ ", video_remark=" + video_remark + ", create_time=" + create_time + ", last_update_time="
+				+ last_update_time + ", have_bd_resource=" + have_bd_resource + ", have_poster=" + have_poster
+				+ ", video_detail_info=" + video_detail_info + ", resource_type=" + Arrays.toString(resource_type)
+				+ ", resource_format=" + Arrays.toString(resource_format) + ", resource_resolution="
+				+ Arrays.toString(resource_resolution) + ", resource_sub=" + Arrays.toString(resource_sub)
+				+ ", resource_sub_type=" + Arrays.toString(resource_sub_type) + ", resource_record_time="
+				+ Arrays.toString(resource_record_time) + ", resource_record_address="
 				+ Arrays.toString(resource_record_address) + ", resource_remark=" + Arrays.toString(resource_remark)
 				+ ", video_poster=" + video_poster + ", posterUpdateFlag=" + posterUpdateFlag + "]";
 	}
