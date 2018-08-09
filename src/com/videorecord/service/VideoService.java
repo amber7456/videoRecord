@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -277,7 +277,11 @@ public class VideoService {
 		videoInfo.setVideo_episode(videoAddBean.getVideo_episode());
 		videoInfo.setVideo_broadcast_time(videoAddBean.getVideo_broadcast_time());
 		videoInfo.setVideo_type(videoAddBean.getVideo_type());
-		videoInfo.setVideo_season(videoAddBean.getVideo_season());
+		if (videoAddBean.getVideo_type().equals("动画")) {
+			videoInfo.setVideo_season(videoAddBean.getAnimationSeason());
+		} else if (videoAddBean.getVideo_type().equals("番剧")) {
+			videoInfo.setVideo_season(videoAddBean.getDramaSeason());
+		}
 		videoInfo.setVideo_country(videoAddBean.getVideo_country());
 		videoInfo.setVideo_source(videoAddBean.getVideo_source());
 		videoInfo.setVideo_detail_info(videoAddBean.getVideo_detail_info());

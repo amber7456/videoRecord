@@ -1,7 +1,5 @@
 package com.videorecord.bean.video.req;
 
-import com.videorecord.mybatis.pojo.VideoInfo;
-
 public class VideoReqBean {
 
 	private String videoType;

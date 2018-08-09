@@ -234,7 +234,6 @@
 <script>
 	$(function() {
 		setSearchCondition(300);
-		loadDiskInfo();
 		//初始化 年范围选择
 		var range = (new Date().getFullYear() - 6) + ' - '
 				+ new Date().getFullYear();
@@ -253,6 +252,8 @@
 		layer = layui.layer;
 
 		form.render('select');
+
+		loadDiskInfo();
 
 		//执行
 		util.fixbar({
@@ -275,32 +276,13 @@
 	function loadDiskInfo() {
 		//加载收录地址硬盘信息
 		var url = "/videoRecord/getDiskListByVideoType";
-		var method = "POST";
 		var data = {
 			video_type : "ALL"
 		};
-		$.ajax({
-			url : url,
-			method : method,
-			data : data,
-			dataType : "json",
-			success : function(resp) {
-				if (resp.code == 0) {
-					setDiskSelect(resp);
-				} else {
-					parent.layer.alert(resp.msg, {
-						offset : "200px",
-						title : "读取硬盘信息异常"
-					});
-				}
-			},
-			error : function(xhr) {
-				parent.layer.alert(resp.msg, {
-					offset : "200px",
-					title : "读取硬盘信息异常"
-				});
-			}
-		});
+		var diskJson = getData(url, data);
+		setDiskSelect(diskJson);
+
+		form.render();
 	}
 
 	function setDiskSelect(resp) {

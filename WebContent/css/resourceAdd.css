@@ -115,10 +115,73 @@ html {
 }
 
 .video-name-input {
-	width: 513px;
+	width: 509px;
 }
 
-.ep-button {
+.ep-input {
+	width: 150px;
+	display: inline-block;
+}
+
+.episodeDiv .ctrl-div {
+	display: inline-block;
+	position: absolute;
+	height: 38px;
+	width: 20px;
+	margin-left: 10px;
+}
+
+.episodeDiv .layui-icon {
+	width: 22px;
+	height: 15px;
+	line-height: 15px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	font-size: 16px;
+	padding: 0 3px;
+	text-align: center;
+	transition: all .2s;
+	-webkit-transition: all .2s;
+}
+
+.margin-bottom4 {
+	margin-bottom: 4px;
+}
+
+.episodeDiv .layui-icon:hover {
+	border-radius: 3px;
+	background-color: #1E9FFF;
+	border: 1px solid #1E9FFF;
+	color: #FFF;
+	cursor: pointer;
+}
+
+.country-btn {
+	width: 35px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	display: inline-block;
+	font-size: 14px;
+	font-weight: normal;
+	margin-right: 10px;
+	padding: 0 10px;
+	border-radius: 3px;
+	cursor: pointer;
+	background-color: #1E9FFF;
+	color: #FFF;
+	moz-user-select: -moz-none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	transition: all .3s;
+	-webkit-transition: all .3s;
+}
+
+.ep-btn {
 	width: 35px;
 	height: 30px;
 	line-height: 30px;
@@ -217,11 +280,11 @@ html {
 	display: none;
 }
 
+.display-inline-block {
+	display: inline-block;
+}
+
 .layui-btn {
 	margin-left: 0 !important;
 	margin-right: 10px !important;
-}
-
-.dramaEp {
-	display: none;
 }

@@ -7,12 +7,11 @@
 <script src="../js/jquery-2.1.4.js"></script>
 <script src="../js/jquery.serializejson.js"></script>
 <script src="../js/imgController.js"></script>
-<script src="../js/animationAdd.js"></script>
 <script src="../js/util.js"></script>
+<script src="../js/resourceAdd.js"></script>
 <script src="../layui/layui.js"></script>
 </head>
 <body>
-	<!-- style="display: none;" -->
 	<div class="main-div">
 		<!--  -->
 		<form class="layui-form layui-form-pane" action=""
@@ -30,7 +29,7 @@
 					<div class="video-type-tab " onclick="clickVideoTypeButton(this)"
 						id="网络视频">网络视频</div>
 					<!--  -->
-					<input type="hidden" id="videoType" name="videoType" value="动画">
+					<input type="hidden" id="videoType" name="video_type" value="动画">
 				</div>
 			</div>
 			<div class="video-resource-div">
@@ -57,9 +56,14 @@
 							<div class="layui-inline display-none" id="countryDiv">
 								<label class="layui-form-label">国家</label>
 								<div class="layui-input-inline">
-									<input name="country" lay-verify="country" id="country"
+									<input name="video_country" lay-verify="country" id="country"
 										autocomplete="off" class="layui-input" type="text" value="日本" />
 								</div>
+							</div>
+							<div class="layui-inline display-none" id="countryBtnDiv">
+								<div class="country-btn " onclick=" ">中国</div>
+								<div class="country-btn " onclick=" ">日本</div>
+								<div class="country-btn " onclick=" ">美国</div>
 							</div>
 							<div class="layui-inline display-none" id="dramaSeasonDiv">
 								<label class="layui-form-label">播出季</label>
@@ -99,26 +103,45 @@
 							</div>
 						</div>
 						<div class="layui-form-item">
-							<div class="layui-inline" id="episodeDiv">
+							<div class="layui-inline episodeDiv" id="episodeDiv">
 								<label class="layui-form-label">集数</label>
-								<div class="layui-input-inline">
-									<input name="video_episode" lay-verify="video_episode"
-										id="video_episode" autocomplete="off" class="layui-input"
-										value="12" type="text">
+								<div class="layui-input-inline ">
+									<input type="text" name="video_episode" value="12"
+										class="layui-input ep-input" id="video_episode"
+										lay-verify="video_episode" autocomplete="off" />
+									<!--  -->
+									<div class="ctrl-div">
+										<div class="layui-icon layui-icon-up margin-bottom4"
+											onclick="changeEp('add')"></div>
+										<!-- -->
+										<div class="layui-icon layui-icon-down"
+											onclick="changeEp('minus')"></div>
+									</div>
 								</div>
 							</div>
 							<div class="layui-inline episodeOption" id="episodeOptionDiv">
-								<div class="ep-button dramaEp" id="dramaEp4 "
+								<div class="ep-btn docuEp netEp display-none"
+									onclick="setEpisode('1')">1</div>
+								<div class="ep-btn docuEp netEp display-none"
+									onclick="setEpisode('3')">3</div>
+								<div class="ep-btn dramaEp display-none" id="dramaEp4 "
 									onclick="setEpisode('4')">4</div>
-								<div class="ep-button dramaEp" id="dramaEp8"
+								<div class="ep-btn docuEp netEp display-none"
+									onclick="setEpisode('6')">6</div>
+								<div class="ep-btn docuEp netEp display-none"
+									onclick="setEpisode('7')">7</div>
+								<div class="ep-btn dramaEp display-none" id="dramaEp8"
 									onclick="setEpisode('8')">8</div>
-								<div class="ep-button" onclick="setEpisode('11')">11</div>
-								<div class="ep-button" onclick="setEpisode('12')">12</div>
-								<div class="ep-button" onclick="setEpisode('13')">13</div>
-								<div class="ep-button animEp" onclick="setEpisode('23')">23</div>
-								<div class="ep-button animEp" onclick="setEpisode('24')">24</div>
-								<div class="ep-button animEp" onclick="setEpisode('25')">25</div>
-								<div class="ep-button animEp" onclick="setEpisode('26')">26</div>
+								<div class="ep-btn docuEp display-none"
+									onclick="setEpisode('10')">10</div>
+								<div class="ep-btn animEp dramaEp" onclick="setEpisode('11')">11</div>
+								<div class="ep-btn animEp dramaEp docuEp netEp"
+									onclick="setEpisode('12')">12</div>
+								<div class="ep-btn animEp" onclick="setEpisode('13')">13</div>
+								<div class="ep-btn animEp" onclick="setEpisode('23')">23</div>
+								<div class="ep-btn animEp netEp" onclick="setEpisode('24')">24</div>
+								<div class="ep-btn animEp" onclick="setEpisode('25')">25</div>
+								<div class="ep-btn animEp" onclick="setEpisode('26')">26</div>
 							</div>
 						</div>
 						<div class="layui-form-item">
@@ -268,7 +291,6 @@
 		$("#video-poster").mouseout(function() {
 			$("#img_del").css("display", "none");
 		});
-
 	});
 
 	var layer;
@@ -290,7 +312,8 @@
 		laydate.render({
 			elem : "#video_broadcast_time",
 			type : "date",
-			value : new Date()
+			value : new Date(),
+			theme : 'grid' //{'#5FB878'}
 		});
 
 		form.verify({
@@ -303,7 +326,7 @@
 
 		form.on("submit(submitButton)", function(data) {
 			var form = new FormData($("#animationAddForm")[0]);
-			var url = "/videoRecord/addAnimation/";
+			var url = "/videoRecord/addVideo/";
 			var method = "POST";
 
 			submitForm(url, method, form, function(resp) {
@@ -316,7 +339,7 @@
 						location.href = location.href;
 					});
 				} else {
-					layer.alert("添加失败，请核对数据！！！", {
+					layer.alert(resp.msg, {
 						title : "添加失败",
 						offset : '200px'
 					});
@@ -352,13 +375,11 @@
 			type : "date",
 			value : new Date()
 		});
-		//$("#resource_" + id).fadeIn(300);
 		$("#resource_" + id).slideDown(300);
 	}
 
 	function loadDisk(resp) {
-		console.log("加载硬盘地址");
-		console.log(resp.data);
+		console.log("加载硬盘地址"); 
 		var objSelect = $("#resource-info-model").find(
 				"#resource_record_address");
 		for (var i = 0; i < resp.data.length; i++) {
@@ -366,101 +387,6 @@
 					+ resp.data[i].disk_name + "</option>");
 		}
 		console.log("加载硬盘地址完成");
-	}
-
-	function resourceDel(resourceId) {
-		$("#" + resourceId).slideUp(200, function() {
-			$("#" + resourceId).remove();
-		});
-	}
-
-	function setEpisode(episode) {
-		$("#video_episode").val(episode);
-	}
-
-	function clickVideoTypeButton(vtt) {
-		var pitchId;
-		$("#video_type_item").children().each(function() {
-			if ($(this).hasClass("video-type-tab-this")) {
-				pitchId = $(this).attr("id");
-			}
-		});
-		if (pitchId !== $(vtt).attr("id")) {
-			$(vtt).addClass('video-type-tab-this');
-			$(vtt).siblings().removeClass('video-type-tab-this');
-			$("#videoType").val($(vtt).attr("id"));
-			setAddInfo(300);// 设置 添加数据
-		} else {
-			console.log("已选中，无操作");
-		}
-	}
-
-	function setAddInfo(second) {
-		var videoType = $("#videoType").val();
-		switch (videoType) {
-		case "动画":
-			$("#countryDiv").hide();
-			$("#dramaSeasonDiv").hide();
-
-			$(".dramaEp").each(function() {
-				$(this).hide();
-			});
-
-			$(".animEp").each(function() {
-				$(this).css("display", "inline-block");
-			});
-
-			$("#animationSeasonDiv").fadeIn(second);
-			$("#episodeDiv").fadeIn(second);
-			$("#episodeOptionDiv").fadeIn(second);
-			$("#sourceDiv").fadeIn(second);
-			break;
-		case "番剧":
-			$("#animationSeasonDiv").hide();
-			$("#sourceDiv").hide();
-
-			$(".animEp").each(function() {
-				$(this).hide();
-			});
-
-			$("#countryDiv").css("display", "inline-block");
-			$("#dramaSeasonDiv").css("display", "inline-block");
-
-			$("#episodeDiv").fadeIn(second);
-			$("#episodeOptionDiv").fadeIn(second);
-
-			$(".dramaEp").each(function() {
-				$(this).css("display", "inline-block");
-			});
-			break;
-		case "电影":
-			$("#dramaSeasonDiv").hide();
-			$("#animationSeasonDiv").hide();
-			$("#episodeDiv").hide();
-			$("#sourceDiv").hide();
-			$("#episodeOptionDiv").hide();
-
-			$("#countryDiv").fadeIn(second);
-			break;
-		case "记录片":
-			$("#dramaSeasonDiv").hide();
-			$("#animationSeasonDiv").hide();
-			$("#sourceDiv").hide();
-
-			$("#episodeDiv").fadeIn(second);
-			$("#episodeOptionDiv").fadeIn(second);
-			$("#countryDiv").fadeIn(second);
-			break;
-		case "网络视频":
-			$("#dramaSeasonDiv").hide();
-			$("#animationSeasonDiv").hide();
-			$("#sourceDiv").hide();
-
-			$("#episodeOptionDiv").fadeIn(second);
-			$("#episodeDiv").fadeIn(second);
-			$("#countryDiv").fadeIn(second);
-			break;
-		}
 	}
 </script>
 </html>
