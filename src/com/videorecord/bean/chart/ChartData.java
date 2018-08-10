@@ -2,7 +2,7 @@ package com.videorecord.bean.chart;
 
 import java.util.Arrays;
 
-public class DataList {
+public class ChartData {
 
 	private String key;
 

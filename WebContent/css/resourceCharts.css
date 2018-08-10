@@ -1,0 +1,74 @@
+@CHARSET "UTF-8";
+
+html {
+	margin: 15px 0px 0px 15px;
+	width: calc(100% -15px);
+	height: calc(100% -15px);
+}
+
+.search-item {
+	margin-bottom: 15px;
+}
+
+.video-type-tab {
+	float: left;
+	font-size: 16px;
+	font-weight: 300;
+	padding: 6px 18px;
+	margin: 0px 15px 0px 0px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	cursor: pointer;
+	transition: all .3s;
+	-webkit-transition: all .3s;
+	moz-user-select: -moz-none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.video-type-tab:hover {
+	border: 1px solid #1E9FFF;
+	background-color: #1E9FFF;
+	color: #fff;
+}
+
+.video-type-tab-this {
+	border: 1px solid #1E9FFF;
+	background-color: #1E9FFF;
+	color: #fff;
+}
+
+.margin-left15 {
+	margin-left: 15px;
+}
+
+.layui-form-item {
+	margin-bottom: 5px !important;
+	/* height: 40px; */
+	clear: both;
+	font-size: 0;
+}
+
+.layui-form-label {
+	font-size: 14px;
+}
+
+.layui-inline {
+	font-size: 14px;
+}
+
+.layui-form-item .layui-inline {
+	height: 40px;
+	margin-bottom: 0px;
+}
+
+.charts-div {
+	width: 90%;
+	height: 600px;
+	min-width: 800px;
+	margin: 0 auto;
+}

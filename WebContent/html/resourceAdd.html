@@ -341,6 +341,7 @@
 				} else {
 					layer.alert(resp.msg, {
 						title : "添加失败",
+						area : [ '300px', '200px' ],
 						offset : '200px'
 					});
 				}
@@ -379,7 +380,7 @@
 	}
 
 	function loadDisk(resp) {
-		console.log("加载硬盘地址"); 
+		console.log("加载硬盘地址");
 		var objSelect = $("#resource-info-model").find(
 				"#resource_record_address");
 		for (var i = 0; i < resp.data.length; i++) {

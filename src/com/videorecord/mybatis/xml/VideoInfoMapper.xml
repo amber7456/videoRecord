@@ -20,6 +20,8 @@
 		<result column="have_bd_resource" property="have_bd_resource"
 			jdbcType="VARCHAR" />
 		<result column="have_poster" property="have_poster" jdbcType="VARCHAR" />
+		<result column="year" property="year" jdbcType="VARCHAR" />
+		<result column="count" property="count" jdbcType="VARCHAR" />
 		<collection property="videoResourceInfo" javaType="java.util.List"
 			ofType="com.videorecord.mybatis.pojo.VideoResourceInfo">
 			<result column="video_id" property="video_id" jdbcType="VARCHAR" />
@@ -188,6 +190,23 @@
 		where
 		t1.video_id =
 		#{video_id,jdbcType=VARCHAR}
+	</select>
+	<select id="getChatrData" parameterType="com.videorecord.mybatis.pojo.VideoSearch"
+		resultMap="ResultMapWithBLOBs">
+		SELECT
+		t.video_season,
+		DATE_FORMAT(t.video_broadcast_time,
+		'%Y') AS year,
+		COUNT(*) AS count
+		FROM
+		video_info t
+		WHERE t.video_type =
+		#{videoType}
+		AND DATE_FORMAT(t.video_broadcast_time, '%Y') BETWEEN
+		#{yearBegin}
+		AND #{yearEnd}
+		GROUP BY t.video_season,
+		DATE_FORMAT(t.video_broadcast_time, '%Y')
 	</select>
 	<select id="searchVideo" parameterType="com.videorecord.mybatis.pojo.VideoSearch"
 		resultMap="ResultMapWithBLOBs">

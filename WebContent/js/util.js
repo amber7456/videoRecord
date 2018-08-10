@@ -16,6 +16,8 @@ function sendRequest(url, method, data, callback) {
 					console.log("执行参数函数");
 					callback(resp);
 				} else {
+					layer.close(index);
+					console.log("关闭遮罩层" + index);
 					return resp;
 				}
 				layer.close(index);

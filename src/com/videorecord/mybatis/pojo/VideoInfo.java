@@ -36,6 +36,11 @@ public class VideoInfo {
 
 	private List<VideoResourceInfo> videoResourceInfo;
 
+	//
+	private String year;
+
+	private String count;
+
 	public String getVideo_id() {
 		return video_id;
 	}
@@ -162,6 +167,22 @@ public class VideoInfo {
 		this.videoResourceInfo = videoResourceInfo;
 	}
 
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getCount() {
+		return count;
+	}
+
+	public void setCount(String count) {
+		this.count = count;
+	}
+
 	@Override
 	public String toString() {
 		return "VideoInfo [video_id=" + video_id + ", video_name=" + video_name + ", video_episode=" + video_episode
@@ -169,7 +190,8 @@ public class VideoInfo {
 				+ video_season + ", video_country=" + video_country + ", video_source=" + video_source
 				+ ", video_remark=" + video_remark + ", create_time=" + create_time + ", last_update_time="
 				+ last_update_time + ", have_bd_resource=" + have_bd_resource + ", have_poster=" + have_poster
-				+ ", video_detail_info=" + video_detail_info + "]";
+				+ ", video_detail_info=" + video_detail_info + ", videoResourceInfo=" + videoResourceInfo + ", year="
+				+ year + ", count=" + count + "]";
 	}
 
 }

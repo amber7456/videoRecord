@@ -37,4 +37,6 @@ public interface VideoInfoMapper {
     int updateByPrimaryKey(VideoInfo record);
 
 	List<VideoInfo> searchVideo(VideoSearch vs);
+
+	List<VideoInfo> getChatrData(VideoSearch vs);
 }

@@ -123,10 +123,10 @@ public class VideoService {
 			type = new String[] { "冬季", "春季", "夏季", "秋季", "SP", "其他" };
 
 		} else if (videoType.equals("电影") || videoType.equals("记录片")) {
-			type = new String[] { "国产", "日本", "美国" };
+			type = new String[] { "中国", "日本", "美国" };
 			Set<String> c = new HashSet<String>();
 			for (int i = 0; i < yearVideoList.size(); i++) {
-				if ((yearVideoList.get(i).getVideo_country() != "国产" || yearVideoList.get(i).getVideo_country() != "中国")
+				if ((yearVideoList.get(i).getVideo_country() != "中国" || yearVideoList.get(i).getVideo_country() != "中国")
 						&& yearVideoList.get(i).getVideo_country() != "日本"
 						&& yearVideoList.get(i).getVideo_country() != "美国") {
 					c.add(yearVideoList.get(i).getVideo_country());
@@ -280,7 +280,13 @@ public class VideoService {
 		if (videoAddBean.getVideo_type().equals("动画")) {
 			videoInfo.setVideo_season(videoAddBean.getAnimationSeason());
 		} else if (videoAddBean.getVideo_type().equals("番剧")) {
-			videoInfo.setVideo_season(videoAddBean.getDramaSeason());
+			if (videoAddBean.getVideo_country().equals("日剧")) {
+				videoInfo.setVideo_season(videoAddBean.getDramaSeason());
+			} else {
+				videoInfo.setVideo_season(videoAddBean.getVideo_country());
+			}
+		} else {
+			videoInfo.setVideo_season(videoAddBean.getVideo_country());
 		}
 		videoInfo.setVideo_country(videoAddBean.getVideo_country());
 		videoInfo.setVideo_source(videoAddBean.getVideo_source());

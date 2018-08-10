@@ -1,17 +1,18 @@
 package com.videorecord.service;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.videorecord.bean.ResponseBean;
-import com.videorecord.bean.chart.DataList;
-import com.videorecord.bean.chart.TrendBean;
-import com.videorecord.bean.video.req.VideoReqBean;
+import com.videorecord.bean.chart.ChartData;
+import com.videorecord.bean.chart.ChartBean;
+import com.videorecord.bean.video.req.VideoSearchReqBean;
 import com.videorecord.dao.VideoDao;
 import com.videorecord.mybatis.pojo.VideoInfo;
 
@@ -22,140 +23,75 @@ public class ChartService {
 	@Autowired
 	private VideoDao videoDao;
 
-	public ResponseBean<TrendBean> getTrend(VideoReqBean videoReqBean) {
-		ResponseBean<TrendBean> resp = new ResponseBean<TrendBean>();
-		List<VideoInfo> list = videoDao.advSearchAnimation(videoReqBean);
-		resp.setData(geTrendDate(videoReqBean, list));
-		return resp;
-	}
+	public ResponseBean<ChartBean> getEchartsData(VideoSearchReqBean req) {
+		ResponseBean<ChartBean> resp = new ResponseBean<ChartBean>();
+		List<VideoInfo> videoList = videoDao.getChatrData(req);
 
-	private TrendBean geTrendDate(VideoReqBean videoReqBean, List<VideoInfo> list) {
-		TrendBean trendBean = new TrendBean();
-		List<DataList> dataList = new ArrayList<DataList>();
+		String videoType = req.getVideoType();
+		int begin = Integer.valueOf(req.getYearRange().split("-")[0].trim());
+		int end = Integer.valueOf(req.getYearRange().split("-")[1].trim());
+		// 按类型将年列表分组
+		String[] type = null;
+		if (videoType.equals("动画")) {
+			type = new String[] { "冬番", "春番", "夏番", "秋番", "OVA/OAD", "映画", "特别篇", "其他" };
 
-		Integer begin = Integer.valueOf(videoReqBean.getYearRange().split("-")[0].trim());
-		Integer end = Integer.valueOf(videoReqBean.getYearRange().split("-")[1].trim());
+		} else if (videoType.equals("番剧")) {
+			type = new String[] { "冬季", "春季", "夏季", "秋季", "SP", "其他" };
 
-		Integer arrLength = (end - begin) + 1;
-		DataList year = new DataList();
-		year.setKey("yearArr");
-		DataList fuyu = new DataList();
-		fuyu.setKey("fuyuArr");
-		DataList haru = new DataList();
-		haru.setKey("haruArr");
-		DataList natsu = new DataList();
-		natsu.setKey("natsuArr");
-		DataList aki = new DataList();
-		aki.setKey("akiArr");
-		DataList ova = new DataList();
-		ova.setKey("ovaArr");
-		DataList ega = new DataList();
-		ega.setKey("egaArr");
-		DataList other = new DataList();
-		other.setKey("otherArr");
-		DataList total = new DataList();
-		total.setKey("totalArr");
-		DataList base = new DataList();
-		base.setKey("baseArr");
-
-		Integer[] yearArr = new Integer[arrLength];
-		Integer[] fuyuArr = new Integer[arrLength];
-		Integer[] haruArr = new Integer[arrLength];
-		Integer[] natsuArr = new Integer[arrLength];
-		Integer[] akiArr = new Integer[arrLength];
-		Integer[] ovaArr = new Integer[arrLength];
-		Integer[] egaArr = new Integer[arrLength];
-		Integer[] otherArr = new Integer[arrLength];
-		Integer[] totalArr = new Integer[arrLength];
-		Integer[] baseArr = new Integer[arrLength];
-
-		Calendar c = Calendar.getInstance();
-		List<VideoInfo> yearVideoList = null;
-		for (int i = begin; i <= end; i++) {
-			yearArr[i - begin] = i;
-
-			yearVideoList = new ArrayList<VideoInfo>();
-			for (int j = 0, lenJ = list.size(); j < lenJ; j++) {
-				c.setTime(list.get(j).getVideo_broadcast_time());
-				if (i == c.get(Calendar.YEAR)) {
-					yearVideoList.add(list.get(j));
+		} else if (videoType.equals("电影") || videoType.equals("记录片")) {
+			type = new String[] { "中国", "日本", "美国" };
+			Set<String> c = new HashSet<String>();
+			for (int i = 0; i < videoList.size(); i++) {
+				if ((videoList.get(i).getVideo_country() != "中国" || videoList.get(i).getVideo_country() != "中国")
+						&& videoList.get(i).getVideo_country() != "日本" && videoList.get(i).getVideo_country() != "美国") {
+					c.add(videoList.get(i).getVideo_country());
 				}
 			}
+			for (String str : c) {
+				type = insertElement(type, str);
+			}
+		}
 
-			// 按类型将年列表分组
-			String[] type = new String[] { "冬番", "春番", "夏番", "秋番", "OVA/OAD", "映画", "其他" };
-
-			Integer fuyuCount = 0;
-			Integer haruCount = 0;
-			Integer natsuCount = 0;
-			Integer akiCount = 0;
-			Integer ovaCount = 0;
-			Integer egaCount = 0;
-			Integer otherCount = 0;
-			for (String str : type) {
-				for (int j = 0, lenJ = yearVideoList.size(); j < lenJ; j++) {
-					if ((yearVideoList.get(j).getVideo_type().split(";").length < 2 && str.equals("其他"))
-							|| (str.equals("其他") && str.equals(yearVideoList.get(j).getVideo_type().split(";")[1]))) {
-						otherCount++;
-					} else if (yearVideoList.get(j).getVideo_type().split(";").length > 1
-							&& str.equals(yearVideoList.get(j).getVideo_type().split(";")[1]) && str.equals("冬番")) {
-						fuyuCount++;
-					} else if (yearVideoList.get(j).getVideo_type().split(";").length > 1
-							&& str.equals(yearVideoList.get(j).getVideo_type().split(";")[1]) && str.equals("春番")) {
-						haruCount++;
-					} else if (yearVideoList.get(j).getVideo_type().split(";").length > 1
-							&& str.equals(yearVideoList.get(j).getVideo_type().split(";")[1]) && str.equals("夏番")) {
-						natsuCount++;
-					} else if (yearVideoList.get(j).getVideo_type().split(";").length > 1
-							&& str.equals(yearVideoList.get(j).getVideo_type().split(";")[1]) && str.equals("秋番")) {
-						akiCount++;
-					} else if (yearVideoList.get(j).getVideo_type().split(";").length > 1
-							&& str.equals(yearVideoList.get(j).getVideo_type().split(";")[1])
-							&& str.equals("OVA/OAD")) {
-						ovaCount++;
-					} else if (yearVideoList.get(j).getVideo_type().split(";").length > 1
-							&& str.equals(yearVideoList.get(j).getVideo_type().split(";")[1]) && str.equals("映画")) {
-						egaCount++;
+		ChartBean chartBean = new ChartBean();
+		chartBean.setSeason(type);
+		List<ChartData> dataList = new ArrayList<ChartData>();
+		ChartData yearList = new ChartData();
+		yearList.setKey("year");
+		Integer[] arr = new Integer[end - begin + 1];
+		for (String season : type) {
+			ChartData c = new ChartData();
+			c.setKey(season);
+			Integer[] seasonArr = new Integer[end - begin + 1];
+			for (int i = begin; i <= end; i++) {
+				String year = String.valueOf(i);
+				String count = null;
+				for (int j = 0; j < videoList.size(); j++) {
+					if (year.equals(videoList.get(j).getYear()) && season.equals(videoList.get(j).getVideo_season())) {
+						count = videoList.get(j).getCount();
 					}
 				}
+				if (count == null || count.length() <= 0) {
+					count = "0";
+				}
+				seasonArr[i - begin] = Integer.valueOf(count);
+				arr[i - begin] = i;
 			}
-
-			yearArr[i - begin] = i;
-			fuyuArr[i - begin] = fuyuCount;
-			haruArr[i - begin] = haruCount;
-			natsuArr[i - begin] = natsuCount;
-			akiArr[i - begin] = akiCount;
-			ovaArr[i - begin] = ovaCount;
-			egaArr[i - begin] = egaCount;
-			otherArr[i - begin] = otherCount;
-			totalArr[i - begin] = fuyuCount + haruCount + natsuCount + akiCount + ovaCount + egaCount + otherCount;
-			baseArr[i - begin] = fuyuCount + haruCount + natsuCount + akiCount ;
-
+			c.setArr(seasonArr);
+			dataList.add(c);
 		}
-		year.setArr(yearArr);
-		fuyu.setArr(fuyuArr);
-		haru.setArr(haruArr);
-		natsu.setArr(natsuArr);
-		aki.setArr(akiArr);
-		ova.setArr(ovaArr);
-		ega.setArr(egaArr);
-		other.setArr(otherArr);
-		total.setArr(totalArr);
-		base.setArr(baseArr);
+		yearList.setArr(arr);
+		dataList.add(yearList);
+		chartBean.setDataList(dataList);
+		resp.setData(chartBean);
+		return resp;
+	} 
 
-		dataList.add(year);
-		dataList.add(fuyu);
-		dataList.add(haru);
-		dataList.add(natsu);
-		dataList.add(aki);
-		dataList.add(ova);
-		dataList.add(ega);
-		dataList.add(other);
-		dataList.add(total);
-		dataList.add(base);
-
-		trendBean.setDataList(dataList);
-		return trendBean;
+	private static String[] insertElement(String original[], String element) {
+		int length = original.length;
+		String destination[] = new String[length + 1];
+		System.arraycopy(original, 0, destination, 0, length);
+		destination[length] = element;
+		return destination;
 	}
 
 }

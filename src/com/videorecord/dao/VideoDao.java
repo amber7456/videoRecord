@@ -163,73 +163,6 @@ public class VideoDao {
 		}
 	}
 
-	// public List<VideoInfo> advSearchAnimation(VideoReqBean videoReqBean) {
-	//
-	// VideoSearchReqBean bean = new VideoSearchReqBean();
-	//
-	// if (CommonUtils.isNotEmpty(videoReqBean.getYearRange())) {
-	// String begin = videoReqBean.getYearRange().split("-")[0].trim();
-	// String end = videoReqBean.getYearRange().split("-")[1].trim();
-	// bean.setYearBegin(begin);
-	// bean.setYearEnd(end);
-	// }
-	//
-	// if (CommonUtils.isNotEmpty(videoReqBean.getVideo_type()) &&
-	// !videoReqBean.getVideo_type().equals("ALL")) {
-	// bean.setVideo_type(videoReqBean.getVideo_type());
-	// }
-	//
-	// if (CommonUtils.isNotEmpty(videoReqBean.getSerializeTime()) &&
-	// !videoReqBean.getSerializeTime().equals("ALL")) {
-	// if (videoReqBean.getSerializeTime().equals("1")) {
-	// bean.setEpisodeBegin("1");
-	// bean.setEpisodeEnd("19");
-	// } else if (videoReqBean.getSerializeTime().equals("2")) {
-	// bean.setEpisodeBegin("20");
-	// bean.setEpisodeEnd("30");
-	// } else if (videoReqBean.getSerializeTime().equals("3")) {
-	// bean.setEpisodeBegin("40");
-	// bean.setEpisodeEnd("70");
-	// } else if (videoReqBean.getSerializeTime().equals("4")) {
-	// bean.setEpisodeBegin("71");
-	// bean.setEpisodeEnd("99999");
-	// }
-	// }
-	//
-	// // if (CommonUtils.isNotEmpty(videoReqBean.getResource_record_address())
-	// // && !videoReqBean.getResource_record_address().equals("ALL")) {
-	// //
-	// bean.setResource_record_address(videoReqBean.getResource_record_address());
-	// // }
-	// //
-	// // if (CommonUtils.isNotEmpty(videoReqBean.getResource_type()) &&
-	// // !videoReqBean.getResource_type().equals("ALL")) {
-	// // bean.setResource_type(videoReqBean.getResource_type());
-	// // }
-	// //
-	// // if (CommonUtils.isNotEmpty(videoReqBean.getResource_format())
-	// // && !videoReqBean.getResource_format().equals("ALL")) {
-	// // bean.setResource_format(videoReqBean.getResource_format());
-	// // }
-	// //
-	// // if (CommonUtils.isNotEmpty(videoReqBean.getResource_resolution())
-	// // && !videoReqBean.getResource_resolution().equals("ALL")) {
-	// // bean.setResource_resolution(videoReqBean.getResource_resolution());
-	// // }
-	// //
-	// // if (CommonUtils.isNotEmpty(videoReqBean.getResource_sub_type())
-	// // && !videoReqBean.getResource_sub_type().equals("ALL")) {
-	// // bean.setResource_sub_type(videoReqBean.getResource_sub_type());
-	// // }
-	//
-	// if (CommonUtils.isNotEmpty(videoReqBean.getVideo_name())) {
-	// bean.setVideo_name("%" + videoReqBean.getVideo_name() + "%");
-	// }
-	//
-	// List<VideoInfo> list = videoInfoMapper.selectByAdv(bean);
-	// return list;
-	// }
-	//
 	public VideoInfo getVideoDetail(String video_id) {
 		return videoInfoMapper.selectByPrimaryKey(video_id);
 	}
@@ -244,6 +177,17 @@ public class VideoDao {
 
 	public int delVideo(String video_id) {
 		return videoInfoMapper.deleteByPrimaryKey(video_id);
+	}
+
+	public List<VideoInfo> getChatrData(VideoSearchReqBean req) {
+		VideoSearch vs = new VideoSearch();
+		// 时间范围 是共有查询条件
+		vs.setVideoType(req.getVideoType());
+		String begin = req.getYearRange().split("-")[0].trim();
+		String end = req.getYearRange().split("-")[1].trim();
+		vs.setYearBegin(begin);
+		vs.setYearEnd(end);
+		return videoInfoMapper.getChatrData(vs);
 	}
 
 }

@@ -1,3 +1,12 @@
+.layui-nav-tree .layui-nav-bar {
+	background-color: #5FB878 !important;
+}
+
+.layui-this>a, .layui-nav-tree .layui-this>a:hover {
+	background-color: #5FB878 !important;
+	color: #fff !important;
+}
+
 .f-div {
 	height: 100%;
 	width: 100%;
@@ -158,7 +167,7 @@ to {
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-color: #20222A !important;
-	color: #009688;
+	color: #5FB878;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .15);
 	text-align: center;
 	font-size: 18px;
