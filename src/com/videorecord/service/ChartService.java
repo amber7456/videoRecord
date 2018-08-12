@@ -54,9 +54,8 @@ public class ChartService {
 
 		ChartBean chartBean = new ChartBean();
 		chartBean.setSeason(type);
-		List<ChartData> dataList = new ArrayList<ChartData>();
 		ChartData yearList = new ChartData();
-		yearList.setKey("year");
+		List<ChartData> dataList = new ArrayList<ChartData>();
 		Integer[] arr = new Integer[end - begin + 1];
 		for (String season : type) {
 			ChartData c = new ChartData();
@@ -79,6 +78,7 @@ public class ChartService {
 			c.setArr(seasonArr);
 			dataList.add(c);
 		}
+		yearList.setKey("year");
 		yearList.setArr(arr);
 		dataList.add(yearList);
 		chartBean.setDataList(dataList);

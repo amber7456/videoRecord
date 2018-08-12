@@ -280,7 +280,7 @@ public class VideoService {
 		if (videoAddBean.getVideo_type().equals("动画")) {
 			videoInfo.setVideo_season(videoAddBean.getAnimationSeason());
 		} else if (videoAddBean.getVideo_type().equals("番剧")) {
-			if (videoAddBean.getVideo_country().equals("日剧")) {
+			if (videoAddBean.getVideo_country().equals("日剧") || videoAddBean.getVideo_country().equals("日本")) {
 				videoInfo.setVideo_season(videoAddBean.getDramaSeason());
 			} else {
 				videoInfo.setVideo_season(videoAddBean.getVideo_country());
