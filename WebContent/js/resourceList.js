@@ -141,7 +141,7 @@ function editVideo(div, id) {
 		title : '资源编辑',
 		shadeClose : false,
 		maxmin : true,
-		shade : [ 0.3, '#fff' ],
+		shade : [ 0.3, '#333' ],
 		area : [ '1200px', '90%' ],
 		anim : 5,
 		isOutAnim : false,

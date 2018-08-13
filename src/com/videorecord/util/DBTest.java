@@ -17,6 +17,7 @@ import com.mysql.jdbc.PreparedStatement;
 import com.videorecord.mybatis.pojo.VideoInfo;
 import com.videorecord.mybatis.pojo.VideoResourceInfo;
 
+@SuppressWarnings("unused")
 public class DBTest {
 
 	public static void main(String[] args) throws SQLException, IOException {

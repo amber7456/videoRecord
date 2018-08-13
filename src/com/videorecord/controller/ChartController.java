@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.videorecord.bean.ResponseBean;
 import com.videorecord.bean.chart.ChartBean;
-import com.videorecord.bean.video.req.VideoReqBean;
 import com.videorecord.bean.video.req.VideoSearchReqBean;
 import com.videorecord.service.ChartService;
 
