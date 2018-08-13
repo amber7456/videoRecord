@@ -1,4 +1,4 @@
-package com.videorecord.controller;
+package com.videorecord.test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
