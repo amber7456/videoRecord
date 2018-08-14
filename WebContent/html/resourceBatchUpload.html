@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>资源列表</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../layui/css/layui.css" media="all">
+<link rel="stylesheet" href="../css/resourceList.css" media="all">
+<script src="../js/jquery-2.1.4.js"></script>
+<script src="../layui/layui.js" charset="utf-8"></script>
+<script src="../js/util.js"></script>
+<style>
+#progress {
+	width: 500px;
+	height: 30px;
+	border: 1px solid green;
+}
+
+#bar {
+	width: 0%;
+	height: 100%;
+	background-color: green;
+}
+</style>
+</head>
+<body>
+
+	<div class="layui-progress layui-progress-big" lay-filter="demo"
+		lay-showpercent="true">
+		<div class="layui-progress-bar" lay-percent="0%"></div>
+	</div>
+
+	<h1>HTML5带进度条的上传功能</h1>
+	<div id="progress">
+		<div id="bar"></div>
+	</div>
+	<input id="file" type="file" name="file" onchange="selfile();" />
+
+</body>
+<script>
+	var element;
+	layui.use('element', function() { 
+		element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+		//触发事件
+		// 		var active = {
+		// 			setPercent : function() {
+		// 				//设置50%进度
+		// 				element.progress('demo', '50%')
+		// 			},
+		// 			loading : function(othis) {
+		// 				var DISABLED = 'layui-btn-disabled';
+		// 				if (othis.hasClass(DISABLED))
+		// 					return;
+
+		// 				//模拟loading
+		// 				var n = 0, timer = setInterval(function() {
+		// 					n = n + Math.random() * 10 | 0;
+		// 					if (n > 100) {
+		// 						n = 100;
+		// 						clearInterval(timer);
+		// 						othis.removeClass(DISABLED);
+		// 					}
+		// 					element.progress('demo', n + '%');
+		// 				}, 300 + Math.random() * 1000);
+
+		// 				othis.addClass(DISABLED);
+		// 			}
+		// 		};
+
+		// 		$('.site-demo-active').on('click', function() {
+		// 			var othis = $(this), type = $(this).data('type');
+		// 			active[type] ? active[type].call(this, othis) : '';
+		// 		});
+	});
+
+	function selfile() {
+		//js读取上传文件
+		var file =$("#file").files[0];// document.getElementsByTagName('input')[0].files[0];//
+		//创建FormData对象
+		var fd = new FormData();
+		fd.append('file', file);
+		//ajax上传文件
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/videoRecord/batchUpload', true);
+		//利用xhr2的新标准，为上传过程，写一个监听函数
+		xhr.upload.onprogress = function(ev) {
+			if (ev.lengthComputable) {//文件长度可计算
+				var percent = 100 * ev.loaded / ev.total;//计算上传的百分比
+
+				element.progress('demo', percent + '%');
+
+				document.getElementById('bar').style.width = percent + '%';//更改上传进度
+				document.getElementById('bar').innerHTML = parseInt(percent)
+						+ '%';//显示上传进度
+			}
+		}
+		xhr.send(fd);//发送请求
+	}
+</script>
+</html>
