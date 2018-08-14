@@ -59,7 +59,7 @@ public class VideoService {
 		return resp;
 	}
 
-	private VideoListBean reseVideoList(String videoType, List<VideoInfo> list) {
+	public VideoListBean reseVideoList(String videoType, List<VideoInfo> list) {
 		VideoListBean videoList = new VideoListBean();
 
 		Set<String> yearSet = new HashSet<String>();// 查询结果的年集合

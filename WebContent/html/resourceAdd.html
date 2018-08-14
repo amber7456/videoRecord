@@ -61,9 +61,9 @@
 								</div>
 							</div>
 							<div class="layui-inline display-none" id="countryBtnDiv">
-								<div class="country-btn " onclick=" ">中国</div>
-								<div class="country-btn " onclick=" ">日本</div>
-								<div class="country-btn " onclick=" ">美国</div>
+								<div class="country-btn " onclick="setCountry(this)">中国</div>
+								<div class="country-btn " onclick="setCountry(this)">日本</div>
+								<div class="country-btn " onclick="setCountry(this)">美国</div>
 							</div>
 							<div class="layui-inline display-none" id="dramaSeasonDiv">
 								<label class="layui-form-label">播出季</label>
@@ -388,6 +388,10 @@
 					+ resp.data[i].disk_name + "</option>");
 		}
 		console.log("加载硬盘地址完成");
+	}
+
+	function setCountry(c) {
+		$("#country").val($(c).html());
 	}
 </script>
 </html>

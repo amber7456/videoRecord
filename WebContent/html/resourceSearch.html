@@ -162,13 +162,13 @@
 					</div>
 				</div>
 				<div class="layui-inline button-div">
-					<div class="layui-btn layui-btn-normal" onclick="search()">搜索</div>
+					<div class="layui-btn layui-btn-normal" onclick="search()">查询</div>
 					<div class="layui-btn layui-btn-normal" onclick="reset()">重置</div>
 					<div class="layui-btn" onclick="excelDownload()">下载列表</div>
 				</div>
 			</div>
 		</form>
-		<form id="searchVideoHide">
+		<form id="searchVideoHide" method="POST">
 			<!--  -->
 			<input type="hidden" id="videoNameHide" name="videoName">
 			<!--  -->
@@ -340,6 +340,20 @@
 			$("#dramaSeasonDiv").hide();
 			$("#videoCountryDiv").hide();
 			break;
+		}
+	}
+
+	function excelDownload() {
+		var videoList = $("#video_list_div").html();
+		if (videoList.length > 0) {
+			var searchVideoHide = $("#searchVideoHide");
+			searchVideoHide.attr("action", "/videoRecord/excelDownload");
+			searchVideoHide.submit();
+			searchVideoHide.attr("action", "");
+		} else {
+			layer.alert('请先执行查询操作！！！', {
+				offset : "200px"
+			});
 		}
 	}
 

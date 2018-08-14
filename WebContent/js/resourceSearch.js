@@ -292,5 +292,4 @@ function enlargeImg(img) {
 		shadeClose : true,
 		content : div.html()
 	});
-
 }
