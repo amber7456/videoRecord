@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+
+html {
+	margin: 15px 0px 0px 15px;
+	width: calc(100% -15px);
+	height: calc(100% -15px);
+}

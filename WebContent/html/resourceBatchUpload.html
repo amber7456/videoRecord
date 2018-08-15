@@ -8,78 +8,53 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="../layui/css/layui.css" media="all">
-<link rel="stylesheet" href="../css/resourceList.css" media="all">
+<link rel="stylesheet" href="../css/resourceBatchUpload.css" media="all">
 <script src="../js/jquery-2.1.4.js"></script>
 <script src="../layui/layui.js" charset="utf-8"></script>
 <script src="../js/util.js"></script>
-<style>
-#progress {
-	width: 500px;
-	height: 30px;
-	border: 1px solid green;
-}
-
-#bar {
-	width: 0%;
-	height: 100%;
-	background-color: green;
-}
-</style>
 </head>
 <body>
-
-	<div class="layui-progress layui-progress-big" lay-filter="demo"
-		lay-showpercent="true">
-		<div class="layui-progress-bar" lay-percent="0%"></div>
+	<div style="margin: 15px 0 0 15px; width: 800px;">
+		<div style="font-size: 0px;">
+			<div style="" class="layui-btn layui-btn-normal" onclick=" ">模板下载</div>
+			<div style="" class="layui-btn layui-btn-normal"
+				onclick="fileInput()">选择文件</div>
+			<div style="" class="layui-btn layui-btn-normal" onclick="upload()">上传</div>
+			<div
+				style="width: 490px; display: inline-block; text-align: left; vertical-align: middle; margin-left: 10px; font-size: 16px;">
+				<span id="fileName"></span>
+			</div>
+		</div>
+		<div class="layui-progress layui-progress-big" lay-filter="demo"
+			lay-showpercent="true" style="width: 666px; margin: 15px 0">
+			<div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+		</div>
+		<form id="uploadForm">
+			<input id="file" type="file" style="display: none;" name="file"
+				onchange="fileChange();" />
+			<!-- 	 -->
+		</form>
 	</div>
-
-	<h1>HTML5带进度条的上传功能</h1>
-	<div id="progress">
-		<div id="bar"></div>
-	</div>
-	<input id="file" type="file" name="file" onchange="selfile();" />
-
 </body>
 <script>
 	var element;
-	layui.use('element', function() { 
+	layui.use('element', function() {
 		element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
-
-		//触发事件
-		// 		var active = {
-		// 			setPercent : function() {
-		// 				//设置50%进度
-		// 				element.progress('demo', '50%')
-		// 			},
-		// 			loading : function(othis) {
-		// 				var DISABLED = 'layui-btn-disabled';
-		// 				if (othis.hasClass(DISABLED))
-		// 					return;
-
-		// 				//模拟loading
-		// 				var n = 0, timer = setInterval(function() {
-		// 					n = n + Math.random() * 10 | 0;
-		// 					if (n > 100) {
-		// 						n = 100;
-		// 						clearInterval(timer);
-		// 						othis.removeClass(DISABLED);
-		// 					}
-		// 					element.progress('demo', n + '%');
-		// 				}, 300 + Math.random() * 1000);
-
-		// 				othis.addClass(DISABLED);
-		// 			}
-		// 		};
-
-		// 		$('.site-demo-active').on('click', function() {
-		// 			var othis = $(this), type = $(this).data('type');
-		// 			active[type] ? active[type].call(this, othis) : '';
-		// 		});
 	});
 
-	function selfile() {
+	function fileInput() {
+		$('#file').click();
+	}
+
+	function fileChange() {
 		//js读取上传文件
-		var file =$("#file").files[0];// document.getElementsByTagName('input')[0].files[0];//
+		var file = $("#uploadForm").find("input")[0].files[0];// document.getElementsByTagName('input')[0].files[0];//
+		$("#fileName").html(file.name);
+		element.progress('demo', '0%');
+	}
+
+	function upload() {
+		var file = $("#uploadForm").find("input")[0].files[0];// document.getElementsByTagName('input')[0].files[0];//
 		//创建FormData对象
 		var fd = new FormData();
 		fd.append('file', file);
@@ -90,12 +65,7 @@
 		xhr.upload.onprogress = function(ev) {
 			if (ev.lengthComputable) {//文件长度可计算
 				var percent = 100 * ev.loaded / ev.total;//计算上传的百分比
-
-				element.progress('demo', percent + '%');
-
-				document.getElementById('bar').style.width = percent + '%';//更改上传进度
-				document.getElementById('bar').innerHTML = parseInt(percent)
-						+ '%';//显示上传进度
+				element.progress('demo', parseInt(percent) + '%');
 			}
 		}
 		xhr.send(fd);//发送请求

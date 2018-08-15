@@ -38,7 +38,7 @@ public class VideoController {
 	}
 
 	@RequestMapping(value = "/addVideo", method = RequestMethod.POST)
-	public ResponseBean<Integer> addAnimation(VideoAddReqBean videoAddBean, HttpSession session) throws Exception {
+	public ResponseBean<Integer> addVideo(VideoAddReqBean videoAddBean, HttpSession session) throws Exception {
 		return videoService.addVideo(videoAddBean);
 	}
 
