@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>资源列表</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../layui/css/layui.css" media="all">
+<link rel="stylesheet" href="../css/resourceBatchAdd.css" media="all">
+<script src="../js/jquery-2.1.4.js"></script>
+<script src="../layui/layui.js" charset="utf-8"></script>
+<script src="../js/util.js"></script>
+</head>
+<body>
+	<div style="margin: 15px 0 0 15px; width: 800px;">
+		<div style="font-size: 0px;">
+			<div style="" class="layui-btn layui-btn-normal" onclick=" ">模板下载</div>
+			<div style="" class="layui-btn layui-btn-normal"
+				onclick="fileInput()">选择文件</div>
+			<div style="" class="layui-btn layui-btn-normal" onclick="upload()">上传</div>
+			<div
+				style="width: 490px; display: inline-block; text-align: left; vertical-align: middle; margin-left: 10px; font-size: 16px;">
+				<span id="fileName"></span>
+			</div>
+		</div>
+		<div class="layui-progress layui-progress-big" lay-filter="demo"
+			lay-showpercent="true" style="width: 666px; margin: 15px 0">
+			<div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+		</div>
+		<form id="uploadForm" enctype="multipart/form-data">
+			<input id="file" type="file" style="display: none;" name="file"
+				onchange="fileChange();" />
+		</form>
+	</div>
+	<div>
+		<table id="dataTable" lay-filter="dataTable">
+			<thead>
+				<tr>
+					<th lay-data="{field:'',fixed : 'left'}">资源名</th>
+					<th lay-data="{field:'',fixed : 'left'}">播出时间</th>
+					<th lay-data="{field:'',fixed : 'left'}">类型</th>
+					<th lay-data="{field:'',fixed : 'left'}">播出季</th>
+					<th lay-data="{field:'',fixed : 'left'}">国家</th>
+					<th lay-data="{field:'',fixed : 'left'}">原作</th>
+					<th lay-data="{field:''}">资源类型</th>
+					<th lay-data="{field:''}">资源格式</th>
+					<th lay-data="{field:''}">分辨率</th>
+					<th lay-data="{field:''}">字幕类型</th>
+					<th lay-data="{field:''}">存储地址</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+	</div>
+</body>
+<script>
+	var element;
+	var table;
+	layui.use([ 'table', 'element' ], function() {
+		element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+		table = layui.table;
+	});
+
+	function fileInput() {
+		$('#file').click();
+	}
+
+	function fileChange() {
+		//js读取上传文件
+		var file = $("#uploadForm").find("input")[0].files[0];// document.getElementsByTagName('input')[0].files[0];//
+		$("#fileName").html(file.name);
+		element.progress('demo', '0%');
+	}
+
+	function upload() {
+		if (window.FormData) {
+			var formDate = new FormData($('#uploadForm')[0]);
+			console.log("准备上传文件");
+			$.ajax({
+				url : '/videoRecord/parseExcel',
+				type : 'POST',
+				//数据
+				data : formDate,
+				contentType : false,
+				processData : false,
+				xhr : function() {//这里我们先拿到jQuery产生的 XMLHttpRequest对象，为其增加 progress 事件绑定，然后再返回交给ajax使用
+					var xhr = $.ajaxSettings.xhr();
+					xhr.upload.onprogress = function(ev) {
+						if (ev.lengthComputable) {//文件长度可计算
+							var percent = 100 * ev.loaded / ev.total;//计算上传的百分比
+							element.progress('demo', parseInt(percent) + '%');
+						}
+					}
+					return xhr;
+				},
+				success : function(resp) {
+					console.log(resp);
+					var data = resp.data;
+					loadData(data);
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log(XMLHttpRequest);
+					console.log(textStatus);
+					console.log(errorThrown);
+					alert("服务器错误,请重新上传");
+				}
+			})
+		} else {
+			alert('浏览器不支持上传方式，请更换浏览器！');
+		}
+	}
+
+	function loadData(data) {
+		$("#dataTable").find('tbody').children().remove();
+		//
+		for (var i = 0; i < data.length; i++) {
+			var tr = "<tr><td>" + data[i].video_name + "</td><td>"
+					+ data[i].video_broadcast_time + "</td><td>"
+					+ data[i].video_type + "</td><td>" + data[i].video_season
+					+ "</td><td>" + data[i].video_country + "</td><td>"
+					+ data[i].video_source + "</td></tr>";
+			$("#dataTable").find('tbody').append(tr);
+		}
+
+		//转换静态表格
+		table.init('dataTable',{});
+	}
+</script>
+</html>

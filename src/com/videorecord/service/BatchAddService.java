@@ -1,4 +1,4 @@
-package com.videorecord.controller;
+package com.videorecord.service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,49 +12,41 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.servlet.http.HttpSession;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.videorecord.bean.ResponseBean;
 import com.videorecord.bean.batchupload.UploadReqBean;
 import com.videorecord.mybatis.pojo.VideoInfo;
 import com.videorecord.mybatis.pojo.VideoResourceInfo;
 import com.videorecord.util.CommonUtils;
 
-@RestController
-public class BatchUploadContoller {
+@Service
+@Transactional
+public class BatchAddService {
 
-	@RequestMapping(value = "/batchUpload", method = RequestMethod.POST)
-	public String getEchartsData(UploadReqBean req, HttpSession session) throws Exception {
-		System.out.println(req.getFile());
-
+	public ResponseBean<List<VideoInfo>> parseExcel(UploadReqBean req) throws IllegalStateException, IOException {
+		 
 		// 获取文件名
 		String fileName = req.getFile().getOriginalFilename();
 		// 获取文件后缀
 		String prefix = fileName.substring(fileName.lastIndexOf("."));
-		// 用uuid作为文件名，防止生成的临时文件重复
-		final File excelFile = File.createTempFile(fileName, prefix);
+		File excelFile = File.createTempFile(fileName, prefix);
 		// MultipartFile to File
 		req.getFile().transferTo(excelFile);
-
 		List<Map<String, String>> list = parseExcel(excelFile);
-
-		List<VideoInfo> videoInfo = getVideoInfo(list);
-
-		// 程序结束时，删除临时文件
+		List<VideoInfo> videoList = getVideoInfo(list);
+		// 删除临时文件
 		deleteFile(excelFile);
-		return req.getFile().toString();
+		return new ResponseBean<List<VideoInfo>>(videoList);
 	}
 
 	private List<VideoInfo> getVideoInfo(List<Map<String, String>> list) {
