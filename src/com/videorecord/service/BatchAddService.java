@@ -34,7 +34,7 @@ import com.videorecord.util.CommonUtils;
 public class BatchAddService {
 
 	public ResponseBean<List<VideoInfo>> parseExcel(UploadReqBean req) throws IllegalStateException, IOException {
-		 
+
 		// 获取文件名
 		String fileName = req.getFile().getOriginalFilename();
 		// 获取文件后缀
@@ -87,6 +87,8 @@ public class BatchAddService {
 			int index = 5 * i;
 			if (map.get("R" + (7 + index)).equals("普通资源") || map.get("R" + (7 + index)).equals("NORMAL")) {
 				vr.setResource_type("NORMAL");
+			} else if (map.get("R" + (7 + index)).equals("BD资源") || map.get("R" + (7 + index)).equals("BD")) {
+				vr.setResource_type("BD");
 			}
 			vr.setResource_format(map.get("R" + (8 + index)));
 			vr.setResource_resolution(map.get("R" + (9 + index)));

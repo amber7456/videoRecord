@@ -12,6 +12,107 @@
 <script src="../js/jquery-2.1.4.js"></script>
 <script src="../layui/layui.js" charset="utf-8"></script>
 <script src="../js/util.js"></script>
+<style>
+table tbody {
+	/* 	display: block;
+	height: 666px;
+	overflow-y: scroll; */
+	
+}
+
+table tr {
+	text-align: left !important;
+	font: 14px Helvetica Neue, Helvetica, PingFang SC, 微软雅黑, Tahoma, Arial,
+		sans-serif;
+	line-height: normal;
+}
+
+table tr:nth-child(2n) {
+	background-color: #f2f2f2;
+}
+
+table thead tr th {
+	height: 28px;
+	min-height: 20px;
+	line-height: 28px;
+	padding: 5px 5px;
+	border: 1px solid #d1d1d1;
+	font-size: 14px;
+	background-color: #f2f2f2;
+	padding: 5px 5px;
+	line-height: 28px;
+	padding: 5px 5px;
+}
+
+table tr td {
+	position: relative;
+	height: 28px;
+	line-height: 28px;
+	cursor: default;
+	padding: 5px 5px;
+	border-top: none;
+	border-left: none;
+	min-height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #d1d1d1;
+	box-sizing: border-box;
+	line-height: 28px;
+}
+
+.table-box * {
+	box-sizing: border-box;
+}
+
+.table-box {
+	position: relative;
+	overflow: hidden;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+.table-header {
+	border-width: 0 0 1px;
+	overflow: hidden;
+	border-style: solid;
+	border-color: #e6e6e6;
+	background-color: #f2f2f2;
+	box-sizing: border-box;
+	border-style: solid;
+	border-color: #e6e6e6;
+	background-color: #f2f2f2;
+	box-sizing: border-box;
+}
+
+.table-body {
+	height: 251px;
+	position: relative;
+	overflow: auto;
+	margin-right: -1px;
+	margin-bottom: -1px;
+	box-sizing: border-box;
+}
+
+.table-fixed-l {
+	position: absolute;
+	left: 0;
+	top: 0;
+	box-shadow: 0 -1px 8px rgba(0, 0, 0, .08);
+	box-sizing: border-box;
+}
+
+.table-fixed-l .table-body {
+	 height: 234px; /**/
+	overflow: hidden;
+	/* position: relative;
+	margin-right: -1px;
+	margin-bottom: -1px; */
+	box-sizing: border-box;
+}
+</style>
 </head>
 <body>
 	<div style="margin: 15px 0 0 15px; width: 800px;">
@@ -34,28 +135,100 @@
 				onchange="fileChange();" />
 		</form>
 	</div>
-	<div>
+
+	<div
+		style="width: 892px; height: 332px; position: relative; overflow: hidden; border-width: 1px; border-style: solid; border-color: #e6e6e6; margin: 10px 0; box-sizing: border-box;">
+		<div class="table-box">
+			<div class="table-header">表头</div>
+			<div class="table-body">
+				<div
+					style="height: 400px; width: 900px; position: relative; margin: 0;">
+					1111111111112222222222223333333333333333334444444444444444455555555555555555<br />1<br />1<br />1<br />1
+					<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
+				</div>
+			</div>
+			<div class="table-fixed-l">
+				<div class="table-header">表头</div>
+				<div class="table-body">
+					<div
+						style="height: 400px; width: 100px; position: relative; margin: 0; background-color: #ddd;">
+						1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
+						1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 	<div style="font-size: 0;"> -->
+	<!-- 		<div -->
+	<!-- 			style="position: relative; border: 1px solid #d1d1d1; height: 566px; width: 800px; display: inline-block;"> -->
+	<!-- 			<div -->
+	<!-- 				style="height: 28px; width: 100%; border-bottom: 1px solid #ddd;"> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 			</div> -->
+	<!-- 			<div style="height: 538px; width: 1220px; overflow-y: auto"> -->
+	<!-- 				<div -->
+	<!-- 					style="height: 1200px; width: 800px; font-size: 14px; background-color: #ddd"> -->
+	<!-- 					1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br /> -->
+	<!-- 					1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br /> -->
+	<!-- 				</div> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 		<div -->
+	<!-- 			style="position: relative; border: 1px solid #d1d1d1; height: 566px; width: 400px; display: inline-block;"> -->
+	<!-- 			<div -->
+	<!-- 				style="height: 28px; width: 100%; border-bottom: 1px solid #ddd;"> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 				<div -->
+	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
+	<!-- 			</div> -->
+	<!-- 			<div style="height: 538px; width: 100%; overflow-x: auto"> -->
+	<!-- 				<div style="height: 100%; width: 800px; font-size: 14px;"></div> -->
+	<!-- 				111111111111222222222222222222222222111111111113333333333333333333333311111114444444444444444444441111 -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- 	<div style="height: 666px;">
 		<table id="dataTable" lay-filter="dataTable">
 			<thead>
 				<tr>
-					<th lay-data="{field:'',fixed : 'left'}">资源名</th>
-					<th lay-data="{field:'',fixed : 'left'}">播出时间</th>
-					<th lay-data="{field:'',fixed : 'left'}">类型</th>
-					<th lay-data="{field:'',fixed : 'left'}">播出季</th>
-					<th lay-data="{field:'',fixed : 'left'}">国家</th>
-					<th lay-data="{field:'',fixed : 'left'}">原作</th>
-					<th lay-data="{field:''}">资源类型</th>
-					<th lay-data="{field:''}">资源格式</th>
-					<th lay-data="{field:''}">分辨率</th>
-					<th lay-data="{field:''}">字幕类型</th>
-					<th lay-data="{field:''}">存储地址</th>
+					<th>资源名</th>
+					<th>播出时间</th>
+					<th>类型</th>
+					<th>播出季</th>
+					<th>国家</th>
+					<th>原作</th>
+					<th>资源类型</th>
+					<th>资源格式</th>
+					<th>分辨率</th>
+					<th>字幕类型</th>
+					<th>存储地址</th>
 				</tr>
 			</thead>
 			<tbody>
-
 			</tbody>
 		</table>
-	</div>
+	</div> -->
 </body>
 <script>
 	var element;
@@ -63,6 +236,19 @@
 	layui.use([ 'table', 'element' ], function() {
 		element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
 		table = layui.table;
+
+		var $ = layui.$, active = {
+			parseTable : function() {
+				table.init('parse-table-demo', { //转化静态表格
+				//height: 'full-500'
+				});
+			}
+		};
+
+		$('.demoTable .layui-btn').on('click', function() {
+			var type = $(this).data('type');
+			active[type] ? active[type].call(this) : '';
+		});
 	});
 
 	function fileInput() {
@@ -122,12 +308,27 @@
 					+ data[i].video_broadcast_time + "</td><td>"
 					+ data[i].video_type + "</td><td>" + data[i].video_season
 					+ "</td><td>" + data[i].video_country + "</td><td>"
-					+ data[i].video_source + "</td></tr>";
+					+ data[i].video_source + "</td>";
+
+			var vr = "";
+			// 			for (var j = 0; j < data[i].videoResourceInfo.length; j++) {
+			// 				vr = vr + "<td>" + data[i].videoResourceInfo[j].resource_type
+			// 						+ "</td><td>"
+			// 						+ data[i].videoResourceInfo[j].resource_format
+			// 						+ "</td><td>"
+			// 						+ data[i].videoResourceInfo[j].resource_resolution
+			// 						+ "</td><td>"
+			// 						+ data[i].videoResourceInfo[j].resource_sub_type
+			// 						+ "</td><td>"
+			// 						+ data[i].videoResourceInfo[j].resource_record_address
+			// 						+ "</td>";
+			// 			}
+			tr = tr + vr + "</tr>";
 			$("#dataTable").find('tbody').append(tr);
 		}
 
 		//转换静态表格
-		table.init('dataTable',{});
+		//table.init('dataTable', {});
 	}
 </script>
 </html>
