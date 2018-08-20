@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<style>
+.table-box * {
+	box-sizing: border-box;
+}
+
+.table-box {
+	position: relative;
+	overflow: hidden;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+.table-header {
+	border-width: 0 0 1px;
+	overflow: hidden;
+	border-style: solid;
+	border-color: #e6e6e6;
+	background-color: #f2f2f2;
+	box-sizing: border-box;
+	border-style: solid;
+	border-color: #e6e6e6;
+	background-color: #f2f2f2;
+	box-sizing: border-box;
+}
+
+.table-body {
+	height: 251px;
+	position: relative;
+	overflow: auto;
+	margin-right: -1px;
+	margin-bottom: -1px;
+	box-sizing: border-box;
+}
+
+.table-fixed-l {
+	position: absolute;
+	left: 0;
+	top: 0;
+	box-shadow: 0 -1px 8px rgba(0, 0, 0, .08);
+	box-sizing: border-box;
+}
+
+.table-fixed-l .table-body {
+	height: 234px; /**/
+	overflow: hidden;
+	/* position: relative;
+	margin-right: -1px;
+	margin-bottom: -1px; */
+	box-sizing: border-box;
+}
+</style>
+</head>
+<body>
+
+	<div
+		style="width: 600px; height: 332px; display: block; position: relative; overflow: hidden;">
+		<div
+			style="position: relative; overflow: hidden; border-width: 1px; border-style: solid; border-color: #e6e6e6;">
+			<div id="d1"
+				style="width: 600px; height: 332px; position: relative; overflow: auto; box-sizing: border-box; font-size: 0px;">
+				<div
+					style="position: relative; display: inline-block; width: 800px; height: 500px; border-width: 1px; border-style: solid; border-color: #e6e6e6; font-size: 14px;">
+					11111222223333344444555556666677777888889999900000</div>
+			</div>
+			<div
+				style="position: absolute; border-width: 1px; border-style: solid; border-color: #e6e6e6; top: 0; left: 0;">
+				<div id="d2"
+					style="position: relative; display: block; width: 100px; height: 332px; overflow: hidden; font-size: 14px;">
+					<div 
+						style="position: relative; width: 100px; height: 500px; font-size: 14px;">
+						1<br />1<br />1<br />2<br />2<br />1<br />1<br />4<br />4<br />
+						1<br />1<br />1<br />3<br />3<br />1<br />1<br />5<br />5<br />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <div
+		style="width: 892px; height: 332px; position: relative; overflow: hidden; border-width: 1px; border-style: solid; border-color: #e6e6e6; margin: 10px 0; box-sizing: border-box;">
+		<div class="table-box">
+			<div class="table-header">表头</div>
+			<div class="table-body">
+				<div
+					style="height: 400px; width: 900px; position: relative; margin: 0;">
+					1111111111112222222222223333333333333333334444444444444444455555555555555555<br />1<br />1<br />1<br />1
+					<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
+				</div>
+			</div>
+			<div class="table-fixed-l">
+				<div class="table-header">表头</div>
+				<div class="table-body">
+					<div
+						style="height: 400px; width: 100px; position: relative; margin: 0; background-color: #ddd;">
+						1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
+						1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+</body>
+<script src="../js/jquery-2.1.4.js"></script>
+<script>
+	$(function() {
+		$("#d1").scroll(function() { 
+			$("#d2").scrollTop($("#d1").scrollTop());
+		});
+	});
+</script>
+</html>

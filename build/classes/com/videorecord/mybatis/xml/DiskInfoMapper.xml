@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.videorecord.mybatis.mapper.DiskInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.videorecord.mybatis.pojo.DiskInfo" >
+    <id column="disk_id" property="disk_id" jdbcType="VARCHAR" />
+    <result column="disk_name" property="disk_name" jdbcType="VARCHAR" />
+    <result column="disk_capacity" property="disk_capacity" jdbcType="VARCHAR" />
+    <result column="disk_state" property="disk_state" jdbcType="VARCHAR" />
+    <result column="is_full" property="is_full" jdbcType="VARCHAR" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+    <result column="video_type" property="video_type" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    disk_id, disk_name, disk_capacity, disk_state, is_full, create_time, video_type, 
+    remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.videorecord.mybatis.pojo.DiskInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from disk_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from disk_info
+    where disk_id = #{disk_id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from disk_info
+    where disk_id = #{disk_id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.videorecord.mybatis.pojo.DiskInfoExample" >
+    delete from disk_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.videorecord.mybatis.pojo.DiskInfo" >
+    insert into disk_info (disk_id, disk_name, disk_capacity, 
+      disk_state, is_full, create_time, 
+      video_type, remark)
+    values (#{disk_id,jdbcType=VARCHAR}, #{disk_name,jdbcType=VARCHAR}, #{disk_capacity,jdbcType=VARCHAR}, 
+      #{disk_state,jdbcType=VARCHAR}, #{is_full,jdbcType=VARCHAR}, #{create_time,jdbcType=TIMESTAMP}, 
+      #{video_type,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.videorecord.mybatis.pojo.DiskInfo" >
+    insert into disk_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="disk_id != null" >
+        disk_id,
+      </if>
+      <if test="disk_name != null" >
+        disk_name,
+      </if>
+      <if test="disk_capacity != null" >
+        disk_capacity,
+      </if>
+      <if test="disk_state != null" >
+        disk_state,
+      </if>
+      <if test="is_full != null" >
+        is_full,
+      </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
+      <if test="video_type != null" >
+        video_type,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="disk_id != null" >
+        #{disk_id,jdbcType=VARCHAR},
+      </if>
+      <if test="disk_name != null" >
+        #{disk_name,jdbcType=VARCHAR},
+      </if>
+      <if test="disk_capacity != null" >
+        #{disk_capacity,jdbcType=VARCHAR},
+      </if>
+      <if test="disk_state != null" >
+        #{disk_state,jdbcType=VARCHAR},
+      </if>
+      <if test="is_full != null" >
+        #{is_full,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null" >
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="video_type != null" >
+        #{video_type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.videorecord.mybatis.pojo.DiskInfoExample" resultType="java.lang.Integer" >
+    select count(*) from disk_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update disk_info
+    <set >
+      <if test="record.disk_id != null" >
+        disk_id = #{record.disk_id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disk_name != null" >
+        disk_name = #{record.disk_name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disk_capacity != null" >
+        disk_capacity = #{record.disk_capacity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disk_state != null" >
+        disk_state = #{record.disk_state,jdbcType=VARCHAR},
+      </if>
+      <if test="record.is_full != null" >
+        is_full = #{record.is_full,jdbcType=VARCHAR},
+      </if>
+      <if test="record.create_time != null" >
+        create_time = #{record.create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.video_type != null" >
+        video_type = #{record.video_type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update disk_info
+    set disk_id = #{record.disk_id,jdbcType=VARCHAR},
+      disk_name = #{record.disk_name,jdbcType=VARCHAR},
+      disk_capacity = #{record.disk_capacity,jdbcType=VARCHAR},
+      disk_state = #{record.disk_state,jdbcType=VARCHAR},
+      is_full = #{record.is_full,jdbcType=VARCHAR},
+      create_time = #{record.create_time,jdbcType=TIMESTAMP},
+      video_type = #{record.video_type,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.videorecord.mybatis.pojo.DiskInfo" >
+    update disk_info
+    <set >
+      <if test="disk_name != null" >
+        disk_name = #{disk_name,jdbcType=VARCHAR},
+      </if>
+      <if test="disk_capacity != null" >
+        disk_capacity = #{disk_capacity,jdbcType=VARCHAR},
+      </if>
+      <if test="disk_state != null" >
+        disk_state = #{disk_state,jdbcType=VARCHAR},
+      </if>
+      <if test="is_full != null" >
+        is_full = #{is_full,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null" >
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="video_type != null" >
+        video_type = #{video_type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where disk_id = #{disk_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.videorecord.mybatis.pojo.DiskInfo" >
+    update disk_info
+    set disk_name = #{disk_name,jdbcType=VARCHAR},
+      disk_capacity = #{disk_capacity,jdbcType=VARCHAR},
+      disk_state = #{disk_state,jdbcType=VARCHAR},
+      is_full = #{is_full,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      video_type = #{video_type,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where disk_id = #{disk_id,jdbcType=VARCHAR}
+  </update>
+</mapper>
