@@ -13,104 +13,67 @@
 <script src="../layui/layui.js" charset="utf-8"></script>
 <script src="../js/util.js"></script>
 <style>
-table tbody {
-	/* 	display: block;
-	height: 666px;
-	overflow-y: scroll; */
-	
-}
-
-table tr {
-	text-align: left !important;
-	font: 14px Helvetica Neue, Helvetica, PingFang SC, 微软雅黑, Tahoma, Arial,
-		sans-serif;
-	line-height: normal;
-}
-
-table tr:nth-child(2n) {
-	background-color: #f2f2f2;
-}
-
-table thead tr th {
-	height: 28px;
-	min-height: 20px;
-	line-height: 28px;
-	padding: 5px 5px;
-	border: 1px solid #d1d1d1;
-	font-size: 14px;
-	background-color: #f2f2f2;
-	padding: 5px 5px;
-	line-height: 28px;
-	padding: 5px 5px;
-}
-
-table tr td {
+.video-info {
 	position: relative;
-	height: 28px;
-	line-height: 28px;
-	cursor: default;
-	padding: 5px 5px;
-	border-top: none;
-	border-left: none;
-	min-height: 20px;
-	line-height: 20px;
-	font-size: 14px;
-	border-width: 1px;
-	border-style: solid;
-	border-color: #d1d1d1;
-	box-sizing: border-box;
-	line-height: 28px;
-}
-
-.table-box * {
-	box-sizing: border-box;
-}
-
-.table-box {
-	position: relative;
-	overflow: hidden;
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
-
-.table-header {
-	border-width: 0 0 1px;
-	overflow: hidden;
-	border-style: solid;
-	border-color: #e6e6e6;
-	background-color: #f2f2f2;
-	box-sizing: border-box;
-	border-style: solid;
-	border-color: #e6e6e6;
-	background-color: #f2f2f2;
-	box-sizing: border-box;
-}
-
-.table-body {
-	height: 251px;
-	position: relative;
+	width: 1271px;
+	height: 500px;
 	overflow: auto;
-	margin-right: -1px;
-	margin-bottom: -1px;
 	box-sizing: border-box;
+	border: 1px solid #d2d2d2;
+	font-size: 0;
 }
 
-.table-fixed-l {
-	position: absolute;
-	left: 0;
-	top: 0;
-	box-shadow: 0 -1px 8px rgba(0, 0, 0, .08);
-	box-sizing: border-box;
-}
-
-.table-fixed-l .table-body {
-	 height: 234px; /**/
+.info-line {
+	display: inline-block;
 	overflow: hidden;
-	/* position: relative;
-	margin-right: -1px;
-	margin-bottom: -1px; */
-	box-sizing: border-box;
+	background-color: #FFF;
+	width: max-content;
+	width: -moz-max-content;
+}
+
+.info-line:nth-child(2n) {
+	background-color: #d2d2d2;
+	border-right: 1px solid #fff;
+}
+
+.info-line:nth-child(2n) .info-box {
+	border-right: 1px solid #fff;
+}
+
+.info-box {
+	width: 60px;
+	height: 36px;
+	display: inline-block;
+	line-height: 36px;
+	font-size: 18px;
+	padding: 0 10px;
+	border-right: 1px solid #d2d2d2;
+	text-align: center;
+	table-layout: fixed;
+	word-wrap: break-word;
+	overflow: hidden;
+}
+
+.video-name-box {
+	width: 200px;
+	text-align: left;
+}
+
+.video-date-box {
+	width: 100px;
+}
+
+.video-type-box {
+	width: 80px;
+}
+
+.video-resolution-box {
+	width: 100px;
+}
+
+.video-address-box {
+	width: 180px;
+	text-align: left;
 }
 </style>
 </head>
@@ -136,101 +99,35 @@ table tr td {
 		</form>
 	</div>
 
+
 	<div
-		style="width: 892px; height: 332px; position: relative; overflow: hidden; border-width: 1px; border-style: solid; border-color: #e6e6e6; margin: 10px 0; box-sizing: border-box;">
-		<div class="table-box">
-			<div class="table-header">表头</div>
-			<div class="table-body">
-				<div
-					style="height: 400px; width: 900px; position: relative; margin: 0;">
-					1111111111112222222222223333333333333333334444444444444444455555555555555555<br />1<br />1<br />1<br />1
-					<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
+		style="width: 1271px; height: 500px; display: block; position: relative; overflow: hidden;">
+		<div style="position: relative; overflow: hidden;">
+			<div id="d1"
+				style="width: 1271px; height: 500px; position: relative; overflow: auto; box-sizing: border-box; font-size: 0px;">
+				<div id="video_info"
+					style="position: relative; display: inline-block; font-size: 0px;">
 				</div>
 			</div>
-			<div class="table-fixed-l">
-				<div class="table-header">表头</div>
-				<div class="table-body">
-					<div
-						style="height: 400px; width: 100px; position: relative; margin: 0; background-color: #ddd;">
-						1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
-						1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />
+			<div style="position: absolute; top: 0px; left: 0px;">
+				<div id="d2"
+					style="position: relative; display: block; width: 220px; height: 480px; overflow: hidden; font-size: 0px;">
+					<div id="video_name" class="video-name"
+						style="position: relative; width: 220px; height: 480px; font-size: 0px;">
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- 	<div style="font-size: 0;"> -->
-	<!-- 		<div -->
-	<!-- 			style="position: relative; border: 1px solid #d1d1d1; height: 566px; width: 800px; display: inline-block;"> -->
-	<!-- 			<div -->
-	<!-- 				style="height: 28px; width: 100%; border-bottom: 1px solid #ddd;"> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 			</div> -->
-	<!-- 			<div style="height: 538px; width: 1220px; overflow-y: auto"> -->
-	<!-- 				<div -->
-	<!-- 					style="height: 1200px; width: 800px; font-size: 14px; background-color: #ddd"> -->
-	<!-- 					1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br /> -->
-	<!-- 					1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br />1<br /> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 		<div -->
-	<!-- 			style="position: relative; border: 1px solid #d1d1d1; height: 566px; width: 400px; display: inline-block;"> -->
-	<!-- 			<div -->
-	<!-- 				style="height: 28px; width: 100%; border-bottom: 1px solid #ddd;"> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 				<div -->
-	<!-- 					style="width: 99px; height: 28px; display: inline-block; border-right: 1px solid #ddd;"></div> -->
-	<!-- 			</div> -->
-	<!-- 			<div style="height: 538px; width: 100%; overflow-x: auto"> -->
-	<!-- 				<div style="height: 100%; width: 800px; font-size: 14px;"></div> -->
-	<!-- 				111111111111222222222222222222222222111111111113333333333333333333333311111114444444444444444444441111 -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<!-- 	<div style="height: 666px;">
-		<table id="dataTable" lay-filter="dataTable">
-			<thead>
-				<tr>
-					<th>资源名</th>
-					<th>播出时间</th>
-					<th>类型</th>
-					<th>播出季</th>
-					<th>国家</th>
-					<th>原作</th>
-					<th>资源类型</th>
-					<th>资源格式</th>
-					<th>分辨率</th>
-					<th>字幕类型</th>
-					<th>存储地址</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-	</div> -->
+
 </body>
 <script>
+	$(function() {
+		$("#d1").scroll(function() {
+			$("#d2").scrollTop($("#d1").scrollTop());
+		});
+	});
+
 	var element;
 	var table;
 	layui.use([ 'table', 'element' ], function() {
@@ -301,34 +198,40 @@ table tr td {
 	}
 
 	function loadData(data) {
-		$("#dataTable").find('tbody').children().remove();
-		//
-		for (var i = 0; i < data.length; i++) {
-			var tr = "<tr><td>" + data[i].video_name + "</td><td>"
-					+ data[i].video_broadcast_time + "</td><td>"
-					+ data[i].video_type + "</td><td>" + data[i].video_season
-					+ "</td><td>" + data[i].video_country + "</td><td>"
-					+ data[i].video_source + "</td>";
 
-			var vr = "";
-			// 			for (var j = 0; j < data[i].videoResourceInfo.length; j++) {
-			// 				vr = vr + "<td>" + data[i].videoResourceInfo[j].resource_type
-			// 						+ "</td><td>"
-			// 						+ data[i].videoResourceInfo[j].resource_format
-			// 						+ "</td><td>"
-			// 						+ data[i].videoResourceInfo[j].resource_resolution
-			// 						+ "</td><td>"
-			// 						+ data[i].videoResourceInfo[j].resource_sub_type
-			// 						+ "</td><td>"
-			// 						+ data[i].videoResourceInfo[j].resource_record_address
-			// 						+ "</td>";
-			// 			}
-			tr = tr + vr + "</tr>";
-			$("#dataTable").find('tbody').append(tr);
+		for (var i = 0; i < data.length; i++) {
+			var video_name = "<div class='info-box video-name-box'><span>"
+					+ data[i].video_name + "<span></div>";
+			var div = "<div class='info-box video-name-box'><span>"
+					+ data[i].video_name
+					+ "<span></div><div class='info-box video-date-box'>"
+					+ data[i].video_broadcast_time
+					+ "</div><div class='info-box'>" + data[i].video_type
+					+ "</div><div class='info-box'>" + data[i].video_season
+					+ "</div><div class='info-box'>" + data[i].video_country
+					+ "</div><div class='info-box'>" + data[i].video_source
+					+ "</div>";
+
+			for (var j = 0; j < data[i].videoResourceInfo.length; j++) {
+				div = div + "<div class='info-box video-type-box'>"
+						+ data[i].videoResourceInfo[j].resource_type
+						+ "</div><div class='info-box'>"
+						+ data[i].videoResourceInfo[j].resource_format
+						+ "</div><div class='info-box video-resolution-box'>"
+						+ data[i].videoResourceInfo[j].resource_resolution
+						+ "</div><div class='info-box'>"
+						+ data[i].videoResourceInfo[j].resource_sub_type
+						+ "</div><div class='info-box video-address-box'>"
+						+ data[i].videoResourceInfo[j].resource_record_address
+						+ "</div>";
+			}
+			div = "<div class='info-line'>" + div + "</div>";
+			video_name = "<div class='info-line'>" + video_name + "</div>";
+
+			$("#video_info").append(div);
+			$("#video_name").append(video_name);
 		}
 
-		//转换静态表格
-		//table.init('dataTable', {});
 	}
 </script>
 </html>
