@@ -167,7 +167,7 @@ public class VideoDao {
 		return videoInfoMapper.selectByPrimaryKey(video_id);
 	}
 
-	public int addAnimation(VideoInfo videoInfo) {
+	public int addVideo(VideoInfo videoInfo) {
 		return videoInfoMapper.insertSelective(videoInfo);
 	}
 

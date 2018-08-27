@@ -13,14 +13,43 @@
 <script src="../layui/layui.js" charset="utf-8"></script>
 <script src="../js/util.js"></script>
 <style>
+.file-name {
+	width: 490px;
+	display: inline-block;
+	text-align: left;
+	vertical-align: middle;
+	margin-left: 10px;
+	font-size: 16px;
+}
+
 .video-info {
-	position: relative;
 	width: 1271px;
 	height: 500px;
+	display: block;
+	position: relative;
+	border: 1px solid #e2e2e2;
+	overflow: hidden;
+	display: block;
+	position: relative;
+}
+
+.video-info-main {
+	width: 1271px;
+	height: 500px;
+	position: relative;
+	display: inline-block;
 	overflow: auto;
 	box-sizing: border-box;
-	border: 1px solid #d2d2d2;
-	font-size: 0;
+	font-size: 0px;
+}
+
+.video-info-fixed {
+	position: relative;
+	display: block;
+	width: 220px;
+	height: 483px;
+	overflow: hidden;
+	font-size: 0px;
 }
 
 .info-line {
@@ -29,10 +58,14 @@
 	background-color: #FFF;
 	width: max-content;
 	width: -moz-max-content;
+	opacity: .8;
+	filter: alpha(opacity = 80);
 }
 
 .info-line:nth-child(2n) {
-	background-color: #d2d2d2;
+	background-color: #01AAED;
+	opacity: .8;
+	filter: alpha(opacity = 80);
 	border-right: 1px solid #fff;
 }
 
@@ -80,73 +113,108 @@
 <body>
 	<div style="margin: 15px 0 0 15px; width: 800px;">
 		<div style="font-size: 0px;">
-			<div style="" class="layui-btn layui-btn-normal" onclick=" ">模板下载</div>
-			<div style="" class="layui-btn layui-btn-normal"
-				onclick="fileInput()">选择文件</div>
-			<div style="" class="layui-btn layui-btn-normal" onclick="upload()">上传</div>
-			<div
-				style="width: 490px; display: inline-block; text-align: left; vertical-align: middle; margin-left: 10px; font-size: 16px;">
+			<div class="layui-btn layui-btn-normal" onclick=" ">模板下载</div>
+			<div class="layui-btn layui-btn-normal" onclick="fileInput()">选择文件</div>
+			<div class="layui-btn layui-btn-normal" onclick="upload()">上传</div>
+			<div class="file-name">
 				<span id="fileName"></span>
 			</div>
 		</div>
+		<!--  -->
 		<div class="layui-progress layui-progress-big" lay-filter="demo"
 			lay-showpercent="true" style="width: 666px; margin: 15px 0">
 			<div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
 		</div>
+		<!--  -->
 		<form id="uploadForm" enctype="multipart/form-data">
 			<input id="file" type="file" style="display: none;" name="file"
 				onchange="fileChange();" />
 		</form>
-	</div>
-
-
-	<div
-		style="width: 1271px; height: 500px; display: block; position: relative; overflow: hidden;">
-		<div style="position: relative; overflow: hidden;">
-			<div id="d1"
-				style="width: 1271px; height: 500px; position: relative; overflow: auto; box-sizing: border-box; font-size: 0px;">
-				<div id="video_info"
-					style="position: relative; display: inline-block; font-size: 0px;">
-				</div>
+		<!--  -->
+		<div class="video-info">
+			<div id="video_info_main" class="video-info-main">
+				<div id="video_info"></div>
 			</div>
 			<div style="position: absolute; top: 0px; left: 0px;">
-				<div id="d2"
-					style="position: relative; display: block; width: 220px; height: 480px; overflow: hidden; font-size: 0px;">
-					<div id="video_name" class="video-name"
-						style="position: relative; width: 220px; height: 480px; font-size: 0px;">
-					</div>
-				</div>
+				<div id="video_info_fixed" class="video-info-fixed"></div>
 			</div>
 		</div>
+		<input type="hidden" id="videoInfo" name="videoInfo">
+		<!--  -->
+		<div class="layui-btn layui-btn-normal" onclick="batchAdd()">提交</div>
 	</div>
-
 </body>
 <script>
 	$(function() {
-		$("#d1").scroll(function() {
-			$("#d2").scrollTop($("#d1").scrollTop());
-		});
+		$("#video_info_main").scroll(
+				function() {
+					$("#video_info_fixed").scrollTop(
+							$("#video_info_main").scrollTop());
+				});
 	});
 
 	var element;
 	var table;
+	var layer;
 	layui.use([ 'table', 'element' ], function() {
 		element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
 		table = layui.table;
+		layer = layui.layer;
 
-		var $ = layui.$, active = {
-			parseTable : function() {
-				table.init('parse-table-demo', { //转化静态表格
-				//height: 'full-500'
-				});
-			}
-		};
-
-		$('.demoTable .layui-btn').on('click', function() {
-			var type = $(this).data('type');
-			active[type] ? active[type].call(this) : '';
-		});
 	});
+
+	function batchAdd() {
+		var videoInfo = $("#videoInfo").val();
+		if (videoInfo != '') {
+			var index = layer.load(1, {
+				shade : [ 0.3, '#ddd' ]
+			});
+
+			$.ajax({
+				url : "/videoRecord/batchAdd/",
+				method : "POST",
+				data : {
+					videoInfo : $("#videoInfo").val()
+				},
+				dataType : "json",
+				success : function(resp) {
+					console.log(resp);
+					if (resp.data == 1) {
+						layer.close(index);
+						layer.alert("添加成功！！！", {
+							offset : '200px'
+						}, function(index) {
+							layer.close(index);
+							// 重新载入添加页面
+							location.href = location.href;
+						});
+					} else {
+						layer.close(index);
+						layer.alert(resp.msg, {
+							title : "添加失败",
+							area : [ '300px', '200px' ],
+							offset : '200px'
+						});
+					}
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log(XMLHttpRequest);
+					console.log(textStatus);
+					console.log(errorThrown);
+					layer.close(index);
+					layer.alert(errorThrown, {
+						title : "系统异常",
+						area : [ '300px', '200px' ],
+						offset : '200px'
+					});
+				}
+			});
+		} else {
+			layer.alert("请上传文件！", {
+				offset : "200px"
+			})
+		}
+	}
 
 	function fileInput() {
 		$('#file').click();
@@ -157,60 +225,84 @@
 		var file = $("#uploadForm").find("input")[0].files[0];// document.getElementsByTagName('input')[0].files[0];//
 		$("#fileName").html(file.name);
 		element.progress('demo', '0%');
+		$("#videoInfo").val('');
 	}
 
 	function upload() {
-		if (window.FormData) {
-			var formDate = new FormData($('#uploadForm')[0]);
-			console.log("准备上传文件");
-			$.ajax({
-				url : '/videoRecord/parseExcel',
-				type : 'POST',
-				//数据
-				data : formDate,
-				contentType : false,
-				processData : false,
-				xhr : function() {//这里我们先拿到jQuery产生的 XMLHttpRequest对象，为其增加 progress 事件绑定，然后再返回交给ajax使用
-					var xhr = $.ajaxSettings.xhr();
-					xhr.upload.onprogress = function(ev) {
-						if (ev.lengthComputable) {//文件长度可计算
-							var percent = 100 * ev.loaded / ev.total;//计算上传的百分比
-							element.progress('demo', parseInt(percent) + '%');
+		// 判断 文件是否为空 为空则提示不上传
+		var file = $("#file").val();
+		console.log(file);
+		if (file !== '') {
+			if (window.FormData) {
+				var formDate = new FormData($('#uploadForm')[0]);
+				console.log("准备上传文件");
+				var index = layer.load(1, {
+					shade : [ 0.3, '#ddd' ]
+				});
+				console.log("开启遮罩层" + index);
+				$.ajax({
+					url : '/videoRecord/parseExcel',
+					type : 'POST',
+					//数据
+					data : formDate,
+					contentType : false,
+					processData : false,
+					xhr : function() {//这里我们先拿到jQuery产生的 XMLHttpRequest对象，为其增加 progress 事件绑定，然后再返回交给ajax使用
+						var xhr = $.ajaxSettings.xhr();
+						xhr.upload.onprogress = function(ev) {
+							if (ev.lengthComputable) {//文件长度可计算
+								var percent = 100 * ev.loaded / ev.total;//计算上传的百分比
+								element.progress('demo', parseInt(percent)
+										+ '%');
+							}
 						}
+						return xhr;
+					},
+					success : function(resp) {
+						loadData(resp.data);
+						$("#videoInfo").val(JSON.stringify(resp.data));
+						layer.close(index);
+						console.log("关闭遮罩层" + index);
+					},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+						layer.close(index);
+						console.log("关闭遮罩层" + index);
+						layer.alert("服务器错误,请重新上传！", {
+							offset : "200px"
+						})
 					}
-					return xhr;
-				},
-				success : function(resp) {
-					console.log(resp);
-					var data = resp.data;
-					loadData(data);
-				},
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					console.log(XMLHttpRequest);
-					console.log(textStatus);
-					console.log(errorThrown);
-					alert("服务器错误,请重新上传");
-				}
-			})
+				})
+			} else {
+				layer.alert("浏览器不支持上传方式，请更换浏览器！", {
+					offset : "200px"
+				})
+			}
 		} else {
-			alert('浏览器不支持上传方式，请更换浏览器！');
+			layer.alert("没有文件", {
+				offset : "200px"
+			})
 		}
+
 	}
 
 	function loadData(data) {
 
+		$("#video_info").children().remove();
+		$("#video_info_fixed").children().remove();
+
 		for (var i = 0; i < data.length; i++) {
-			var video_name = "<div class='info-box video-name-box'><span>"
-					+ data[i].video_name + "<span></div>";
-			var div = "<div class='info-box video-name-box'><span>"
+			var video_name = "<div class='info-box video-name-box'>"
+					+ data[i].video_name + "</div>";
+			var div = "<div class='info-box video-name-box'>"
 					+ data[i].video_name
-					+ "<span></div><div class='info-box video-date-box'>"
+					+ "</div><div class='info-box video-date-box'>"
 					+ data[i].video_broadcast_time
-					+ "</div><div class='info-box'>" + data[i].video_type
-					+ "</div><div class='info-box'>" + data[i].video_season
-					+ "</div><div class='info-box'>" + data[i].video_country
-					+ "</div><div class='info-box'>" + data[i].video_source
-					+ "</div>";
+					+ "</div><div class='info-box video-date-box'>"
+					+ data[i].video_episode + "话</div><div class='info-box'>"
+					+ data[i].video_type + "</div><div class='info-box'>"
+					+ data[i].video_season + "</div><div class='info-box'>"
+					+ data[i].video_country + "</div><div class='info-box'>"
+					+ data[i].video_source + "</div>";
 
 			for (var j = 0; j < data[i].videoResourceInfo.length; j++) {
 				div = div + "<div class='info-box video-type-box'>"
@@ -229,7 +321,7 @@
 			video_name = "<div class='info-line'>" + video_name + "</div>";
 
 			$("#video_info").append(div);
-			$("#video_name").append(video_name);
+			$("#video_info_fixed").append(video_name);
 		}
 
 	}

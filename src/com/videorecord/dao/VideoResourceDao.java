@@ -27,7 +27,9 @@ public class VideoResourceDao {
 	public int addVideoResource(List<VideoResourceInfo> videoResourceInfo) {
 		int result = 0;
 		for (int i = 0; i < videoResourceInfo.size(); i++) {
-			result = videoResourceInfoMapper.insertSelective(videoResourceInfo.get(i));
+			if (videoResourceInfo.get(i).getResource_type() != null) {
+				result = videoResourceInfoMapper.insertSelective(videoResourceInfo.get(i));
+			}
 		}
 		return result;
 	}

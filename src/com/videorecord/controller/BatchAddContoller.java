@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.videorecord.bean.ResponseBean;
-import com.videorecord.bean.batchupload.UploadReqBean; 
+import com.videorecord.bean.batchupload.UploadReqBean;
 import com.videorecord.mybatis.pojo.VideoInfo;
 import com.videorecord.service.BatchAddService;
 
@@ -22,6 +22,11 @@ public class BatchAddContoller {
 	@RequestMapping(value = "/parseExcel", method = RequestMethod.POST)
 	public ResponseBean<List<VideoInfo>> getEchartsData(UploadReqBean req, HttpSession session) throws Exception {
 		return batchAddService.parseExcel(req);
+	}
+
+	@RequestMapping(value = "/batchAdd", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public ResponseBean<Integer> batchAdd(String videoInfo, HttpSession session) throws Exception {
+		return batchAddService.batchAdd(videoInfo);
 	}
 
 }

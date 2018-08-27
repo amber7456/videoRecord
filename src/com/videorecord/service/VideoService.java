@@ -196,7 +196,7 @@ public class VideoService {
 			videoInfo.setHave_poster("0");
 		}
 		// 添加资源信息
-		int videoFlag = videoDao.addAnimation(videoInfo);
+		int videoFlag = videoDao.addVideo(videoInfo);
 		// 添加收录信息
 		int resourceFlag = 1;
 		if (videoInfo.getVideoResourceInfo() != null && videoInfo.getVideoResourceInfo().size() > 0) {
