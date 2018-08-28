@@ -4,6 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -141,6 +146,54 @@ public class CommonUtils {
 			file.delete();
 		}
 		return false;
+	}
+
+	/**
+	 * 文件的复制
+	 * 
+	 * @param beginFilename
+	 *            原始文件
+	 * @param endFilename
+	 *            目标文件
+	 */
+	public static void fileCopy(String beginFilename, String endFilename) {
+		// 创建输入输出流对象
+		InputStream input = null;
+		OutputStream output = null;
+		int length;
+		try {
+			input = new FileInputStream(beginFilename);
+			output = new FileOutputStream(endFilename);
+			// 获取文件长度
+			try {
+				length = input.available();
+
+				// 创建缓存区域
+				byte[] buffer = new byte[length];
+				// 将文件中的数据写入缓存数组
+				input.read(buffer);
+				// 将缓存数组中的数据输出到文件
+				output.write(buffer);
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+
+		} finally {
+			if (input != null && output != null) {
+				try {
+					input.close(); // 关闭流
+					output.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
 	}
 
 	/**

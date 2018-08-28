@@ -96,6 +96,10 @@
 	width: 100px;
 }
 
+.video-ep-box {
+	width: 50px;
+}
+
 .video-type-box {
 	width: 80px;
 }
@@ -108,12 +112,16 @@
 	width: 180px;
 	text-align: left;
 }
+
+.margin-top20 {
+	margin-top: 20px;
+}
 </style>
 </head>
 <body>
 	<div style="margin: 15px 0 0 15px; width: 800px;">
 		<div style="font-size: 0px;">
-			<div class="layui-btn layui-btn-normal" onclick=" ">模板下载</div>
+			<div class="layui-btn layui-btn-normal" onclick="templateDownload()">模板下载</div>
 			<div class="layui-btn layui-btn-normal" onclick="fileInput()">选择文件</div>
 			<div class="layui-btn layui-btn-normal" onclick="upload()">上传</div>
 			<div class="file-name">
@@ -141,8 +149,11 @@
 		</div>
 		<input type="hidden" id="videoInfo" name="videoInfo">
 		<!--  -->
-		<div class="layui-btn layui-btn-normal" onclick="batchAdd()">提交</div>
+		<div class="layui-btn layui-btn-normal margin-top20"
+			onclick="batchAdd()">提交</div>
 	</div>
+	<form id="templateDownload" method="POST"
+		action="/videoRecord/templateDownload"></form>
 </body>
 <script>
 	$(function() {
@@ -162,6 +173,10 @@
 		layer = layui.layer;
 
 	});
+
+	function templateDownload() {
+		$("#templateDownload").submit();
+	}
 
 	function batchAdd() {
 		var videoInfo = $("#videoInfo").val();
@@ -297,7 +312,7 @@
 					+ data[i].video_name
 					+ "</div><div class='info-box video-date-box'>"
 					+ data[i].video_broadcast_time
-					+ "</div><div class='info-box video-date-box'>"
+					+ "</div><div class='info-box video-ep-box'>"
 					+ data[i].video_episode + "话</div><div class='info-box'>"
 					+ data[i].video_type + "</div><div class='info-box'>"
 					+ data[i].video_season + "</div><div class='info-box'>"
